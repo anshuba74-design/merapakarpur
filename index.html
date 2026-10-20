@@ -505,7 +505,7 @@
           <i class="fa-solid fa-magnifying-glass-location" style="color: var(--accent);"></i> अपनी शिकायत ट्रैक करें
         </div>
         <div class="form-group">
-          <label>शिकायत रसीद संख्या (उदा. PKP-123) दर्ज करें:</label>
+          <label>शिकायत रसीद संख्या (उदा. PKP-84729145) दर्ज करें:</label>
           <input type="text" id="trackQueryInput" placeholder="PKP नंबर दर्ज करें">
         </div>
         <button class="btn btn-amber" onclick="executeComplaintTrack()"><i class="fa-solid fa-search"></i> स्थिति खोजें</button>
@@ -1839,6 +1839,7 @@
       var bg = (c.status === "निस्तारित") ? "#16a34a" : (c.status === "प्रगति पर" ? "#0284c7" : (c.status.includes("निरस्त") ? "#dc2626" : "#f59e0b"));
       var out = '<div class="complaint-card"><span class="badge" style="background:'+bg+'">'+c.status+'</span>' +
                 '<strong>'+c.id+' - '+c.cat+'</strong>' +
+                '<div style="font-size:12px; color:#64748b; margin:2px 0;"><i class="fa-regular fa-calendar-days"></i> दिनांक: '+(c.date || "N/A")+'</div>' +
                 '<div style="font-size:12px; color:#475569; margin:4px 0;">स्थान: '+c.place+'</div>' +
                 '<div style="font-size:13px; margin:6px 0;">'+c.desc+'</div>';
       
@@ -1870,6 +1871,7 @@
 
         h += '<div class="complaint-card"><span class="badge" style="background:'+bg+'">'+c.status+'</span>' +
              '<strong style="font-size:14px;"><i class="fa-solid fa-receipt"></i> '+c.id+' - '+c.cat+'</strong>' +
+             '<div style="font-size:11px; color:#64748b; margin:2px 0;"><i class="fa-regular fa-calendar-days"></i> दिनांक: ' + (c.date || "N/A") + '</div>' +
              '<div style="font-size:12px; color:#64748b; margin:4px 0;"><i class="fa-solid fa-location-dot" style="color:#dc2626;"></i> ' + c.place + '</div>' +
              '<div style="font-size:13px; color:#334155; margin-bottom:6px;">' + c.desc + '</div>';
 
@@ -2139,6 +2141,7 @@
           out += '<div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:8px; margin-bottom:6px;">' +
                  '<span class="badge" style="background:'+bg+'; font-size:10px;">'+c.status+'</span>' +
                  '<strong>'+c.id+' - '+c.cat+'</strong>' +
+                 '<div style="font-size:10px; color:#64748b; margin:1px 0;">दिनांक: '+(c.date || "N/A")+'</div>' +
                  '<div style="font-size:11px; color:#64748b; margin:2px 0;">स्थान: '+c.place+'</div>' +
                  '<div style="font-size:12px; color:#334155;">'+c.desc+'</div>';
           if (c.resolutionPhoto) {
@@ -2186,6 +2189,7 @@
              '<button onclick="moveToRecycleBin(\''+c.id+'\')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">बिन में डालें</button>' +
              '</div>' +
              '</div>' +
+             '<div style="font-size:11px; color:#64748b; margin:2px 0;"><i class="fa-regular fa-calendar-days"></i> दर्ज दिनांक: ' + (c.date || "N/A") + '</div>' +
              '<div style="font-size:12px; margin:4px 0;">नागरिक: <b>' + c.name + '</b> (' + c.phone + ') <a href="tel:' + c.phone + '" style="color:#16a34a; font-weight:700;"><i class="fa-solid fa-phone"></i> कॉल करें</a></div>' +
              '<div style="font-size:12px; color:#475569;">स्थान: ' + c.place + '</div>' +
              '<div style="font-size:13px; margin:4px 0;">' + c.desc + '</div>' +
@@ -2313,6 +2317,7 @@
       if (!c) return;
       var body = document.getElementById('modalCompBody');
       var out = '<p style="margin-bottom:6px;"><strong>रसीद:</strong> ' + c.id + '</p>' +
+                '<p style="margin-bottom:6px;"><strong>दिनांक:</strong> ' + (c.date || "N/A") + '</p>' +
                 '<p style="margin-bottom:6px;"><strong>विभाग:</strong> ' + c.cat + '</p>' +
                 '<p style="margin-bottom:6px;"><strong>नागरिक:</strong> ' + c.name + ' (<a href="tel:'+c.phone+'" style="color:#16a34a; font-weight:700;">+91 '+c.phone+'</a>)</p>' +
                 '<p style="margin-bottom:6px;"><strong>स्थान:</strong> ' + c.place + '</p>' +
@@ -2386,7 +2391,8 @@
       e.preventDefault();
       if (!curUser) return alert("कृपया पहले लॉगिन करें!");
 
-      var compId = "PKP-" + Math.floor(100 + Math.random() * 900);
+      // 100% Unique ID (Current Timestamp के 6 अंक + 2 रैंडम अंक)
+      var compId = "PKP-" + Date.now().toString().slice(-6) + Math.floor(10 + Math.random() * 90);
       var item = {
         id: compId,
         name: curUser.name,
@@ -2398,12 +2404,13 @@
         photo: tempCompPhoto || "",
         status: "लंबित",
         reply: "",
-        resolutionPhoto: ""
+        resolutionPhoto: "",
+        date: new Date().toLocaleDateString('hi-IN')
       };
 
       db.ref('complaints/' + compId).set(item).then(function() {
         tempCompPhoto = "";
-        alert("शिकायत दर्ज हो गई!\nरसीद संख्या: " + item.id);
+        alert("शिकायत सफलतापूर्वक दर्ज हो गई!\nआपकी रसीद संख्या: " + item.id + "\nकृपया इस संख्या को नोट कर लें।");
         document.getElementById('compForm').reset();
         switchAction('vList');
       });
