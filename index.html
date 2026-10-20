@@ -82,6 +82,10 @@
     .header-btn {
       background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.35);
       color: #fff; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer;
+      overflow: hidden; padding: 0;
+    }
+    .header-user-avatar {
+      width: 100%; height: 100%; object-fit: cover; display: none;
     }
     .admin-secret-btn {
       background: rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.5);
@@ -215,7 +219,6 @@
     .zoomable-pic { cursor: pointer; transition: transform 0.2s; }
     .zoomable-pic:active { transform: scale(0.96); }
 
-    /* Citizen Status Mini Grid */
     .stat-square-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 10px 0;
     }
@@ -224,6 +227,14 @@
     }
     .stat-square span { display: block; font-size: 10px; opacity: 0.9; margin-bottom: 2px; }
     .stat-square h4 { font-size: 18px; line-height: 1; }
+
+    .user-profile-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+    }
+    .user-avatar-circle {
+      width: 58px; height: 58px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);
+      background: #dcfce7; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -285,7 +296,8 @@
 
   <header>
     <button class="header-btn" onclick="openUserProfileDirect()" title="नागरिक खाता">
-      <i class="fa-solid fa-circle-user"></i>
+      <img id="headerUserAvatar" class="header-user-avatar" src="" alt="Avatar">
+      <i id="headerUserIcon" class="fa-solid fa-circle-user"></i>
     </button>
 
     <div class="header-center">
@@ -555,7 +567,7 @@
       </div>
     </div>
 
-    <!-- Citizen Account Form -->
+    <!-- Citizen Account Form & Profile (UPDATED WITH PHOTO UPLOAD) -->
     <div id="vProfile" class="view-content">
       <div class="card" id="userAuthBox">
         <div class="card-title">
@@ -593,10 +605,26 @@
       </div>
 
       <div class="card" id="userProfileBox" style="display:none;">
-        <div class="card-title"><i class="fa-solid fa-address-card" style="color: var(--primary);"></i> मेरी सक्रिय प्रोफ़ाइल</div>
-        <p style="margin-bottom:6px;"><strong>नाम:</strong> <span id="pName"></span></p>
-        <p style="margin-bottom:6px;"><strong>मोबाइल:</strong> <span id="pPhone"></span></p>
-        <p style="margin-bottom:12px;"><strong>टोला:</strong> <span id="pWard"></span></p>
+        <div class="card-title"><i class="fa-solid fa-address-card" style="color: var(--primary);"></i> मेरी सक्रिय नागरिक प्रोफ़ाइल</div>
+        
+        <div class="user-profile-header">
+          <img id="uAvatarImg" class="user-avatar-circle zoomable-pic" src="" style="display:none;" onclick="zoomSpecificImage(this.src)" alt="User Pic">
+          <div id="uAvatarIcon" class="user-avatar-circle"><i class="fa-solid fa-user"></i></div>
+          <div>
+            <h3 id="pName" style="font-size:16px; color:#1e293b;"></h3>
+            <p style="font-size:12px; color:#16a34a; font-weight:600;"><i class="fa-solid fa-circle-check"></i> प्रमाणित ग्राम नागरिक</p>
+            <span id="pPhone" style="font-size:12px; color:#64748b;"></span>
+          </div>
+        </div>
+
+        <p style="margin-bottom:6px; font-size:13px;"><strong>निवास / टोला:</strong> <span id="pWard"></span></p>
+
+        <!-- USER PROFILE PHOTO UPLOAD SECTION -->
+        <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:10px; margin:12px 0;">
+          <label style="font-size:12px; color:#15803d; font-weight:700;"><i class="fa-solid fa-camera"></i> अपनी प्रोफाइल फोटो लगाएं / बदलें:</label>
+          <input type="file" accept="image/*" onchange="uploadUserAvatarCloud(event)" style="font-size:12px; padding:6px; margin-top:4px;">
+        </div>
+
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px dashed var(--border); padding-top:10px;">
           <button class="btn btn-emerald" style="width:auto; padding:6px 14px;" onclick="switchAction('vNew')"><i class="fa-solid fa-feather-pointed"></i> शिकायत करें</button>
           <button class="mini-logout-btn" onclick="userLogout()"><i class="fa-solid fa-power-off"></i> लॉगआउट</button>
@@ -1024,7 +1052,6 @@
         }
       });
 
-      // REALTIME COMPLAINT LISTENER
       db.ref('complaints').on('value', function(snapshot) {
         var val = snapshot.val();
         comps = val ? Object.values(val) : [];
@@ -1043,6 +1070,13 @@
       db.ref('users').on('value', function(snapshot) {
         var val = snapshot.val();
         users = val ? Object.values(val) : [];
+        if (curUser) {
+          var updatedSelf = users.find(function(u){ return u.phone === curUser.phone; });
+          if (updatedSelf) {
+            curUser = updatedSelf;
+            localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
+          }
+        }
         syncUserState();
         if (isAdminUnlocked) renderActiveUsers();
       });
@@ -1357,7 +1391,7 @@
       if (!n || p.length < 10 || !w || !pass) return alert("कृपया सभी विवरण भरें!");
       if (blockedPhones.includes(p)) return alert("यह मोबाइल नंबर प्रतिबंधित है!");
 
-      var newUserObj = { name: n, phone: p, ward: w, pass: pass, date: new Date().toLocaleDateString('hi-IN') };
+      var newUserObj = { name: n, phone: p, ward: w, pass: pass, avatar: "", date: new Date().toLocaleDateString('hi-IN') };
 
       if (approvalMode === 'auto') {
         db.ref('users/' + p).set(newUserObj);
@@ -1399,16 +1433,54 @@
       applyUserGate();
     }
 
+    /* USER AVATAR UPLOAD */
+    function uploadUserAvatarCloud(e) {
+      if (!curUser) return;
+      compressPhoto(e.target.files[0], function(b64){
+        db.ref('users/' + curUser.phone).update({ avatar: b64 }).then(function() {
+          curUser.avatar = b64;
+          localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
+          syncUserState();
+          alert("आपकी प्रोफाइल फोटो सफलतापूर्वक अपडेट हो गई!");
+        });
+      });
+    }
+
     function syncUserState() {
+      var headerAvatar = document.getElementById('headerUserAvatar');
+      var headerIcon = document.getElementById('headerUserIcon');
+
       if (curUser) {
         document.getElementById('userAuthBox').style.display = 'none';
         document.getElementById('userProfileBox').style.display = 'block';
         document.getElementById('pName').innerText = curUser.name;
-        document.getElementById('pPhone').innerText = curUser.phone;
+        document.getElementById('pPhone').innerText = "+91 " + curUser.phone;
         document.getElementById('pWard').innerText = curUser.ward;
+
+        var uImg = document.getElementById('uAvatarImg');
+        var uIco = document.getElementById('uAvatarIcon');
+
+        if (curUser.avatar) {
+          uImg.src = curUser.avatar;
+          uImg.style.display = 'block';
+          uIco.style.display = 'none';
+
+          headerAvatar.src = curUser.avatar;
+          headerAvatar.style.display = 'block';
+          headerIcon.style.display = 'none';
+        } else {
+          uImg.style.display = 'none';
+          uIco.style.display = 'flex';
+
+          headerAvatar.style.display = 'none';
+          headerIcon.style.display = 'inline-block';
+        }
       } else {
         document.getElementById('userAuthBox').style.display = 'block';
         document.getElementById('userProfileBox').style.display = 'none';
+
+        headerAvatar.style.display = 'none';
+        headerIcon.style.display = 'inline-block';
       }
     }
 
@@ -1620,7 +1692,6 @@
       db.ref('users/' + phone).remove();
     }
 
-    /* ACTIVE CITIZEN DETAILED VIEW & ANALYTICS */
     function renderActiveUsers() {
       var div = document.getElementById('activeUserListDiv');
       document.getElementById('activeUserCount').innerText = users.length;
@@ -1630,8 +1701,10 @@
       }
       var h = "";
       users.forEach(function(u) {
+        var avatarThumbnail = u.avatar ? '<img src="'+u.avatar+'" style="width:28px; height:28px; border-radius:50%; object-fit:cover; margin-right:6px; border:1px solid #16a34a;">' : '<i class="fa-solid fa-circle-user" style="font-size:22px; color:#64748b; margin-right:6px;"></i>';
+
         h += '<div style="display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid #e2e8f0; padding:6px 10px; border-radius:6px; margin-bottom:5px;">' +
-             '<div><b>' + u.name + '</b> (' + u.phone + ')<br><span style="color:#64748b; font-size:10px;">टोला: ' + u.ward + '</span></div>' +
+             '<div style="display:flex; align-items:center;">' + avatarThumbnail + '<div><b>' + u.name + '</b> (' + u.phone + ')<br><span style="color:#64748b; font-size:10px;">टोला: ' + u.ward + '</span></div></div>' +
              '<div style="display:flex; gap:6px;">' +
              '<button onclick="openCitizenDetailModal(\''+u.phone+'\')" style="background:#0284c7; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-eye"></i> विवरण</button>' +
              '<button onclick="deleteCitizenUserCloud(\''+u.phone+'\')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">हटाएं</button>' +
@@ -1651,12 +1724,16 @@
       var countOngoing = userComps.filter(function(c){ return c.status === "लंबित" || c.status === "प्रगति पर"; }).length;
       var countRejected = binUserComps.length + userComps.filter(function(c){ return c.status.includes("निरस्त"); }).length;
 
-      var out = '<div style="background:#f8fafc; border:1px solid #e2e8f0; padding:10px; border-radius:10px; margin-bottom:10px;">' +
+      var userImgHtml = u.avatar ? '<img src="'+u.avatar+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid #0284c7;">' : '<div style="width:52px; height:52px; border-radius:50%; background:#e0f2fe; color:#0284c7; display:flex; align-items:center; justify-content:center; font-size:24px;"><i class="fa-solid fa-user"></i></div>';
+
+      var out = '<div style="background:#f8fafc; border:1px solid #e2e8f0; padding:10px; border-radius:10px; margin-bottom:10px; display:flex; align-items:center; gap:12px;">' +
+                userImgHtml +
+                '<div>' +
                 '<h4 style="font-size:14px; color:#1e293b;"><i class="fa-solid fa-user"></i> ' + u.name + '</h4>' +
                 '<p style="font-size:12px; color:#475569;">मोबाइल: <a href="tel:'+u.phone+'" style="color:#16a34a; font-weight:700;">+91 '+u.phone+'</a></p>' +
                 '<p style="font-size:12px; color:#475569;">निवास / टोला: <b>' + u.ward + '</b></p>' +
                 '<p style="font-size:11px; color:#64748b;">पंजीकरण तिथि: ' + (u.date || "N/A") + '</p>' +
-                '</div>' +
+                '</div></div>' +
 
                 '<div class="stat-square-grid">' +
                 '<div class="stat-square" style="background:#16a34a;">' +
