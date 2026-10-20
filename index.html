@@ -134,8 +134,8 @@
     .btn-call { background: #16a34a; }
     .btn-wa { background: #25d366; }
 
-    /* GRID TILES */
-    .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+    /* MAIN GRID TILES */
+    .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
     .action-tile {
       background: var(--card-bg); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 10px 4px;
       text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.03); backdrop-filter: blur(8px);
@@ -149,6 +149,47 @@
       justify-content: center; font-size: 16px; color: #fff;
     }
     .action-tile span { display: block; font-size: 11px; font-weight: 700; color: #334155; line-height: 1.2; }
+
+    /* SEPARATE SMALLER PROFILE SECTION AT BOTTOM */
+    .profile-tile-bottom-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 16px;
+    }
+    .profile-tile-small {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      border: 1.5px solid #86efac;
+      border-radius: 30px;
+      padding: 6px 18px 6px 8px;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(22, 163, 74, 0.12);
+      transition: all 0.2s ease;
+    }
+    .profile-tile-small:active {
+      transform: scale(0.95);
+      background: #f0fdf4;
+      border-color: var(--primary);
+    }
+    .profile-tile-small .tile-icon-small {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #16a34a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #fff;
+    }
+    .profile-tile-small span {
+      font-size: 12px;
+      font-weight: 700;
+      color: #166534;
+      line-height: 1;
+    }
 
     .admin-square-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0; }
     .admin-square-tile {
@@ -216,7 +257,6 @@
     .btn-whatsapp { background: #25d366; color: #fff; }
     .btn-direct-gov { background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; padding: 8px 12px; font-size: 12px; border-radius: 8px; margin-top: 8px; display: inline-flex; }
 
-    .adm-action-btn-group { display: flex; gap: 5px; align-items: center; }
     .adm-btn-del {
       background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
     }
@@ -385,7 +425,7 @@
       </div>
     </div>
 
-    <!-- 11-GRID NAVIGATION ICONS FOR ALL USER SERVICES -->
+    <!-- 9 MAIN SERVICE TILES (PROFILE IS MOVED BELOW SEPARATELY) -->
     <div class="actions-grid" id="mainActionsGrid">
       <div class="action-tile" onclick="openScreenModal('vNew')">
         <div class="tile-icon" style="background: #15803d;"><i class="fa-solid fa-feather-pointed"></i></div>
@@ -400,16 +440,11 @@
         <span>शिकायत स्थिति</span>
       </div>
       
-      <!-- NEW KRAY VIKRAY & SKILLS MARKETPLACE TILE -->
       <div class="action-tile" onclick="openScreenModal('vMarket')">
         <div class="tile-icon" style="background: #ea580c;"><i class="fa-solid fa-store"></i></div>
         <span>क्रय-विक्रय व सेवा</span>
       </div>
 
-      <div class="action-tile" onclick="openUserProfileDirect()">
-        <div class="tile-icon" style="background: #059669;"><i class="fa-solid fa-address-card"></i></div>
-        <span>मेरा खाता / प्रोफाइल</span>
-      </div>
       <div class="action-tile" onclick="openScreenModal('vNotice')">
         <div class="tile-icon" style="background: #dc2626;"><i class="fa-solid fa-bullhorn"></i></div>
         <span>सूचना बोर्ड</span>
@@ -436,7 +471,15 @@
       </div>
     </div>
 
-    <!-- ADMIN VIEW CONTAINER (ONLY PURE ADMIN CONTROLS REMAIN) -->
+    <!-- SEPARATE COMPACT PROFILE BUTTON AT BOTTOM -->
+    <div class="profile-tile-bottom-wrap">
+      <div class="profile-tile-small" onclick="openUserProfileDirect()" title="मेरी प्रोफ़ाइल / नागरिक खाता">
+        <div class="tile-icon-small"><i class="fa-solid fa-id-card"></i></div>
+        <span>मेरा खाता / प्रोफाइल देखें</span>
+      </div>
+    </div>
+
+    <!-- ADMIN VIEW CONTAINER -->
     <div id="vAdmin" class="view-content">
       <div class="card" id="adminGateBox" style="border: 2px solid var(--accent);">
         <div class="card-title" style="color: #b45309;">
@@ -486,7 +529,7 @@
             </div>
           </div>
 
-          <!-- PURE ADMIN GRID TILES (REMOVED USER SERVICE TILES) -->
+          <!-- ADMIN GRID TILES -->
           <div class="admin-square-grid">
             <div class="admin-square-tile" onclick="openAdminPopupSection('secBroadcastForm')">
               <div class="adm-tile-icon" style="background: #dc2626;"><i class="fa-solid fa-tower-broadcast"></i></div>
@@ -1932,7 +1975,7 @@
           out += '<div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:8px; margin-bottom:6px;">' +
                  '<span class="badge" style="background:'+bg+'; font-size:10px;">'+c.status+'</span>' +
                  '<strong>'+c.id+' - '+c.cat+'</strong>' +
-                 '<div style="font-size:11px; color:#64748b; margin:2px 0;">स्थान: '+c.place+'</div>' +
+                 '<div style="font-size:11px; color:#64748b; margin-2px 0;">स्थान: '+c.place+'</div>' +
                  '<div style="font-size:12px; color:#334155;">'+c.desc+'</div>';
           if (c.resolutionPhoto) {
             out += '<div style="font-size:10px; color:#16a34a; font-weight:700; margin-top:4px;"><i class="fa-solid fa-image"></i> काम पूरा होने की फोटो जुड़ी है</div>';
