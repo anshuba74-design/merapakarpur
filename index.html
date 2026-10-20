@@ -17,7 +17,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-  <!-- Google Translate In-built Integration -->
+  <!-- Google Translate Integration -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
@@ -68,7 +68,6 @@
       z-index: -1;
     }
 
-    /* Clean Language Selector Bar */
     .lang-bar {
       background: #0f172a; color: #fff; padding: 6px 12px; font-size: 12px;
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;
@@ -172,7 +171,7 @@
     }
     .admin-square-tile span { display: block; font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.2; }
 
-    /* POP-UP MODAL OVERLAY */
+    /* POP-UP MODAL OVERLAYS FOR PUBLIC FEATURES */
     .popup-modal-overlay {
       position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75);
       z-index: 1500; display: none; align-items: center; justify-content: center; padding: 12px;
@@ -368,7 +367,7 @@
       </div>
     </div>
 
-    <!-- Admin Button always opens password gate freely -->
+    <!-- Admin Button directly opens dedicated Admin Gateway -->
     <button class="admin-secret-btn" onclick="openAdminGate()" title="व्यवस्थापक लॉगिन">
       <i class="fa-solid fa-shield-halved"></i>
       <span class="notify-badge" id="hdrAdminBadge">0</span>
@@ -389,476 +388,125 @@
   </div>
 
   <div class="container">
-    <div class="pradhan-card">
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <img id="headPradhanImg" class="pradhan-pic zoomable-pic" src="" style="display:none;" onclick="zoomSpecificImage(this.src)" alt="प्रधान">
-        <div id="headPradhanIcon" class="pradhan-pic"><i class="fa-solid fa-user-tie"></i></div>
+    <!-- ==================== NORMAL CITIZEN VIEW ==================== -->
+    <div id="citizenMainPortalView">
+      <div class="pradhan-card">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img id="headPradhanImg" class="pradhan-pic zoomable-pic" src="" style="display:none;" onclick="zoomSpecificImage(this.src)" alt="प्रधान">
+          <div id="headPradhanIcon" class="pradhan-pic"><i class="fa-solid fa-user-tie"></i></div>
+          <div>
+            <h4 id="headPradhanName" style="font-size: 14px; font-weight: 700;">विवरण लोड हो रहा है...</h4>
+            <p style="font-size: 11px; color: #15803d; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> अधिकृत ग्राम प्रधान, पाकरपुर</p>
+            <span style="font-size: 11px; color: #475569;" id="headPradhanPhone">लोड हो रहा है...</span>
+          </div>
+        </div>
         <div>
-          <h4 id="headPradhanName" style="font-size: 14px; font-weight: 700;">विवरण लोड हो रहा है...</h4>
-          <p style="font-size: 11px; color: #15803d; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> अधिकृत ग्राम प्रधान, पाकरपुर</p>
-          <span style="font-size: 11px; color: #475569;" id="headPradhanPhone">लोड हो रहा है...</span>
+          <a href="#" id="pradhanTel" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
+          <a href="#" target="_blank" id="pradhanWa" class="action-circle-btn btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
         </div>
       </div>
-      <div>
-        <a href="#" id="pradhanTel" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
-        <a href="#" target="_blank" id="pradhanWa" class="action-circle-btn btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+
+      <!-- 13-GRID MAIN NAVIGATION ICONS -->
+      <div class="actions-grid" id="mainActionsGrid" style="display:none;">
+        <div class="action-tile" onclick="openPopupModal('vNew')">
+          <div class="tile-icon" style="background: #15803d;"><i class="fa-solid fa-feather-pointed"></i></div>
+          <span>नई शिकायत</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vList')">
+          <div class="tile-icon" style="background: #0284c7;"><i class="fa-solid fa-list-check"></i></div>
+          <span>शिकायतें देखें</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vTrack')">
+          <div class="tile-icon" style="background: #d97706;"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+          <span>ट्रैक स्थिति</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vMandi')">
+          <div class="tile-icon" style="background: #16a34a;"><i class="fa-solid fa-wheat-awn"></i></div>
+          <span>दैनिक मंडी भाव</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vRozgar')">
+          <div class="tile-icon" style="background: #ea580c;"><i class="fa-solid fa-user-gear"></i></div>
+          <span>मिस्त्री / रोज़गार</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vMarket')">
+          <div class="tile-icon" style="background: #0891b2;"><i class="fa-solid fa-shop"></i></div>
+          <span>ग्रामीण हाट</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vRationBijli')">
+          <div class="tile-icon" style="background: #e11d48;"><i class="fa-solid fa-bolt"></i></div>
+          <span>राशन व बिजली</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vForms')">
+          <div class="tile-icon" style="background: #6366f1;"><i class="fa-solid fa-file-arrow-down"></i></div>
+          <span>फॉर्म डाउनलोड</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vNotice')">
+          <div class="tile-icon" style="background: #dc2626;"><i class="fa-solid fa-bullhorn"></i></div>
+          <span>सूचना बोर्ड</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vDirectory')">
+          <div class="tile-icon" style="background: #4f46e5;"><i class="fa-solid fa-address-book"></i></div>
+          <span>हेल्पलाइन</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vBudget')">
+          <div class="tile-icon" style="background: #0d9488;"><i class="fa-solid fa-building-columns"></i></div>
+          <span>विकास कोष</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vGallery')">
+          <div class="tile-icon" style="background: #be185d;"><i class="fa-solid fa-images"></i></div>
+          <span>विकास गैलरी</span>
+        </div>
+        <div class="action-tile" onclick="openPopupModal('vSchemes')">
+          <div class="tile-icon" style="background: #059669;"><i class="fa-solid fa-hand-holding-hand"></i></div>
+          <span>सरकारी योजना</span>
+        </div>
+      </div>
+
+      <!-- GUEST LOCK GATE (IN-PAGE) -->
+      <div id="vGuestGate" style="display:none;">
+        <div class="card" style="text-align:center; padding:22px 16px; border: 2px dashed #86efac;">
+          <div style="width:58px; height:58px; background:#dcfce7; color:#15803d; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:24px;">
+            <i class="fa-solid fa-wheat-awn"></i>
+          </div>
+          <h3 style="font-size:17px; margin-bottom:6px; color:#14532d;">ग्राम पाकरपुर डिजिटल सेवा में स्वागत है</h3>
+          <p style="font-size:13px; color:#475569; margin-bottom:16px;">
+            गाँव की सुरक्षा और पारदर्शिता हेतु सेवाएं देखने या शिकायत दर्ज करने से पहले लॉगिन करना आवश्यक है।
+          </p>
+          <button class="btn btn-emerald" onclick="openUserProfileDirect()">
+            <i class="fa-solid fa-user-plus"></i> नागरिक पंजीकरण / लॉगिन करें
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- 13-GRID MAIN NAVIGATION ICONS -->
-    <div class="actions-grid" id="mainActionsGrid" style="display:none;">
-      <div class="action-tile" onclick="openPopupModal('vNew')">
-        <div class="tile-icon" style="background: #15803d;"><i class="fa-solid fa-feather-pointed"></i></div>
-        <span>नई शिकायत</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vList')">
-        <div class="tile-icon" style="background: #0284c7;"><i class="fa-solid fa-list-check"></i></div>
-        <span>शिकायतें देखें</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vTrack')">
-        <div class="tile-icon" style="background: #d97706;"><i class="fa-solid fa-magnifying-glass-location"></i></div>
-        <span>ट्रैक स्थिति</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vMandi')">
-        <div class="tile-icon" style="background: #16a34a;"><i class="fa-solid fa-wheat-awn"></i></div>
-        <span>दैनिक मंडी भाव</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vRozgar')">
-        <div class="tile-icon" style="background: #ea580c;"><i class="fa-solid fa-user-gear"></i></div>
-        <span>मिस्त्री / रोज़गार</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vMarket')">
-        <div class="tile-icon" style="background: #0891b2;"><i class="fa-solid fa-shop"></i></div>
-        <span>ग्रामीण हाट</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vRationBijli')">
-        <div class="tile-icon" style="background: #e11d48;"><i class="fa-solid fa-bolt"></i></div>
-        <span>राशन व बिजली</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vForms')">
-        <div class="tile-icon" style="background: #6366f1;"><i class="fa-solid fa-file-arrow-down"></i></div>
-        <span>फॉर्म डाउनलोड</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vNotice')">
-        <div class="tile-icon" style="background: #dc2626;"><i class="fa-solid fa-bullhorn"></i></div>
-        <span>सूचना बोर्ड</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vDirectory')">
-        <div class="tile-icon" style="background: #4f46e5;"><i class="fa-solid fa-address-book"></i></div>
-        <span>हेल्पलाइन</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vBudget')">
-        <div class="tile-icon" style="background: #0d9488;"><i class="fa-solid fa-building-columns"></i></div>
-        <span>विकास कोष</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vGallery')">
-        <div class="tile-icon" style="background: #be185d;"><i class="fa-solid fa-images"></i></div>
-        <span>विकास गैलरी</span>
-      </div>
-      <div class="action-tile" onclick="openPopupModal('vSchemes')">
-        <div class="tile-icon" style="background: #059669;"><i class="fa-solid fa-hand-holding-hand"></i></div>
-        <span>सरकारी योजना</span>
-      </div>
-    </div>
-
-    <!-- GUEST LOCK GATE (IN-PAGE) -->
-    <div id="vGuestGate" style="display:none;">
-      <div class="card" style="text-align:center; padding:22px 16px; border: 2px dashed #86efac;">
-        <div style="width:58px; height:58px; background:#dcfce7; color:#15803d; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:24px;">
-          <i class="fa-solid fa-wheat-awn"></i>
+    <!-- ==================== DEDICATED ADMIN FULL-VIEW (SEPARATE & PROTECTED) ==================== -->
+    <div id="vAdminDedicatedView" style="display:none;">
+      <!-- STEP 1: PASSWORD GATE (ISOLATED) -->
+      <div class="card" id="adminGateBox" style="border: 2px solid var(--accent); padding:18px;">
+        <div class="popup-modal-header" style="border-bottom:1px solid #fed7aa; margin-bottom:12px;">
+          <h4 style="color:#b45309; font-size:16px; font-weight:800;"><i class="fa-solid fa-lock"></i> प्रधान / व्यवस्थापक सत्यापन</h4>
+          <button class="popup-close-btn" onclick="exitAdminDedicatedView()">✕</button>
         </div>
-        <h3 style="font-size:17px; margin-bottom:6px; color:#14532d;">ग्राम पाकरपुर डिजिटल सेवा में स्वागत है</h3>
-        <p style="font-size:13px; color:#475569; margin-bottom:16px;">
-          गाँव की सुरक्षा और पारदर्शिता हेतु सेवाएं देखने या शिकायत दर्ज करने से पहले लॉगिन करना आवश्यक है।
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
+          यह सुरक्षित क्षेत्र है। डैशबोर्ड खोलने के लिए अधिकृत एडमिन पासवर्ड दर्ज करें:
         </p>
-        <button class="btn btn-emerald" onclick="openUserProfileDirect()">
-          <i class="fa-solid fa-user-plus"></i> नागरिक पंजीकरण / लॉगिन करें
-        </button>
-      </div>
-    </div>
-
-    <!-- ==================== ALL FEATURE POPUP MODALS WITH "X" CLOSE BUTTON ==================== -->
-
-    <!-- 1. POPUP: New Complaint -->
-    <div id="vNew" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-feather-pointed" style="color:var(--primary);"></i> जन समस्या दर्ज करें</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vNew')">✕</button>
-        </div>
-        <form id="compForm" onsubmit="handleNewComp(event)">
-          <div class="form-group"><label>आपका नाम *</label><input type="text" id="cName" required readonly style="background:#f8fafc;"></div>
-          <div class="form-group"><label>मोबाइल नंबर *</label><input type="tel" id="cPhone" maxlength="10" required readonly style="background:#f8fafc;"></div>
-          <div class="form-group"><label>समस्या की श्रेणी *</label>
-            <select id="cCat" required>
-              <option value="">-- विभाग चुनें --</option>
-              <option value="सड़क व खड़ंजा">सड़क, खड़ंजा व नाली मरम्मत</option>
-              <option value="पेयजल व हैंडपंप">सरकारी हैंडपंप व पेयजल आपूर्ति</option>
-              <option value="स्ट्रीट लाइट / बिजली">स्ट्रीट लाइट / बिजली पोल व तार</option>
-              <option value="सफाई व्यवस्था">गाँव की सफाई व कचरा निस्तारण</option>
-              <option value="अन्य समस्या">अन्य पंचायत स्तरीय समस्या</option>
-            </select>
-          </div>
-          <div class="form-group"><label>गाँव में स्थान / मोहल्ला *</label><input type="text" id="cPlace" required placeholder="उदा. प्राथमिक विद्यालय के पास"></div>
-          
-          <div class="form-group">
-            <button type="button" class="btn btn-slate" onclick="toggleMap()" style="font-size:12px; padding:7px;">
-              <i class="fa-solid fa-map-location-dot" style="color: var(--info);"></i> सैटेलाइट नक्शा (GPS लोकेशन)
-            </button>
-            <div id="mapBox"><div id="mapDiv" style="height:100%; width:100%;"></div></div>
-            <input type="hidden" id="cCoords">
-            <div id="coordsNotice" style="font-size:11px; color:var(--primary); font-weight:700; margin-top:4px; display:none;"></div>
-          </div>
-
-          <div class="form-group"><label><i class="fa-solid fa-camera"></i> समस्या की फोटो जोड़ें</label><input type="file" accept="image/*" onchange="handleCompPhoto(event)"></div>
-
-          <div class="form-group">
-            <label><i class="fa-solid fa-microphone-lines" style="color:#dc2626;"></i> बोलकर बताएं (ऑडियो रिकॉर्डिंग):</label>
-            <div class="audio-record-box">
-              <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
-                <button type="button" id="btnRecordToggle" class="btn btn-crimson" style="width:auto; padding:6px 12px; font-size:12px;" onclick="toggleAudioRecording()">
-                  <i class="fa-solid fa-microphone"></i> रिकॉर्डिंग शुरू करें
-                </button>
-                <span id="recordTimer" style="font-size:12px; font-weight:700; color:#dc2626; display:none;">00:00</span>
-                <span id="recordStatusText" style="font-size:11px; color:#64748b;">(माइक परमिशन जरूरी)</span>
-              </div>
-              <audio id="audioPreviewPlayer" controls style="display:none; width:100%; margin-top:8px; height:36px;"></audio>
-              <div style="margin-top:8px; border-top:1px dashed #cbd5e1; padding-top:6px;">
-                <label style="font-size:11px; color:#475569;"><i class="fa-solid fa-file-audio"></i> या फ़ोन में रिकॉर्ड किया ऑडियो चुनें:</label>
-                <input type="file" id="audioFileInput" accept="audio/*" onchange="handleAudioFileUpload(event)" style="font-size:11px; padding:5px;">
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group"><label>समस्या का विस्तृत विवरण *</label><textarea id="cDesc" placeholder="समस्या क्या है, कब से है और कहाँ है... (या ऊपर आवाज़ रिकॉर्ड करें)"></textarea></div>
-          <button type="submit" class="btn btn-emerald"><i class="fa-solid fa-paper-plane"></i> शिकायत सबमिट करें</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- 2. POPUP: Complaints List -->
-    <div id="vList" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-clipboard-list" style="color:var(--info);"></i> दर्ज शिकायतें (<span id="cCount">0</span>)</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vList')">✕</button>
-        </div>
-        <p style="font-size:11px; color:#64748b; margin-bottom:10px;">* सुरक्षा नियम: निजता हेतु नाम व नंबर सार्वजनिक सूची में छिपे रहते हैं।</p>
-        <div id="compListDiv"></div>
-      </div>
-    </div>
-
-    <!-- 3. POPUP: Track Complaint -->
-    <div id="vTrack" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-magnifying-glass-location" style="color:var(--accent);"></i> अपनी शिकायत ट्रैक करें</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vTrack')">✕</button>
-        </div>
         <div class="form-group">
-          <label>शिकायत रसीद संख्या (उदा. PKP-84729145):</label>
-          <input type="text" id="trackQueryInput" placeholder="PKP नंबर दर्ज करें">
+          <input type="password" id="adminGatePin" placeholder="एडमिन पासवर्ड दर्ज करें" style="font-size:16px; letter-spacing:2px;">
         </div>
-        <button class="btn btn-amber" onclick="executeComplaintTrack()"><i class="fa-solid fa-search"></i> स्थिति खोजें</button>
-        <div id="trackResultDiv" style="margin-top:12px;"></div>
-      </div>
-    </div>
-
-    <!-- 4. POPUP: MANDI RATES -->
-    <div id="vMandi" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-wheat-awn" style="color:#16a34a;"></i> दैनिक मंडी भाव</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vMandi')">✕</button>
-        </div>
-        <div class="form-group">
-          <label><i class="fa-solid fa-location-dot"></i> मंडी चुनें:</label>
-          <select id="mandiSelect" onchange="renderMandiRates()" style="font-weight:700;">
-            <option value="सुल्तानपुर">सुल्तानपुर मंडी (Sultanpur)</option>
-            <option value="कादीपुर">कादीपुर मंडी (Kadipur)</option>
-            <option value="दोस्तपुर">दोस्तपुर बाज़ार (Dostpur)</option>
-            <option value="सूरापुर">सूरापुर मंडी (Surapur)</option>
-            <option value="जौनपुर">जौनपुर मंडी (Jaunpur)</option>
-          </select>
-        </div>
-        <div id="mandiTableDiv"></div>
-      </div>
-    </div>
-
-    <!-- 5. POPUP: MISTRI & ROZGAR -->
-    <div id="vRozgar" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-user-gear" style="color:#ea580c;"></i> मिस्त्री / रोज़गार हब</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vRozgar')">✕</button>
-        </div>
-        <button class="btn btn-amber" style="margin-bottom:12px;" onclick="toggleAddRozgarBox()">
-          <i class="fa-solid fa-plus"></i> अपना काम / हुनर जोड़ें
-        </button>
-        
-        <div id="boxAddRozgar" style="display:none; background:#fff7ed; border:1px solid #fed7aa; padding:12px; border-radius:10px; margin-bottom:12px;">
-          <h4 style="font-size:13px; color:#c2410c; margin-bottom:8px;">अपने काम का विज्ञापन दर्ज करें</h4>
-          <div class="form-group"><input type="text" id="rzName" placeholder="आपका नाम *" required></div>
-          <div class="form-group"><input type="tel" id="rzPhone" maxlength="10" placeholder="मोबाइल नंबर *" required></div>
-          <div class="form-group">
-            <select id="rzSkill" required>
-              <option value="">-- कार्य चुनें --</option>
-              <option value="बिजली मिस्त्री (Electrician)">बिजली मिस्त्री (Electrician)</option>
-              <option value="प्लम्बर / नलसाज (Plumber)">प्लम्बर / नलसाज (Plumber)</option>
-              <option value="राजमिस्त्री (Mason)">राजमिस्त्री (मकान निर्माण)</option>
-              <option value="बढ़ई / कारपेंटर (Carpenter)">बढ़ई / लकड़ी कार्य</option>
-              <option value="ट्रैक्टर / कृषि यंत्र चालक">ट्रैक्टर चालक / खेत जुताई</option>
-              <option value="वेल्डिंग व लोहार कार्य">वेल्डिंग व लोहार कार्य</option>
-              <option value="पेंटर व पुट्टी कारीगर">पेंटर व पुट्टी कारीगर</option>
-              <option value="अन्य स्थानीय कारीगर">अन्य स्थानीय कारीगर</option>
-            </select>
-          </div>
-          <div class="form-group"><input type="text" id="rzRate" placeholder="चार्ज (उदा. ₹500/दिन या ₹150/घंटा) *" required></div>
-          <div class="form-group"><input type="text" id="rzExp" placeholder="अनुभव व विशेषज्ञता"></div>
-          <button class="btn btn-amber" onclick="submitRozgarProfileCloud()"><i class="fa-solid fa-paper-plane"></i> प्रकाशित करें</button>
-        </div>
-        <div id="rozgarListDiv"></div>
-      </div>
-    </div>
-
-    <!-- 6. POPUP: GRAMIN HAAT -->
-    <div id="vMarket" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-shop" style="color:#0891b2;"></i> ग्रामीण हाट (क्रय-विक्रय)</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vMarket')">✕</button>
-        </div>
-        <button class="btn btn-emerald" style="margin-bottom:12px;" onclick="toggleAddMarketBox()">
-          <i class="fa-solid fa-plus"></i> सामान / पशु बेचने का विज्ञापन लगाएं
-        </button>
-
-        <div id="boxAddMarket" style="display:none; background:#ecfeff; border:1px solid #a5f3fc; padding:12px; border-radius:10px; margin-bottom:12px;">
-          <div class="form-group"><input type="text" id="mktItemTitle" placeholder="सामान का नाम (उदा. मुर्रा भैंस, गेहूं, भूसा) *" required></div>
-          <div class="form-group">
-            <select id="mktCategory" required>
-              <option value="">-- श्रेणी चुनें --</option>
-              <option value="पशु मेला (गाय/भैंस/बकरी)">पशु (गाय, भैंस, बकरी आदि)</option>
-              <option value="कृषि यंत्र / ट्रैक्टर किराया">कृषि यंत्र / ट्रैक्टर / किराया</option>
-              <option value="फसल, अनाज व भूसा">फसल, अनाज व भूसा</option>
-              <option value="वाहन व अन्य सामान">वाहन व अन्य सामान</option>
-            </select>
-          </div>
-          <div class="form-group"><input type="number" id="mktPrice" placeholder="मांग मूल्य ₹ *" required></div>
-          <div class="form-group"><textarea id="mktDesc" placeholder="विवरण (उम्र, दूध क्षमता, मॉडल आदि)..." style="min-height:50px;"></textarea></div>
-          <div class="form-group"><label style="font-size:11px;">फोटो जोड़ें (ऐच्छिक):</label><input type="file" accept="image/*" onchange="handleMarketPhoto(event)"></div>
-          <button class="btn btn-emerald" onclick="submitMarketAdCloud()"><i class="fa-solid fa-paper-plane"></i> प्रकाशित करें</button>
-        </div>
-        <div id="marketListDiv"></div>
-      </div>
-    </div>
-
-    <!-- 7. POPUP: RATION & BIJLI -->
-    <div id="vRationBijli" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-bolt" style="color:#e11d48;"></i> राशन वितरण एवं बिजली रोस्टर</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vRationBijli')">✕</button>
-        </div>
-
-        <div style="background:#fff1f2; border:1px solid #fecdd3; border-radius:12px; padding:12px; margin-bottom:12px;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <h4 style="font-size:14px; color:#be123c;"><i class="fa-solid fa-bowl-rice"></i> गाँव राशन वितरण सूचना</h4>
-              <p style="font-size:13px; font-weight:700; margin-top:2px;">कोटेदार: <span id="rationDealerName">लोड हो रहा है...</span></p>
-              <p style="font-size:12px; color:#475569;" id="rationPhoneText">संपर्क: लोड हो रहा है...</p>
-            </div>
-            <a href="#" id="rationCallBtn" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
-          </div>
-          <div style="margin-top:6px; border-top:1px dashed #fca5a5; padding-top:6px; font-size:12px;">
-            <p><strong>वितरण स्थिति:</strong> <span id="rationStatusBadge" style="background:#16a34a; color:#fff; font-size:11px; padding:2px 8px; border-radius:8px; font-weight:700;">सक्रिय</span></p>
-            <p style="margin-top:2px;"><strong>वितरण समय:</strong> <span id="rationTimingsText" style="color:#991b1b; font-weight:700;">प्रातः 08:00 से सायं 06:00 बजे तक</span></p>
-          </div>
-        </div>
-
-        <div style="background:#fefce8; border:1px solid #fef08a; border-radius:12px; padding:12px;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <h4 style="font-size:14px; color:#a16207;"><i class="fa-solid fa-plug-circle-bolt"></i> पाकरपुर फीडर बिजली व्यवस्था</h4>
-              <p style="font-size:13px; font-weight:700; margin-top:2px;">लाइनमैन / प्रभारी: <span id="bijliStaffName">लोड हो रहा है...</span></p>
-              <p style="font-size:12px; color:#475569;" id="bijliPhoneText">संपर्क: लोड हो रहा है...</p>
-            </div>
-            <a href="#" id="bijliCallBtn" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
-          </div>
-          <div style="margin-top:6px; border-top:1px dashed #fcd34d; padding-top:6px; font-size:12px;">
-            <p><strong>वर्तमान स्थिति:</strong> <span id="bijliStatusBadge" style="background:#0284c7; color:#fff; font-size:11px; padding:2px 8px; border-radius:8px; font-weight:700;">आपूर्ति सामान्य</span></p>
-            <p style="margin-top:2px;"><strong>रोस्टर समय:</strong></p>
-            <p id="bijliRosterText" style="color:#854d0e; font-weight:700; background:#fff; padding:6px; border-radius:6px; border:1px solid #fde047; margin-top:2px;">
-              सुबह 06:00 से 12:00 बजे | शाम 03:00 से रात 11:00 बजे तक
-            </p>
-          </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-emerald" onclick="verifyAdminGate()"><i class="fa-solid fa-unlock"></i> प्रवेश करें</button>
+          <button class="btn btn-slate" style="width:auto;" onclick="exitAdminDedicatedView()">रद्द करें</button>
         </div>
       </div>
-    </div>
 
-    <!-- 8. POPUP: FORMS DOWNLOAD -->
-    <div id="vForms" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-file-arrow-down" style="color:#6366f1;"></i> सरकारी प्रपत्र डाउनलोड</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vForms')">✕</button>
-        </div>
-        <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
-          <div><h4 style="font-size:13px; font-weight:700;">परिवार रजिस्टर नकल आवेदन</h4><span style="font-size:11px; color:#64748b;">अधिकृत ग्राम पंचायत प्रारूप</span></div>
-          <button class="btn btn-slate" style="width:auto; padding:6px 12px; font-size:12px;" onclick="window.print()"><i class="fa-solid fa-download"></i> प्रिंट</button>
-        </div>
-        <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
-          <div><h4 style="font-size:13px; font-weight:700;">आय / जाति / निवास स्व-घोषणा पत्र</h4><span style="font-size:11px; color:#64748b;">ई-डिस्ट्रिक्ट मान्य प्रारूप</span></div>
-          <a href="https://edistrict.up.gov.in" target="_blank" class="btn btn-slate" style="width:auto; padding:6px 12px; font-size:12px;"><i class="fa-solid fa-arrow-up-right-from-square"></i> डाउनलोड</a>
-        </div>
-        <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
-          <div><h4 style="font-size:13px; font-weight:700;">राशन कार्ड संशोधन आवेदन</h4><span style="font-size:11px; color:#64748b;">NFSA खाद्य विभाग</span></div>
-          <a href="https://fcs.up.gov.in" target="_blank" class="btn btn-slate" style="width:auto; padding:6px 12px; font-size:12px;"><i class="fa-solid fa-arrow-up-right-from-square"></i> डाउनलोड</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- 9. POPUP: NOTICE BOARD -->
-    <div id="vNotice" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-bullhorn" style="color:var(--danger);"></i> सूचना बोर्ड</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vNotice')">✕</button>
-        </div>
-        <div id="noticeListDiv"></div>
-      </div>
-    </div>
-
-    <!-- 10. POPUP: DIRECTORY -->
-    <div id="vDirectory" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-address-book" style="color:#4f46e5;"></i> आवश्यक हेल्पलाइन</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vDirectory')">✕</button>
-        </div>
-        <div id="directoryListDiv"></div>
-      </div>
-    </div>
-
-    <!-- 11. POPUP: VIKAS KOSH -->
-    <div id="vBudget" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-building-columns" style="color:#0d9488;"></i> विकास कोष एवं खर्च</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vBudget')">✕</button>
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:14px; text-align:center;">
-          <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:8px 4px; border-radius:10px;">
-            <span style="font-size:11px; color:#166534; font-weight:700;">कुल फंड</span>
-            <h4 id="koshTotalIn" style="font-size:14px; color:#15803d; margin-top:2px;">₹0</h4>
-          </div>
-          <div style="background:#fef2f2; border:1px solid #fecaca; padding:8px 4px; border-radius:10px;">
-            <span style="font-size:11px; color:#991b1b; font-weight:700;">कुल खर्च</span>
-            <h4 id="koshTotalOut" style="font-size:14px; color:#dc2626; margin-top:2px;">₹0</h4>
-          </div>
-          <div style="background:#eff6ff; border:1px solid #bfdbfe; padding:8px 4px; border-radius:10px;">
-            <span style="font-size:11px; color:#1e40af; font-weight:700;">बैलेंस</span>
-            <h4 id="koshBalance" style="font-size:14px; color:#0284c7; margin-top:2px;">₹0</h4>
-          </div>
-        </div>
-        <div id="koshExpensesDiv"></div>
-      </div>
-    </div>
-
-    <!-- 12. POPUP: GALLERY -->
-    <div id="vGallery" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-images" style="color:#be185d;"></i> ग्राम विकास कार्य गैलरी</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vGallery')">✕</button>
-        </div>
-        <div id="galleryListDiv"></div>
-      </div>
-    </div>
-
-    <!-- 13. POPUP: SARKARI YOJNA -->
-    <div id="vSchemes" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-hand-holding-hand" style="color:var(--success);"></i> सरकारी योजनाएं</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vSchemes')">✕</button>
-        </div>
-        <div id="schemesDynamicListDiv"></div>
-      </div>
-    </div>
-
-    <!-- Citizen Account Form & Profile (Popup) -->
-    <div id="vProfile" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title"><i class="fa-solid fa-user-lock" style="color:var(--accent);"></i> नागरिक खाता</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vProfile')">✕</button>
-        </div>
-
-        <div id="userAuthBox">
-          <div style="display:flex; gap:8px; margin-bottom:14px;">
-            <button class="btn btn-amber" id="btnSubReg" onclick="switchAuthTab('reg')"><i class="fa-solid fa-user-plus"></i> नया पंजीकरण</button>
-            <button class="btn btn-slate" id="btnSubLogin" onclick="switchAuthTab('login')"><i class="fa-solid fa-right-to-bracket"></i> लॉगिन करें</button>
+      <!-- STEP 2: PROTECTED CONTROL PANEL (OPENS ONLY AFTER SUCCESSFUL AUTH) -->
+      <div id="adminMainDashBox" style="display:none;">
+        <div class="card">
+          <div class="popup-modal-header">
+            <h4 style="font-size:16px; font-weight:800; color:var(--primary);"><i class="fa-solid fa-sliders"></i> व्यवस्थापक नियंत्रण कक्ष</h4>
+            <button class="popup-close-btn" onclick="exitAdminDedicatedView()" title="वापस होम पर जाएं">✕</button>
           </div>
 
-          <div id="boxReg">
-            <div id="regReqNotice" style="display:none; padding:10px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; font-size:12px; color:#1e40af; margin-bottom:10px;">
-              <i class="fa-solid fa-clock-rotate-left"></i> अनुरोध भेजा गया: खाता अनुमोदन हेतु लंबित है।
-            </div>
-            <div class="form-group"><label>पूरा नाम *</label><input type="text" id="rName" placeholder="अपना पूरा नाम दर्ज करें"></div>
-            <div class="form-group"><label>मोबाइल नंबर *</label><input type="tel" id="rPhone" maxlength="10" placeholder="10-अंकीय मोबाइल नंबर"></div>
-            <div class="form-group"><label>टोला / मोहल्ला *</label><input type="text" id="rWard" placeholder="उदा. उत्तर टोला"></div>
-            <div class="form-group"><label>पासवर्ड बनाएं *</label><input type="password" id="rPass" placeholder="कम से कम 4 अक्षर"></div>
-            <button class="btn btn-amber" onclick="submitCitizenRegistrationRequest()"><i class="fa-solid fa-paper-plane"></i> प्रधान जी को अनुमोदन अनुरोध भेजें</button>
-          </div>
-
-          <div id="boxLogin" style="display:none;">
-            <div class="form-group"><label>पंजीकृत मोबाइल नंबर</label><input type="tel" id="lPhone" maxlength="10" placeholder="10-अंकीय नंबर"></div>
-            <div class="form-group"><label>पासवर्ड</label><input type="password" id="lPass" placeholder="अपना पासवर्ड दर्ज करें"></div>
-            <button class="btn btn-emerald" onclick="userLogin()"><i class="fa-solid fa-unlock"></i> लॉगिन करें</button>
-          </div>
-        </div>
-
-        <div id="userProfileBox" style="display:none;">
-          <div class="user-profile-header">
-            <img id="uAvatarImg" class="user-avatar-circle zoomable-pic" src="" style="display:none;" onclick="zoomSpecificImage(this.src)" alt="User Pic">
-            <div id="uAvatarIcon" class="user-avatar-circle"><i class="fa-solid fa-user"></i></div>
-            <div>
-              <h3 id="pName" style="font-size:16px; color:#1e293b;"></h3>
-              <p style="font-size:12px; color:#16a34a; font-weight:600;"><i class="fa-solid fa-circle-check"></i> प्रमाणित ग्राम नागरिक</p>
-              <span id="pPhone" style="font-size:12px; color:#64748b;"></span>
-            </div>
-          </div>
-          <p style="margin-bottom:6px; font-size:13px;"><strong>निवास / टोला:</strong> <span id="pWard"></span></p>
-          <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:10px; margin:12px 0;">
-            <label style="font-size:12px; color:#15803d; font-weight:700;"><i class="fa-solid fa-camera"></i> अपनी प्रोफाइल फोटो लगाएं / बदलें:</label>
-            <input type="file" accept="image/*" onchange="uploadUserAvatarCloud(event)" style="font-size:12px; padding:6px; margin-top:4px;">
-          </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px dashed var(--border); padding-top:10px;">
-            <button class="btn btn-emerald" style="width:auto; padding:6px 14px;" onclick="closePopupModal('vProfile'); openPopupModal('vNew');"><i class="fa-solid fa-feather-pointed"></i> शिकायत करें</button>
-            <button class="mini-logout-btn" onclick="userLogout()"><i class="fa-solid fa-power-off"></i> लॉगआउट</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ADMIN CONTROL PANEL (Popup Modal) -->
-    <div id="vAdmin" class="popup-modal-overlay">
-      <div class="popup-modal-card">
-        <div class="popup-modal-header">
-          <div class="popup-modal-title" style="color:#b45309;"><i class="fa-solid fa-shield-halved"></i> व्यवस्थापक नियंत्रण कक्ष</div>
-          <button class="popup-close-btn" onclick="closePopupModal('vAdmin')">✕</button>
-        </div>
-
-        <div id="adminGateBox" style="border: 2px solid var(--accent); padding:14px; border-radius:12px;">
-          <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">कृपया अधिकृत एडमिन पासवर्ड दर्ज करें:</p>
-          <div class="form-group"><input type="password" id="adminGatePin" placeholder="पासवर्ड दर्ज करें"></div>
-          <div style="display:flex; gap:8px;">
-            <button class="btn btn-emerald" onclick="verifyAdminGate()"><i class="fa-solid fa-unlock"></i> लॉगिन करें</button>
-            <button class="btn btn-slate" style="width:auto;" onclick="closePopupModal('vAdmin')">रद्द करें</button>
-          </div>
-        </div>
-
-        <div id="adminMainDashBox" style="display: none;">
           <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:10px; margin-bottom:12px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <div>
@@ -1044,8 +692,372 @@
 
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px;">
             <button class="btn btn-slate" onclick="window.print()"><i class="fa-solid fa-print"></i> प्रिंट रिपोर्ट</button>
-            <button class="btn btn-crimson" onclick="adminLogout()"><i class="fa-solid fa-power-off"></i> लॉगआउट</button>
+            <button class="btn btn-crimson" onclick="adminLogout()"><i class="fa-solid fa-power-off"></i> एडमिन लॉगआउट</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ALL FEATURE POPUP MODALS WITH "X" CLOSE BUTTON ==================== -->
+
+  <!-- 1. POPUP: New Complaint -->
+  <div id="vNew" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-feather-pointed" style="color:var(--primary);"></i> जन समस्या दर्ज करें</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vNew')">✕</button>
+      </div>
+      <form id="compForm" onsubmit="handleNewComp(event)">
+        <div class="form-group"><label>आपका नाम *</label><input type="text" id="cName" required readonly style="background:#f8fafc;"></div>
+        <div class="form-group"><label>मोबाइल नंबर *</label><input type="tel" id="cPhone" maxlength="10" required readonly style="background:#f8fafc;"></div>
+        <div class="form-group"><label>समस्या की श्रेणी *</label>
+          <select id="cCat" required>
+            <option value="">-- विभाग चुनें --</option>
+            <option value="सड़क व खड़ंजा">सड़क, खड़ंजा व नाली मरम्मत</option>
+            <option value="पेयजल व हैंडपंप">सरकारी हैंडपंप व पेयजल आपूर्ति</option>
+            <option value="स्ट्रीट लाइट / बिजली">स्ट्रीट लाइट / बिजली पोल व तार</option>
+            <option value="सफाई व्यवस्था">गाँव की सफाई व कचरा निस्तारण</option>
+            <option value="अन्य समस्या">अन्य पंचायत स्तरीय समस्या</option>
+          </select>
+        </div>
+        <div class="form-group"><label>गाँव में स्थान / मोहल्ला *</label><input type="text" id="cPlace" required placeholder="उदा. प्राथमिक विद्यालय के पास"></div>
+        
+        <div class="form-group">
+          <button type="button" class="btn btn-slate" onclick="toggleMap()" style="font-size:12px; padding:7px;">
+            <i class="fa-solid fa-map-location-dot" style="color: var(--info);"></i> सैटेलाइट नक्शा (GPS लोकेशन)
+          </button>
+          <div id="mapBox"><div id="mapDiv" style="height:100%; width:100%;"></div></div>
+          <input type="hidden" id="cCoords">
+          <div id="coordsNotice" style="font-size:11px; color:var(--primary); font-weight:700; margin-top:4px; display:none;"></div>
+        </div>
+
+        <div class="form-group"><label><i class="fa-solid fa-camera"></i> समस्या की फोटो जोड़ें</label><input type="file" accept="image/*" onchange="handleCompPhoto(event)"></div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-microphone-lines" style="color:#dc2626;"></i> बोलकर बताएं (ऑडियो रिकॉर्डिंग):</label>
+          <div class="audio-record-box">
+            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+              <button type="button" id="btnRecordToggle" class="btn btn-crimson" style="width:auto; padding:6px 12px; font-size:12px;" onclick="toggleAudioRecording()">
+                <i class="fa-solid fa-microphone"></i> रिकॉर्डिंग शुरू करें
+              </button>
+              <span id="recordTimer" style="font-size:12px; font-weight:700; color:#dc2626; display:none;">00:00</span>
+              <span id="recordStatusText" style="font-size:11px; color:#64748b;">(माइक परमिशन जरूरी)</span>
+            </div>
+            <audio id="audioPreviewPlayer" controls style="display:none; width:100%; margin-top:8px; height:36px;"></audio>
+            <div style="margin-top:8px; border-top:1px dashed #cbd5e1; padding-top:6px;">
+              <label style="font-size:11px; color:#475569;"><i class="fa-solid fa-file-audio"></i> या फ़ोन में रिकॉर्ड किया ऑडियो चुनें:</label>
+              <input type="file" id="audioFileInput" accept="audio/*" onchange="handleAudioFileUpload(event)" style="font-size:11px; padding:5px;">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group"><label>समस्या का विस्तृत विवरण *</label><textarea id="cDesc" placeholder="समस्या क्या है, कब से है और कहाँ है... (या ऊपर आवाज़ रिकॉर्ड करें)"></textarea></div>
+        <button type="submit" class="btn btn-emerald"><i class="fa-solid fa-paper-plane"></i> शिकायत सबमिट करें</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. POPUP: Complaints List -->
+  <div id="vList" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-clipboard-list" style="color:var(--info);"></i> दर्ज शिकायतें (<span id="cCount">0</span>)</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vList')">✕</button>
+      </div>
+      <p style="font-size:11px; color:#64748b; margin-bottom:10px;">* सुरक्षा नियम: निजता हेतु नाम व नंबर सार्वजनिक सूची में छिपे रहते हैं।</p>
+      <div id="compListDiv"></div>
+    </div>
+  </div>
+
+  <!-- 3. POPUP: Track Complaint -->
+  <div id="vTrack" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-magnifying-glass-location" style="color:var(--accent);"></i> अपनी शिकायत ट्रैक करें</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vTrack')">✕</button>
+      </div>
+      <div class="form-group">
+        <label>शिकायत रसीद संख्या (उदा. PKP-84729145):</label>
+        <input type="text" id="trackQueryInput" placeholder="PKP नंबर दर्ज करें">
+      </div>
+      <button class="btn btn-amber" onclick="executeComplaintTrack()"><i class="fa-solid fa-search"></i> स्थिति खोजें</button>
+      <div id="trackResultDiv" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- 4. POPUP: MANDI RATES -->
+  <div id="vMandi" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-wheat-awn" style="color:#16a34a;"></i> दैनिक मंडी भाव</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vMandi')">✕</button>
+      </div>
+      <div class="form-group">
+        <label><i class="fa-solid fa-location-dot"></i> मंडी चुनें:</label>
+        <select id="mandiSelect" onchange="renderMandiRates()" style="font-weight:700;">
+          <option value="सुल्तानपुर">सुल्तानपुर मंडी (Sultanpur)</option>
+          <option value="कादीपुर">कादीपुर मंडी (Kadipur)</option>
+          <option value="दोस्तपुर">दोस्तपुर बाज़ार (Dostpur)</option>
+          <option value="सूरापुर">सूरापुर मंडी (Surapur)</option>
+          <option value="जौनपुर">जौनपुर मंडी (Jaunpur)</option>
+        </select>
+      </div>
+      <div id="mandiTableDiv"></div>
+    </div>
+  </div>
+
+  <!-- 5. POPUP: MISTRI & ROZGAR -->
+  <div id="vRozgar" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-user-gear" style="color:#ea580c;"></i> मिस्त्री / रोज़गार हब</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vRozgar')">✕</button>
+      </div>
+      <button class="btn btn-amber" style="margin-bottom:12px;" onclick="toggleAddRozgarBox()">
+        <i class="fa-solid fa-plus"></i> अपना काम / हुनर जोड़ें
+      </button>
+      
+      <div id="boxAddRozgar" style="display:none; background:#fff7ed; border:1px solid #fed7aa; padding:12px; border-radius:10px; margin-bottom:12px;">
+        <h4 style="font-size:13px; color:#c2410c; margin-bottom:8px;">अपने काम का विज्ञापन दर्ज करें</h4>
+        <div class="form-group"><input type="text" id="rzName" placeholder="आपका नाम *" required></div>
+        <div class="form-group"><input type="tel" id="rzPhone" maxlength="10" placeholder="मोबाइल नंबर *" required></div>
+        <div class="form-group">
+          <select id="rzSkill" required>
+            <option value="">-- कार्य चुनें --</option>
+            <option value="बिजली मिस्त्री (Electrician)">बिजली मिस्त्री (Electrician)</option>
+            <option value="प्लम्बर / नलसाज (Plumber)">प्लम्बर / नलसाज (Plumber)</option>
+            <option value="राजमिस्त्री (Mason)">राजमिस्त्री (मकान निर्माण)</option>
+            <option value="बढ़ई / कारपेंटर (Carpenter)">बढ़ई / लकड़ी कार्य</option>
+            <option value="ट्रैक्टर / कृषि यंत्र चालक">ट्रैक्टर चालक / खेत जुताई</option>
+            <option value="वेल्डिंग व लोहार कार्य">वेल्डिंग व लोहार कार्य</option>
+            <option value="पेंटर व पुट्टी कारीगर">पेंटर व पुट्टी कारीगर</option>
+            <option value="अन्य स्थानीय कारीगर">अन्य स्थानीय कारीगर</option>
+          </select>
+        </div>
+        <div class="form-group"><input type="text" id="rzRate" placeholder="चार्ज (उदा. ₹500/दिन या ₹150/घंटा) *" required></div>
+        <div class="form-group"><input type="text" id="rzExp" placeholder="अनुभव व विशेषज्ञता"></div>
+        <button class="btn btn-amber" onclick="submitRozgarProfileCloud()"><i class="fa-solid fa-paper-plane"></i> प्रकाशित करें</button>
+      </div>
+      <div id="rozgarListDiv"></div>
+    </div>
+  </div>
+
+  <!-- 6. POPUP: GRAMIN HAAT -->
+  <div id="vMarket" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-shop" style="color:#0891b2;"></i> ग्रामीण हाट (क्रय-विक्रय)</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vMarket')">✕</button>
+      </div>
+      <button class="btn btn-emerald" style="margin-bottom:12px;" onclick="toggleAddMarketBox()">
+        <i class="fa-solid fa-plus"></i> सामान / पशु बेचने का विज्ञापन लगाएं
+      </button>
+
+      <div id="boxAddMarket" style="display:none; background:#ecfeff; border:1px solid #a5f3fc; padding:12px; border-radius:10px; margin-bottom:12px;">
+        <div class="form-group"><input type="text" id="mktItemTitle" placeholder="सामान का नाम (उदा. मुर्रा भैंस, गेहूं, भूसा) *" required></div>
+        <div class="form-group">
+          <select id="mktCategory" required>
+            <option value="">-- श्रेणी चुनें --</option>
+            <option value="पशु मेला (गाय/भैंस/बकरी)">पशु (गाय, भैंस, बकरी आदि)</option>
+            <option value="कृषि यंत्र / ट्रैक्टर किराया">कृषि यंत्र / ट्रैक्टर / किराया</option>
+            <option value="फसल, अनाज व भूसा">फसल, अनाज व भूसा</option>
+            <option value="वाहन व अन्य सामान">वाहन व अन्य सामान</option>
+          </select>
+        </div>
+        <div class="form-group"><input type="number" id="mktPrice" placeholder="मांग मूल्य ₹ *" required></div>
+        <div class="form-group"><textarea id="mktDesc" placeholder="विवरण (उम्र, दूध क्षमता, मॉडल आदि)..." style="min-height:50px;"></textarea></div>
+        <div class="form-group"><label style="font-size:11px;">फोटो जोड़ें (ऐच्छिक):</label><input type="file" accept="image/*" onchange="handleMarketPhoto(event)"></div>
+        <button class="btn btn-emerald" onclick="submitMarketAdCloud()"><i class="fa-solid fa-paper-plane"></i> प्रकाशित करें</button>
+      </div>
+      <div id="marketListDiv"></div>
+    </div>
+  </div>
+
+  <!-- 7. POPUP: RATION & BIJLI -->
+  <div id="vRationBijli" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-bolt" style="color:#e11d48;"></i> राशन वितरण एवं बिजली रोस्टर</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vRationBijli')">✕</button>
+      </div>
+
+      <div style="background:#fff1f2; border:1px solid #fecdd3; border-radius:12px; padding:12px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h4 style="font-size:14px; color:#be123c;"><i class="fa-solid fa-bowl-rice"></i> गाँव राशन वितरण सूचना</h4>
+            <p style="font-size:13px; font-weight:700; margin-top:2px;">कोटेदार: <span id="rationDealerName">लोड हो रहा है...</span></p>
+            <p style="font-size:12px; color:#475569;" id="rationPhoneText">संपर्क: लोड हो रहा है...</p>
+          </div>
+          <a href="#" id="rationCallBtn" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
+        </div>
+        <div style="margin-top:6px; border-top:1px dashed #fca5a5; padding-top:6px; font-size:12px;">
+          <p><strong>वितरण स्थिति:</strong> <span id="rationStatusBadge" style="background:#16a34a; color:#fff; font-size:11px; padding:2px 8px; border-radius:8px; font-weight:700;">सक्रिय</span></p>
+          <p style="margin-top:2px;"><strong>वितरण समय:</strong> <span id="rationTimingsText" style="color:#991b1b; font-weight:700;">प्रातः 08:00 से सायं 06:00 बजे तक</span></p>
+        </div>
+      </div>
+
+      <div style="background:#fefce8; border:1px solid #fef08a; border-radius:12px; padding:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h4 style="font-size:14px; color:#a16207;"><i class="fa-solid fa-plug-circle-bolt"></i> पाकरपुर फीडर बिजली व्यवस्था</h4>
+            <p style="font-size:13px; font-weight:700; margin-top:2px;">लाइनमैन / प्रभारी: <span id="bijliStaffName">लोड हो रहा है...</span></p>
+            <p style="font-size:12px; color:#475569;" id="bijliPhoneText">संपर्क: लोड हो रहा है...</p>
+          </div>
+          <a href="#" id="bijliCallBtn" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
+        </div>
+        <div style="margin-top:6px; border-top:1px dashed #fcd34d; padding-top:6px; font-size:12px;">
+          <p><strong>वर्तमान स्थिति:</strong> <span id="bijliStatusBadge" style="background:#0284c7; color:#fff; font-size:11px; padding:2px 8px; border-radius:8px; font-weight:700;">आपूर्ति सामान्य</span></p>
+          <p style="margin-top:2px;"><strong>रोस्टर समय:</strong></p>
+          <p id="bijliRosterText" style="color:#854d0e; font-weight:700; background:#fff; padding:6px; border-radius:6px; border:1px solid #fde047; margin-top:2px;">
+            सुबह 06:00 से 12:00 बजे | शाम 03:00 से रात 11:00 बजे तक
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. POPUP: FORMS DOWNLOAD -->
+  <div id="vForms" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-file-arrow-down" style="color:#6366f1;"></i> सरकारी प्रपत्र डाउनलोड</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vForms')">✕</button>
+      </div>
+      <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
+        <div><h4 style="font-size:13px; font-weight:700;">परिवार रजिस्टर नकल आवेदन</h4><span style="font-size:11px; color:#64748b;">अधिकृत ग्राम पंचायत प्रारूप</span></div>
+        <button class="btn btn-slate" style="width:auto; padding:6px 12px; font-size:12px;" onclick="window.print()"><i class="fa-solid fa-download"></i> प्रिंट</button>
+      </div>
+      <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
+        <div><h4 style="font-size:13px; font-weight:700;">आय / जाति / निवास स्व-घोषणा पत्र</h4><span style="font-size:11px; color:#64748b;">ई-डिस्ट्रिक्ट मान्य प्रारूप</span></div>
+        <a href="https://edistrict.up.gov.in" target="_blank" class="btn btn-slate" style="width:auto; padding:6px 12px; font-size:12px;"><i class="fa-solid fa-arrow-up-right-from-square"></i> डाउनलोड</a>
+      </div>
+      <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
+        <div><h4 style="font-size:13px; font-weight:700;">राशन कार्ड संशोधन आवेदन</h4><span style="font-size:11px; color:#64748b;">NFSA खाद्य विभाग</span></div>
+        <a href="https://fcs.up.gov.in" target="_blank" class="btn btn-slate" style="width:auto; padding:6px 12px; font-size:12px;"><i class="fa-solid fa-arrow-up-right-from-square"></i> डाउनलोड</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. POPUP: NOTICE BOARD -->
+  <div id="vNotice" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-bullhorn" style="color:var(--danger);"></i> सूचना बोर्ड</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vNotice')">✕</button>
+      </div>
+      <div id="noticeListDiv"></div>
+    </div>
+  </div>
+
+  <!-- 10. POPUP: DIRECTORY -->
+  <div id="vDirectory" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-address-book" style="color:#4f46e5;"></i> आवश्यक हेल्पलाइन</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vDirectory')">✕</button>
+      </div>
+      <div id="directoryListDiv"></div>
+    </div>
+  </div>
+
+  <!-- 11. POPUP: VIKAS KOSH -->
+  <div id="vBudget" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-building-columns" style="color:#0d9488;"></i> विकास कोष एवं खर्च</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vBudget')">✕</button>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:14px; text-align:center;">
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:8px 4px; border-radius:10px;">
+          <span style="font-size:11px; color:#166534; font-weight:700;">कुल फंड</span>
+          <h4 id="koshTotalIn" style="font-size:14px; color:#15803d; margin-top:2px;">₹0</h4>
+        </div>
+        <div style="background:#fef2f2; border:1px solid #fecaca; padding:8px 4px; border-radius:10px;">
+          <span style="font-size:11px; color:#991b1b; font-weight:700;">कुल खर्च</span>
+          <h4 id="koshTotalOut" style="font-size:14px; color:#dc2626; margin-top:2px;">₹0</h4>
+        </div>
+        <div style="background:#eff6ff; border:1px solid #bfdbfe; padding:8px 4px; border-radius:10px;">
+          <span style="font-size:11px; color:#1e40af; font-weight:700;">बैलेंस</span>
+          <h4 id="koshBalance" style="font-size:14px; color:#0284c7; margin-top:2px;">₹0</h4>
+        </div>
+      </div>
+      <div id="koshExpensesDiv"></div>
+    </div>
+  </div>
+
+  <!-- 12. POPUP: GALLERY -->
+  <div id="vGallery" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-images" style="color:#be185d;"></i> ग्राम विकास कार्य गैलरी</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vGallery')">✕</button>
+      </div>
+      <div id="galleryListDiv"></div>
+    </div>
+  </div>
+
+  <!-- 13. POPUP: SARKARI YOJNA -->
+  <div id="vSchemes" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-hand-holding-hand" style="color:var(--success);"></i> सरकारी योजनाएं</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vSchemes')">✕</button>
+      </div>
+      <div id="schemesDynamicListDiv"></div>
+    </div>
+  </div>
+
+  <!-- Citizen Account Form & Profile (Popup) -->
+  <div id="vProfile" class="popup-modal-overlay">
+    <div class="popup-modal-card">
+      <div class="popup-modal-header">
+        <div class="popup-modal-title"><i class="fa-solid fa-user-lock" style="color:var(--accent);"></i> नागरिक खाता</div>
+        <button class="popup-close-btn" onclick="closePopupModal('vProfile')">✕</button>
+      </div>
+
+      <div id="userAuthBox">
+        <div style="display:flex; gap:8px; margin-bottom:14px;">
+          <button class="btn btn-amber" id="btnSubReg" onclick="switchAuthTab('reg')"><i class="fa-solid fa-user-plus"></i> नया पंजीकरण</button>
+          <button class="btn btn-slate" id="btnSubLogin" onclick="switchAuthTab('login')"><i class="fa-solid fa-right-to-bracket"></i> लॉगिन करें</button>
+        </div>
+
+        <div id="boxReg">
+          <div id="regReqNotice" style="display:none; padding:10px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; font-size:12px; color:#1e40af; margin-bottom:10px;">
+            <i class="fa-solid fa-clock-rotate-left"></i> अनुरोध भेजा गया: खाता अनुमोदन हेतु लंबित है।
+          </div>
+          <div class="form-group"><label>पूरा नाम *</label><input type="text" id="rName" placeholder="अपना पूरा नाम दर्ज करें"></div>
+          <div class="form-group"><label>मोबाइल नंबर *</label><input type="tel" id="rPhone" maxlength="10" placeholder="10-अंकीय मोबाइल नंबर"></div>
+          <div class="form-group"><label>टोला / मोहल्ला *</label><input type="text" id="rWard" placeholder="उदा. उत्तर टोला"></div>
+          <div class="form-group"><label>पासवर्ड बनाएं *</label><input type="password" id="rPass" placeholder="कम से कम 4 अक्षर"></div>
+          <button class="btn btn-amber" onclick="submitCitizenRegistrationRequest()"><i class="fa-solid fa-paper-plane"></i> प्रधान जी को अनुमोदन अनुरोध भेजें</button>
+        </div>
+
+        <div id="boxLogin" style="display:none;">
+          <div class="form-group"><label>पंजीकृत मोबाइल नंबर</label><input type="tel" id="lPhone" maxlength="10" placeholder="10-अंकीय नंबर"></div>
+          <div class="form-group"><label>पासवर्ड</label><input type="password" id="lPass" placeholder="अपना पासवर्ड दर्ज करें"></div>
+          <button class="btn btn-emerald" onclick="userLogin()"><i class="fa-solid fa-unlock"></i> लॉगिन करें</button>
+        </div>
+      </div>
+
+      <div id="userProfileBox" style="display:none;">
+        <div class="user-profile-header">
+          <img id="uAvatarImg" class="user-avatar-circle zoomable-pic" src="" style="display:none;" onclick="zoomSpecificImage(this.src)" alt="User Pic">
+          <div id="uAvatarIcon" class="user-avatar-circle"><i class="fa-solid fa-user"></i></div>
+          <div>
+            <h3 id="pName" style="font-size:16px; color:#1e293b;"></h3>
+            <p style="font-size:12px; color:#16a34a; font-weight:600;"><i class="fa-solid fa-circle-check"></i> प्रमाणित ग्राम नागरिक</p>
+            <span id="pPhone" style="font-size:12px; color:#64748b;"></span>
+          </div>
+        </div>
+        <p style="margin-bottom:6px; font-size:13px;"><strong>निवास / टोला:</strong> <span id="pWard"></span></p>
+        <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:10px; margin:12px 0;">
+          <label style="font-size:12px; color:#15803d; font-weight:700;"><i class="fa-solid fa-camera"></i> अपनी प्रोफाइल फोटो लगाएं / बदलें:</label>
+          <input type="file" accept="image/*" onchange="uploadUserAvatarCloud(event)" style="font-size:12px; padding:6px; margin-top:4px;">
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px dashed var(--border); padding-top:10px;">
+          <button class="btn btn-emerald" style="width:auto; padding:6px 14px;" onclick="closePopupModal('vProfile'); openPopupModal('vNew');"><i class="fa-solid fa-feather-pointed"></i> शिकायत करें</button>
+          <button class="mini-logout-btn" onclick="userLogout()"><i class="fa-solid fa-power-off"></i> लॉगआउट</button>
         </div>
       </div>
     </div>
@@ -1114,11 +1126,20 @@
       initFirebaseListeners();
       fetchPakarpurWeather();
       applyUserGate();
+
+      // Check if admin is currently active
+      if (isAdminUnlocked) {
+        document.getElementById('citizenMainPortalView').style.display = 'none';
+        document.getElementById('vAdminDedicatedView').style.display = 'block';
+        document.getElementById('adminGateBox').style.display = 'none';
+        document.getElementById('adminMainDashBox').style.display = 'block';
+        renderAdminDashboard();
+      }
     };
 
-    /* POP-UP MODAL ENGINE: UNRESTRICTED FOR ADMIN AND PROFILE */
+    /* POP-UP MODAL ENGINE FOR CITIZEN PORTAL */
     function openPopupModal(modalId) {
-      if (modalId !== 'vAdmin' && modalId !== 'vProfile' && !curUser) {
+      if (modalId !== 'vProfile' && !curUser) {
         applyUserGate();
         return;
       }
@@ -1146,21 +1167,29 @@
       if (target) target.classList.remove('active');
     }
 
-    /* DIRECT ADMIN GATE CALL (ALWAYS ACCESSIBLE) */
+    /* DEDICATED SEPARATE ADMIN GATEWAY */
     function openAdminGate() {
-      var adminModal = document.getElementById('vAdmin');
-      if (adminModal) {
-        adminModal.classList.add('active');
-        if (!isAdminUnlocked) {
-          document.getElementById('adminGateBox').style.display = 'block';
-          document.getElementById('adminMainDashBox').style.display = 'none';
-          document.getElementById('adminGatePin').value = "";
-        } else {
-          document.getElementById('adminGateBox').style.display = 'none';
-          document.getElementById('adminMainDashBox').style.display = 'block';
-          renderAdminDashboard();
-        }
+      // Hide public portal, show dedicated admin section
+      document.getElementById('citizenMainPortalView').style.display = 'none';
+      document.getElementById('vAdminDedicatedView').style.display = 'block';
+
+      if (!isAdminUnlocked) {
+        document.getElementById('adminGateBox').style.display = 'block';
+        document.getElementById('adminMainDashBox').style.display = 'none';
+        document.getElementById('adminGatePin').value = "";
+      } else {
+        document.getElementById('adminGateBox').style.display = 'none';
+        document.getElementById('adminMainDashBox').style.display = 'block';
+        renderAdminDashboard();
       }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function exitAdminDedicatedView() {
+      document.getElementById('vAdminDedicatedView').style.display = 'none';
+      document.getElementById('citizenMainPortalView').style.display = 'block';
+      applyUserGate();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function verifyAdminGate() {
@@ -1179,8 +1208,16 @@
         document.getElementById('adminMainDashBox').style.display = 'block';
         renderAdminDashboard();
       } else {
-        alert("अमान्य पासवर्ड!");
+        alert("अमान्य पासवर्ड! सही पासवर्ड दर्ज करें।");
       }
+    }
+
+    function adminLogout() {
+      isAdminUnlocked = false;
+      localStorage.removeItem('pkp_admin_logged_in');
+      document.getElementById('adminGateBox').style.display = 'block';
+      document.getElementById('adminMainDashBox').style.display = 'none';
+      exitAdminDedicatedView();
     }
 
     function renderAdminDashboard() {
@@ -1497,7 +1534,7 @@
       if (!d || !p) return alert("नाम और मोबाइल नंबर भरें!");
 
       db.ref('ration_info').set({ dealer: d, phone: p, status: s, timing: t }).then(function() {
-        alert("राशन वितरण विवरण सुरक्षित हो गया!");
+        alert("राशन विवरण सुरक्षित हो गया!");
       });
     }
 
@@ -2106,14 +2143,6 @@
       db.ref('complaints/' + id).update({ status: s, reply: r }).then(function() {
         alert("स्थिति सेव हो गई!");
       });
-    }
-
-    function adminLogout() {
-      isAdminUnlocked = false;
-      localStorage.removeItem('pkp_admin_logged_in');
-      document.getElementById('adminGateBox').style.display = 'block';
-      document.getElementById('adminMainDashBox').style.display = 'none';
-      closePopupModal('vAdmin');
     }
 
     function toggleMap() {
