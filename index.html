@@ -17,12 +17,13 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
+  <!-- Google Translate In-built Integration -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'hi',
-        includedLanguages: 'hi,en',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        includedLanguages: 'hi,en,ur,bn,mr,te,ta,gu,pa',
+        layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
         autoDisplay: false
       }, 'google_translate_element');
     }
@@ -66,6 +67,21 @@
       z-index: -1;
     }
 
+    /* In-Built Top Language Strip */
+    .lang-bar {
+      background: #0f172a; color: #fff; padding: 6px 12px; font-size: 11px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .lang-bar-title { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+    #google_translate_element select {
+      padding: 3px 6px; font-size: 11px; border-radius: 6px; border: 1px solid #475569;
+      background: #1e293b; color: #ffffff; font-weight: 700; outline: none; cursor: pointer;
+    }
+    .goog-te-gadget { font-size: 0px !important; }
+    .goog-te-gadget span { display: none !important; }
+    .goog-te-banner-frame { display: none !important; }
+    body { top: 0px !important; }
+
     header {
       background: linear-gradient(135deg, var(--primary-dark), var(--primary));
       color: #fff; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;
@@ -84,23 +100,11 @@
       color: #fff; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer;
       overflow: hidden; padding: 0;
     }
-    .header-user-avatar {
-      width: 100%; height: 100%; object-fit: cover; display: none;
-    }
+    .header-user-avatar { width: 100%; height: 100%; object-fit: cover; display: none; }
     .admin-secret-btn {
       background: rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.5);
       color: #fef08a; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer;
     }
-
-    #google_translate_element select {
-      padding: 5px 6px; font-size: 11px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.4);
-      background: rgba(255,255,255,0.25); color: #ffffff; font-weight: 700; outline: none; cursor: pointer;
-    }
-    #google_translate_element select option { background: #166534; color: #ffffff; }
-    .goog-te-gadget { font-size: 0px !important; }
-    .goog-te-gadget span { display: none !important; }
-    .goog-te-banner-frame { display: none !important; }
-    body { top: 0px !important; }
 
     .weather-strip {
       background: linear-gradient(90deg, #0284c7, #0d9488); color: #fff; padding: 7px 14px;
@@ -173,13 +177,14 @@
     textarea { min-height: 70px; resize: vertical; }
 
     .btn {
-      width: 100%; padding: 10px; border: none; border-radius: 9px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px;
+      width: 100%; padding: 10px; border: none; border-radius: 9px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; text-decoration: none;
     }
     .btn-emerald { background: var(--primary); color: #fff; }
     .btn-amber { background: var(--accent); color: #fff; }
     .btn-crimson { background: var(--danger); color: #fff; }
     .btn-slate { background: #f1f5f9; color: #334155; border: 1px solid var(--border); }
     .btn-whatsapp { background: #25d366; color: #fff; }
+    .btn-direct-gov { background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; padding: 8px 12px; font-size: 12px; border-radius: 8px; margin-top: 8px; display: inline-flex; }
 
     .complaint-card, .notice-card, .directory-card, .scheme-card, .fund-item-card, .gallery-card {
       background: #ffffff; border-radius: 12px; padding: 12px; border: 1px solid var(--border); margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
@@ -228,9 +233,7 @@
     .stat-square span { display: block; font-size: 10px; opacity: 0.9; margin-bottom: 2px; }
     .stat-square h4 { font-size: 18px; line-height: 1; }
 
-    .user-profile-header {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
-    }
+    .user-profile-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
     .user-avatar-circle {
       width: 58px; height: 58px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);
       background: #dcfce7; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--primary);
@@ -238,6 +241,15 @@
   </style>
 </head>
 <body>
+
+  <!-- In-Built Language Selector Header Bar -->
+  <div class="lang-bar">
+    <div class="lang-bar-title">
+      <i class="fa-solid fa-language" style="color:#38bdf8; font-size:14px;"></i>
+      <span>भाषा बदलें (Select Language):</span>
+    </div>
+    <div id="google_translate_element"></div>
+  </div>
 
   <!-- UNIVERSAL FULLSCREEN IMAGE MODAL -->
   <div class="image-modal" id="universalImageModal" onclick="closeUniversalImgModal()">
@@ -308,12 +320,9 @@
       </div>
     </div>
 
-    <div style="display:flex; align-items:center; gap:6px;">
-      <div id="google_translate_element"></div>
-      <button class="admin-secret-btn" onclick="openAdminGate()" title="व्यवस्थापक लॉगिन">
-        <i class="fa-solid fa-shield-halved"></i>
-      </button>
-    </div>
+    <button class="admin-secret-btn" onclick="openAdminGate()" title="व्यवस्थापक लॉगिन">
+      <i class="fa-solid fa-shield-halved"></i>
+    </button>
   </header>
 
   <div class="weather-strip" id="weatherBox" onclick="openWeatherModal()">
@@ -554,20 +563,78 @@
       </div>
     </div>
 
-    <!-- 9. VIEW: GOVT SCHEMES -->
+    <!-- 9. VIEW: SARKARI YOJNA (DIRECT PORTAL LINKS) -->
     <div id="vSchemes" class="view-content">
       <div class="card">
         <div class="card-title">
-          <i class="fa-solid fa-hand-holding-hand" style="color: var(--success);"></i> प्रमुख सरकारी योजनाएं
+          <i class="fa-solid fa-hand-holding-hand" style="color: var(--success);"></i> प्रमुख सरकारी योजनाएं एवं ऑनलाइन आवेदन
         </div>
+        <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
+          योजना का लाभ लेने या स्टेटस चेक करने हेतु सीधे आधिकारिक सरकारी वेबसाइट पर जाएं:
+        </p>
+        
+        <div id="schemesDynamicListDiv"></div>
+
+        <!-- Default Essential Central & State Schemes -->
+        <div class="scheme-card" style="border-left: 4px solid #0284c7;">
+          <h4 style="font-size:14px; color:#0369a1;"><i class="fa-solid fa-id-card-clip"></i> आयुष्मान भारत कार्ड (Ayushman Card)</h4>
+          <p style="font-size:12px; color:#475569; margin:4px 0;">हर पात्र परिवार को सरकारी व निजी अस्पतालों में ₹5 लाख तक का सालाना मुफ़्त इलाज।</p>
+          <a href="https://beneficiary.nha.gov.in" target="_blank" class="btn-direct-gov">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> आयुष्मान कार्ड बनाएं / डाउनलोड करें
+          </a>
+        </div>
+
+        <div class="scheme-card" style="border-left: 4px solid #ea580c;">
+          <h4 style="font-size:14px; color:#c2410c;"><i class="fa-solid fa-person-digging"></i> ई-श्रम कार्ड (e-Shram Card)</h4>
+          <p style="font-size:12px; color:#475569; margin:4px 0;">असंगठित क्षेत्र के कामगारों, मजदूरों एवं कारीगरों हेतु ₹2 लाख दुर्घटना बीमा एवं सरकारी सहायता।</p>
+          <a href="https://eshram.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #ea580c, #c2410c);">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> ई-श्रम पोर्टल पर ऑनलाइन रजिस्ट्रेशन
+          </a>
+        </div>
+
         <div class="scheme-card" style="border-left: 4px solid #16a34a;">
-          <h4 style="font-size:14px; color:#166534;"><i class="fa-solid fa-house-chimney"></i> प्रधानमंत्री आवास योजना (ग्रामीण)</h4>
-          <p style="font-size:12px; color:#475569; margin:4px 0;">पात्र परिवारों को पक्का मकान हेतु ₹1,20,000 की सहायता।</p>
+          <h4 style="font-size:14px; color:#166534;"><i class="fa-solid fa-tractor"></i> पीएम किसान सम्मान निधि (PM Kisan)</h4>
+          <p style="font-size:12px; color:#475569; margin:4px 0;">किसान भाइयों को ₹6,000 सालाना (₹2,000 की 3 किस्तें)। e-KYC और किस्त स्टेटस चेक करें।</p>
+          <a href="https://pmkisan.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #16a34a, #15803d);">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> पीएम किसान e-KYC व किस्त देखें
+          </a>
+        </div>
+
+        <div class="scheme-card" style="border-left: 4px solid #d97706;">
+          <h4 style="font-size:14px; color:#b45309;"><i class="fa-solid fa-house-chimney"></i> प्रधानमंत्री आवास योजना (PMAY-G)</h4>
+          <p style="font-size:12px; color:#475569; margin:4px 0;">ग्रामीण बेघर परिवारों को पक्का मकान निर्माण हेतु ₹1,20,000 की आर्थिक सहायता सूची।</p>
+          <a href="https://pmayg.nic.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #d97706, #b45309);">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> आवास योजना लाभार्थी सूची देखें
+          </a>
+        </div>
+
+        <div class="scheme-card" style="border-left: 4px solid #4f46e5;">
+          <h4 style="font-size:14px; color:#3730a3;"><i class="fa-solid fa-person-cane"></i> वृद्धावस्था / विधवा / दिव्यांग पेंशन (SSPY)</h4>
+          <p style="font-size:12px; color:#475569; margin:4px 0;">बुजुर्गों, विधवा माताओं व दिव्यांग भाई-बहनों को ₹1,000 प्रतिमाह सीधे बैंक खाते में।</p>
+          <a href="https://sspy-up.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #4f46e5, #3730a3);">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> पेंशन आवेदन एवं पात्रता सूची
+          </a>
+        </div>
+
+        <div class="scheme-card" style="border-left: 4px solid #0d9488;">
+          <h4 style="font-size:14px; color:#0f766e;"><i class="fa-solid fa-bowl-rice"></i> राशन कार्ड पात्रता सूची (NFSA Ration Card)</h4>
+          <p style="font-size:12px; color:#475569; margin:4px 0;">गाँव की राशन कार्ड यूनिट लिस्ट में अपना व परिवार का नाम ऑनलाइन चेक करें।</p>
+          <a href="https://fcs.up.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #0d9488, #0f766e);">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> पाकरपुर राशन कार्ड लिस्ट चेक करें
+          </a>
+        </div>
+
+        <div class="scheme-card" style="border-left: 4px solid #7c3aed;">
+          <h4 style="font-size:14px; color:#6d28d9;"><i class="fa-solid fa-map-location-dot"></i> यूपी भूलेख (खतौनी / खेत कागज़ात)</h4>
+          <p style="font-size:12px; color:#475569; margin:4px 0;">अपनी ज़मीन, खेत व गाटा संख्या की प्रमाणित खतौनी नकल मोबाइल पर ऑनलाइन निकालें।</p>
+          <a href="https://upbhulekh.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #7c3aed, #6d28d9);">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> खेत की खतौनी नकल देखें
+          </a>
         </div>
       </div>
     </div>
 
-    <!-- Citizen Account Form & Profile (UPDATED WITH PHOTO UPLOAD) -->
+    <!-- Citizen Account Form & Profile -->
     <div id="vProfile" class="view-content">
       <div class="card" id="userAuthBox">
         <div class="card-title">
@@ -619,7 +686,6 @@
 
         <p style="margin-bottom:6px; font-size:13px;"><strong>निवास / टोला:</strong> <span id="pWard"></span></p>
 
-        <!-- USER PROFILE PHOTO UPLOAD SECTION -->
         <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:10px; margin:12px 0;">
           <label style="font-size:12px; color:#15803d; font-weight:700;"><i class="fa-solid fa-camera"></i> अपनी प्रोफाइल फोटो लगाएं / बदलें:</label>
           <input type="file" accept="image/*" onchange="uploadUserAvatarCloud(event)" style="font-size:12px; padding:6px; margin-top:4px;">
@@ -708,6 +774,19 @@
               <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-user-check"></i></div>
               <span>नागरिक खाते</span>
             </div>
+            <div class="admin-square-tile" onclick="openAdminSection('secAddSchemeForm')">
+              <div class="adm-tile-icon" style="background: #059669;"><i class="fa-solid fa-plus-circle"></i></div>
+              <span>योजना जोड़ें</span>
+            </div>
+          </div>
+
+          <!-- ADMIN ADD NEW SARKARI YOJNA FORM -->
+          <div class="admin-accordion-body" id="secAddSchemeForm" style="background:#f0fdf4; border-color:#86efac;">
+            <h4 style="font-size:13px; color:#166534; margin-bottom:6px;"><i class="fa-solid fa-hand-holding-hand"></i> नई सरकारी योजना व डायरेक्ट लिंक जोड़ें</h4>
+            <div class="form-group"><input type="text" id="admSchTitle" placeholder="योजना का नाम (उदा. सुकन्या समृद्धि योजना)"></div>
+            <div class="form-group"><textarea id="admSchDesc" placeholder="योजना का लाभ व पात्रता (उदा. बेटियों हेतु बचत योजना)..." style="min-height:50px;"></textarea></div>
+            <div class="form-group"><input type="url" id="admSchLink" placeholder="सरकारी वेबसाइट का लिंक (उदा. https://...)"></div>
+            <button class="btn btn-emerald" style="padding:7px; font-size:12px;" onclick="saveCustomSchemeCloud()">योजना प्रकाशित करें</button>
           </div>
 
           <!-- 1. BROADCAST FORM BODY -->
@@ -871,6 +950,7 @@
     var fundsList = [];
     var expensesList = [];
     var galleryList = [];
+    var customSchemesList = [];
 
     var curUser = JSON.parse(localStorage.getItem('pkp_live_cur_u')) || null;
     var isAdminUnlocked = (localStorage.getItem('pkp_admin_logged_in') === 'true');
@@ -916,7 +996,7 @@
     }
 
     function openAdminSection(sectionId) {
-      var allSections = ['secBroadcastForm', 'secNoticeForm', 'secDirForm', 'secKoshForm', 'secGalleryForm', 'secUsersForm'];
+      var allSections = ['secBroadcastForm', 'secNoticeForm', 'secDirForm', 'secKoshForm', 'secGalleryForm', 'secUsersForm', 'secAddSchemeForm'];
       allSections.forEach(function(sec) {
         var el = document.getElementById(sec);
         if (sec === sectionId) {
@@ -1124,6 +1204,13 @@
         galleryList.reverse();
         drawGallery();
       });
+
+      db.ref('custom_schemes').on('value', function(snapshot) {
+        var val = snapshot.val();
+        customSchemesList = val ? Object.values(val) : [];
+        customSchemesList.reverse();
+        drawCustomSchemes();
+      });
     }
 
     function drawPradhanHeader() {
@@ -1182,9 +1269,57 @@
       if (viewId === 'vBudget') { document.getElementById('tileBudget').classList.add('active'); calcAndDrawBudget(); }
       if (viewId === 'vGallery') { document.getElementById('tileGallery').classList.add('active'); drawGallery(); }
       if (viewId === 'vTeam') document.getElementById('tileTeam').classList.add('active');
-      if (viewId === 'vSchemes') document.getElementById('tileSchemes').classList.add('active');
+      if (viewId === 'vSchemes') { document.getElementById('tileSchemes').classList.add('active'); drawCustomSchemes(); }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* CUSTOM SCHEMES FROM ADMIN */
+    function saveCustomSchemeCloud() {
+      var t = document.getElementById('admSchTitle').value.trim();
+      var d = document.getElementById('admSchDesc').value.trim();
+      var l = document.getElementById('admSchLink').value.trim();
+
+      if (!t || !d || !l) return alert("कृपया योजना का नाम, विवरण और वेबसाइट लिंक भरें!");
+
+      var id = "SCH-" + Date.now();
+      db.ref('custom_schemes/' + id).set({
+        id: id, title: t, desc: d, link: l, date: new Date().toLocaleDateString('hi-IN')
+      }).then(function() {
+        alert("नई सरकारी योजना सफलतापूर्वक जुड़ गई!");
+        document.getElementById('admSchTitle').value = "";
+        document.getElementById('admSchDesc').value = "";
+        document.getElementById('admSchLink').value = "";
+      });
+    }
+
+    function deleteCustomSchemeCloud(id) {
+      if (confirm("क्या आप इस योजना को हटाना चाहते हैं?")) {
+        db.ref('custom_schemes/' + id).remove();
+      }
+    }
+
+    function drawCustomSchemes() {
+      var d = document.getElementById('schemesDynamicListDiv');
+      if (customSchemesList.length === 0) {
+        d.innerHTML = "";
+        return;
+      }
+      var h = "";
+      customSchemesList.forEach(function(s) {
+        h += '<div class="scheme-card" style="border-left: 4px solid var(--success);">' +
+             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+             '<h4 style="font-size:14px; color:#166534;"><i class="fa-solid fa-star" style="color:#eab308;"></i> ' + s.title + '</h4>';
+        if (isAdminUnlocked) {
+          h += '<button onclick="deleteCustomSchemeCloud(\''+s.id+'\')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;">हटाएं</button>';
+        }
+        h += '</div>' +
+             '<p style="font-size:12px; color:#475569; margin:4px 0;">' + s.desc + '</p>' +
+             '<a href="' + s.link + '" target="_blank" class="btn-direct-gov">' +
+             '<i class="fa-solid fa-arrow-up-right-from-square"></i> ऑनलाइन पोर्टल पर जाएं (Apply Online)</a>' +
+             '</div>';
+      });
+      d.innerHTML = h;
     }
 
     function saveBroadcastCloud() {
@@ -1433,7 +1568,6 @@
       applyUserGate();
     }
 
-    /* USER AVATAR UPLOAD */
     function uploadUserAvatarCloud(e) {
       if (!curUser) return;
       compressPhoto(e.target.files[0], function(b64){
