@@ -138,8 +138,9 @@
     .action-tile {
       background: var(--card-bg); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 10px 4px;
       text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.03); backdrop-filter: blur(8px);
+      position: relative;
     }
-    .action-tile:active, .action-tile.active {
+    .action-tile:active {
       border-color: var(--primary); background: #f0fdf4; transform: translateY(-2px);
     }
     .tile-icon {
@@ -152,6 +153,7 @@
     .admin-square-tile {
       background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 4px;
       text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      position: relative;
     }
     .admin-square-tile:active { transform: scale(0.95); background: #f8fafc; }
     .adm-tile-icon {
@@ -160,13 +162,49 @@
     }
     .admin-square-tile span { display: block; font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.2; }
 
+    /* Badge on admin user tile */
+    .icon-badge {
+      position: absolute;
+      top: -5px;
+      right: -3px;
+      background: #dc2626;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      border-radius: 10px;
+      padding: 1px 6px;
+      border: 1.5px solid #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    /* Views Modal Styling */
     .view-content { display: none; }
-    .view-content.active { display: block; animation: fadeIn 0.25s ease-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .view-content.active { display: block; }
+
+    /* User Screen Modal Popup */
+    .screen-modal {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
+      z-index: 1500; display: none; align-items: center; justify-content: center; padding: 12px;
+    }
+    .screen-modal.active { display: flex; animation: fadeIn 0.2s ease-out; }
+
+    .screen-modal-card {
+      background: #ffffff; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+      border-radius: 16px; padding: 16px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    .red-close-btn {
+      position: absolute; top: 12px; right: 12px; background: #dc2626; color: #ffffff;
+      border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; font-weight: 800;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;
+      box-shadow: 0 2px 6px rgba(220, 38, 38, 0.4); transition: transform 0.15s;
+    }
+    .red-close-btn:hover { background: #b91c1c; }
+    .red-close-btn:active { transform: scale(0.9); }
 
     .card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; backdrop-filter: blur(8px); }
     .card-title {
-      font-size: 15px; font-weight: 700; color: var(--primary-dark); margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; display: flex; align-items: center; gap: 8px;
+      font-size: 15px; font-weight: 700; color: var(--primary-dark); margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; display: flex; align-items: center; gap: 8px; padding-right: 36px;
     }
     .form-group { margin-bottom: 12px; }
     label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #334155; }
@@ -222,10 +260,6 @@
       padding: 5px 10px; border-radius: 7px; font-size: 11px; font-weight: 700; cursor: pointer; float: right;
     }
 
-    .admin-accordion-body {
-      display: none; padding: 12px; border-radius: 10px; margin: 10px 0; border: 1.5px solid var(--border); animation: fadeIn 0.2s ease-out;
-    }
-
     .hourly-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
     .hourly-scroll::-webkit-scrollbar { display: none; }
     .hourly-card { min-width: 62px; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 8px 4px; text-align: center; font-size: 11px; flex-shrink: 0; }
@@ -269,7 +303,7 @@
     <div class="modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
         <h4 style="color:var(--primary); font-size:15px;" id="modalCompTitle"><i class="fa-solid fa-file-lines"></i> शिकायत विस्तृत विवरण</h4>
-        <button style="border:none; background:#f1f5f9; width:30px; height:30px; border-radius:50%; font-size:15px; cursor:pointer;" onclick="closeCompDetailModal()">✕</button>
+        <button style="border:none; background:#dc2626; color:#fff; width:30px; height:30px; border-radius:50%; font-size:15px; cursor:pointer;" onclick="closeCompDetailModal()">✕</button>
       </div>
       <div id="modalCompBody"></div>
     </div>
@@ -280,7 +314,7 @@
     <div class="modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:10px;">
         <h4 style="color:#0284c7; font-size:15px;"><i class="fa-solid fa-id-badge"></i> नागरिक संपूर्ण विवरण</h4>
-        <button style="border:none; background:#f1f5f9; width:30px; height:30px; border-radius:50%; font-size:15px; cursor:pointer;" onclick="closeCitizenDetailModal()">✕</button>
+        <button style="border:none; background:#dc2626; color:#fff; width:30px; height:30px; border-radius:50%; font-size:15px; cursor:pointer;" onclick="closeCitizenDetailModal()">✕</button>
       </div>
       <div id="citizenModalContent"></div>
     </div>
@@ -291,7 +325,7 @@
     <div class="modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
         <h4 style="color:var(--primary); font-size:15px;" id="adminEditModalTitle"><i class="fa-solid fa-pen-to-square"></i> विवरण संशोधित (Edit) करें</h4>
-        <button style="border:none; background:#f1f5f9; width:30px; height:30px; border-radius:50%; font-size:15px; cursor:pointer;" onclick="closeAdminEditModal()">✕</button>
+        <button style="border:none; background:#dc2626; color:#fff; width:30px; height:30px; border-radius:50%; font-size:15px; cursor:pointer;" onclick="closeAdminEditModal()">✕</button>
       </div>
       <div id="adminEditModalBody"></div>
     </div>
@@ -305,7 +339,7 @@
           <h4 style="color:#0284c7; font-size:16px;"><i class="fa-solid fa-cloud-sun-rain"></i> पाकरपुर मौसम पूर्वानुमान</h4>
           <span style="font-size:11px; color:#64748b;">लाइव वेदर एवं 7-दिवसीय 24-घंटे रिपोर्ट</span>
         </div>
-        <button style="border:none; background:#f1f5f9; width:32px; height:32px; border-radius:50%; font-size:16px; cursor:pointer;" onclick="closeWeatherModal()">✕</button>
+        <button style="border:none; background:#dc2626; color:#fff; width:32px; height:32px; border-radius:50%; font-size:16px; cursor:pointer;" onclick="closeWeatherModal()">✕</button>
       </div>
 
       <div style="background: linear-gradient(135deg, #0284c7, #0369a1); color:#fff; border-radius:12px; padding:14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
@@ -375,39 +409,39 @@
 
     <!-- 8-GRID NAVIGATION ICONS -->
     <div class="actions-grid" id="mainActionsGrid" style="display:none;">
-      <div class="action-tile active" id="tileNew" onclick="switchAction('vNew')">
+      <div class="action-tile" id="tileNew" onclick="openScreenModal('vNew')">
         <div class="tile-icon" style="background: #15803d;"><i class="fa-solid fa-feather-pointed"></i></div>
         <span>नई शिकायत</span>
       </div>
-      <div class="action-tile" id="tileList" onclick="switchAction('vList')">
+      <div class="action-tile" id="tileList" onclick="openScreenModal('vList')">
         <div class="tile-icon" style="background: #0284c7;"><i class="fa-solid fa-list-check"></i></div>
         <span>शिकायतें देखें</span>
       </div>
-      <div class="action-tile" id="tileTrack" onclick="switchAction('vTrack')">
+      <div class="action-tile" id="tileTrack" onclick="openScreenModal('vTrack')">
         <div class="tile-icon" style="background: #d97706;"><i class="fa-solid fa-magnifying-glass-location"></i></div>
         <span>ट्रैक स्थिति</span>
       </div>
-      <div class="action-tile" id="tileNotice" onclick="switchAction('vNotice')">
+      <div class="action-tile" id="tileNotice" onclick="openScreenModal('vNotice')">
         <div class="tile-icon" style="background: #dc2626;"><i class="fa-solid fa-bullhorn"></i></div>
         <span>सूचना बोर्ड</span>
       </div>
-      <div class="action-tile" id="tileDirectory" onclick="switchAction('vDirectory')">
+      <div class="action-tile" id="tileDirectory" onclick="openScreenModal('vDirectory')">
         <div class="tile-icon" style="background: #4f46e5;"><i class="fa-solid fa-address-book"></i></div>
         <span>हेल्पलाइन</span>
       </div>
-      <div class="action-tile" id="tileBudget" onclick="switchAction('vBudget')">
+      <div class="action-tile" id="tileBudget" onclick="openScreenModal('vBudget')">
         <div class="tile-icon" style="background: #0d9488;"><i class="fa-solid fa-building-columns"></i></div>
         <span>विकास कोष</span>
       </div>
-      <div class="action-tile" id="tileGallery" onclick="switchAction('vGallery')">
+      <div class="action-tile" id="tileGallery" onclick="openScreenModal('vGallery')">
         <div class="tile-icon" style="background: #e11d48;"><i class="fa-solid fa-images"></i></div>
         <span>विकास गैलरी</span>
       </div>
-      <div class="action-tile" id="tileTeam" onclick="switchAction('vTeam')">
+      <div class="action-tile" id="tileTeam" onclick="openScreenModal('vTeam')">
         <div class="tile-icon" style="background: #7c3aed;"><i class="fa-solid fa-users-gear"></i></div>
         <span>पंचायत टीम</span>
       </div>
-      <div class="action-tile" id="tileSchemes" onclick="switchAction('vSchemes')">
+      <div class="action-tile" id="tileSchemes" onclick="openScreenModal('vSchemes')">
         <div class="tile-icon" style="background: #059669;"><i class="fa-solid fa-hand-holding-hand"></i></div>
         <span>सरकारी योजना</span>
       </div>
@@ -429,303 +463,14 @@
       </div>
     </div>
 
-    <!-- 1. VIEW: New Complaint -->
-    <div id="vNew" class="view-content">
-      <div class="card">
-        <div class="card-title">
-          <i class="fa-solid fa-feather-pointed" style="color: var(--primary);"></i> जन समस्या दर्ज करें
-        </div>
-
-        <form id="compForm" onsubmit="handleNewComp(event)">
-          <div class="form-group">
-            <label><i class="fa-solid fa-user"></i> आपका नाम *</label>
-            <input type="text" id="cName" required readonly style="background:#f8fafc;">
-          </div>
-          <div class="form-group">
-            <label><i class="fa-solid fa-phone"></i> मोबाइल नंबर *</label>
-            <input type="tel" id="cPhone" maxlength="10" required readonly style="background:#f8fafc;">
-          </div>
-          <div class="form-group">
-            <label><i class="fa-solid fa-layer-group"></i> समस्या का विभाग / श्रेणी *</label>
-            <select id="cCat" required>
-              <option value="">-- विभाग चुनें --</option>
-              <option value="सड़क व खड़ंजा">सड़क, खड़ंजा व नाली मरम्मत</option>
-              <option value="पेयजल व हैंडपंप">सरकारी हैंडपंप व पेयजल आपूर्ति</option>
-              <option value="स्ट्रीट लाइट / बिजली">स्ट्रीट लाइट / बिजली पोल व तार</option>
-              <option value="सफाई व्यवस्था">गाँव की सफाई व कचरा निस्तारण</option>
-              <option value="अन्य समस्या">अन्य पंचायत स्तरीय समस्या</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label><i class="fa-solid fa-location-dot"></i> गाँव में स्थान / मोहल्ला *</label>
-            <input type="text" id="cPlace" required placeholder="उदा. प्राथमिक विद्यालय के पास">
-          </div>
-          
-          <div class="form-group">
-            <button type="button" class="btn btn-slate" onclick="toggleMap()" style="font-size:12px; padding:7px;">
-              <i class="fa-solid fa-map-location-dot" style="color: var(--info);"></i> पाकरपुर सैटेलाइट नक्शा (Google Hybrid)
-            </button>
-            <div id="mapBox"><div id="mapDiv" style="height:100%; width:100%;"></div></div>
-            <input type="hidden" id="cCoords">
-            <div id="coordsNotice" style="font-size:11px; color:var(--primary); font-weight:700; margin-top:4px; display:none;"></div>
-          </div>
-
-          <div class="form-group">
-            <label><i class="fa-solid fa-camera"></i> समस्या की फोटो जोड़ें (ऐच्छिक)</label>
-            <input type="file" accept="image/*" onchange="handleCompPhoto(event)">
-          </div>
-          <div class="form-group">
-            <label><i class="fa-solid fa-comment-dots"></i> समस्या का विस्तृत विवरण *</label>
-            <textarea id="cDesc" required placeholder="समस्या क्या है, कब से है और किस जगह है..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-emerald">
-            <i class="fa-solid fa-paper-plane"></i> शिकायत सबमिट करें
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- 2. VIEW: Complaints List -->
-    <div id="vList" class="view-content">
-      <div class="card">
-        <div class="card-title">
-          <i class="fa-solid fa-clipboard-list" style="color: var(--info);"></i> पाकरपुर दर्ज शिकायतें (<span id="cCount">0</span>)
-        </div>
-        <p style="font-size:11px; color:#64748b; margin-bottom:10px;">
-          * सुरक्षा नियम: नागरिकों की निजता हेतु नाम व नंबर सार्वजनिक सूची में छिपे रहते हैं।
-        </p>
-        <div id="compListDiv"></div>
-      </div>
-    </div>
-
-    <!-- 3. VIEW: Track Complaint -->
-    <div id="vTrack" class="view-content">
-      <div class="card">
-        <div class="card-title">
-          <i class="fa-solid fa-magnifying-glass-location" style="color: var(--accent);"></i> अपनी शिकायत ट्रैक करें
-        </div>
-        <div class="form-group">
-          <label>शिकायत रसीद संख्या (उदा. PKP-123) दर्ज करें:</label>
-          <input type="text" id="trackQueryInput" placeholder="PKP नंबर दर्ज करें">
-        </div>
-        <button class="btn btn-amber" onclick="executeComplaintTrack()"><i class="fa-solid fa-search"></i> स्थिति खोजें</button>
-        <div id="trackResultDiv" style="margin-top:12px;"></div>
-      </div>
-    </div>
-
-    <!-- 4. VIEW: NOTICE BOARD -->
-    <div id="vNotice" class="view-content">
-      <div class="card">
-        <div class="card-title">
-          <i class="fa-solid fa-bullhorn" style="color: var(--danger);"></i> ग्राम पंचायत सूचना बोर्ड
-        </div>
-        <div id="noticeListDiv"></div>
-      </div>
-    </div>
-
-    <!-- 5. VIEW: EMERGENCY DIRECTORY -->
-    <div id="vDirectory" class="view-content">
-      <div class="card">
-        <div class="card-title">
-          <i class="fa-solid fa-address-book" style="color: #4f46e5;"></i> आवश्यक एवं आपातकालीन संपर्क
-        </div>
-        <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
-          आपात स्थिति अथवा विभागीय कार्य हेतु एक क्लिक में संपर्क करें:
-        </p>
-        <div id="directoryListDiv"></div>
-      </div>
-    </div>
-
-    <!-- 6. VIEW: GRAM VIKAS KOSH -->
-    <div id="vBudget" class="view-content">
-      <div class="card">
-        <div class="card-title">
-          <i class="fa-solid fa-building-columns" style="color: #0d9488;"></i> ग्राम विकास कोष एवं खर्च विवरण
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:14px; text-align:center;">
-          <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:8px 4px; border-radius:10px;">
-            <span style="font-size:11px; color:#166534; font-weight:700;">कुल फंड</span>
-            <h4 id="koshTotalIn" style="font-size:14px; color:#15803d; margin-top:2px;">₹0</h4>
-          </div>
-          <div style="background:#fef2f2; border:1px solid #fecaca; padding:8px 4px; border-radius:10px;">
-            <span style="font-size:11px; color:#991b1b; font-weight:700;">कुल खर्च</span>
-            <h4 id="koshTotalOut" style="font-size:14px; color:#dc2626; margin-top:2px;">₹0</h4>
-          </div>
-          <div style="background:#eff6ff; border:1px solid #bfdbfe; padding:8px 4px; border-radius:10px;">
-            <span style="font-size:11px; color:#1e40af; font-weight:700;">बैलेंस</span>
-            <h4 id="koshBalance" style="font-size:14px; color:#0284c7; margin-top:2px;">₹0</h4>
-          </div>
-        </div>
-        <div id="koshExpensesDiv"></div>
-      </div>
-    </div>
-
-    <!-- 7. VIEW: VIKAS GALLERY -->
-    <div id="vGallery" class="view-content">
-      <div class="card">
-        <div class="card-title">
-          <i class="fa-solid fa-images" style="color: #e11d48;"></i> ग्राम विकास कार्य गैलरी
-        </div>
-        <div id="galleryListDiv"></div>
-      </div>
-    </div>
-
-    <!-- 8. VIEW: PANCHAYAT TEAM -->
-    <div id="vTeam" class="view-content">
-      <div class="card">
-        <div class="card-title">
-          <i class="fa-solid fa-users-gear" style="color: #7c3aed;"></i> ग्राम पंचायत पाकरपुर प्रतिनिधि मंडल
-        </div>
-        <div class="directory-card" style="border-left: 4px solid var(--primary);">
-          <h4 style="font-size:14px; color:var(--primary); font-weight:700;"><i class="fa-solid fa-user-tie"></i> ग्राम प्रधान</h4>
-          <p style="font-size:13px;" id="teamPradhanName">लोड हो रहा है...</p>
-          <p style="font-size:12px; color:#64748b;" id="teamPradhanPhone"></p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 9. VIEW: SARKARI YOJNA -->
-    <div id="vSchemes" class="view-content">
-      <div class="card">
-        <div class="card-title">
-          <i class="fa-solid fa-hand-holding-hand" style="color: var(--success);"></i> प्रमुख सरकारी योजनाएं एवं ऑनलाइन आवेदन
-        </div>
-        <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
-          योजना का लाभ लेने या स्टेटस चेक करने हेतु सीधे आधिकारिक सरकारी वेबसाइट पर जाएं:
-        </p>
-        
-        <div id="schemesDynamicListDiv"></div>
-
-        <div class="scheme-card" style="border-left: 4px solid #0284c7;">
-          <h4 style="font-size:14px; color:#0369a1;"><i class="fa-solid fa-id-card-clip"></i> आयुष्मान भारत कार्ड (Ayushman Card)</h4>
-          <p style="font-size:12px; color:#475569; margin:4px 0;">हर पात्र परिवार को सरकारी व निजी अस्पतालों में ₹5 लाख तक का सालाना मुफ़्त इलाज।</p>
-          <a href="https://beneficiary.nha.gov.in" target="_blank" class="btn-direct-gov">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> आयुष्मान कार्ड बनाएं / डाउनलोड करें
-          </a>
-        </div>
-
-        <div class="scheme-card" style="border-left: 4px solid #ea580c;">
-          <h4 style="font-size:14px; color:#c2410c;"><i class="fa-solid fa-person-digging"></i> ई-श्रम कार्ड (e-Shram Card)</h4>
-          <p style="font-size:12px; color:#475569; margin:4px 0;">असंगठित क्षेत्र के कामगारों, मजदूरों एवं कारीगरों हेतु ₹2 लाख दुर्घटना बीमा एवं सरकारी सहायता।</p>
-          <a href="https://eshram.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #ea580c, #c2410c);">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> ई-श्रम पोर्टल पर ऑनलाइन रजिस्ट्रेशन
-          </a>
-        </div>
-
-        <div class="scheme-card" style="border-left: 4px solid #16a34a;">
-          <h4 style="font-size:14px; color:#166534;"><i class="fa-solid fa-tractor"></i> पीएम किसान सम्मान निधि (PM Kisan)</h4>
-          <p style="font-size:12px; color:#475569; margin:4px 0;">किसान भाइयों को ₹6,000 सालाना (₹2,000 की 3 किस्तें)। e-KYC और किस्त स्टेटस चेक करें।</p>
-          <a href="https://pmkisan.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #16a34a, #15803d);">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> पीएम किसान e-KYC व किस्त देखें
-          </a>
-        </div>
-
-        <div class="scheme-card" style="border-left: 4px solid #d97706;">
-          <h4 style="font-size:14px; color:#b45309;"><i class="fa-solid fa-house-chimney"></i> प्रधानमंत्री आवास योजना (PMAY-G)</h4>
-          <p style="font-size:12px; color:#475569; margin:4px 0;">ग्रामीण बेघर परिवारों को पक्का मकान निर्माण हेतु ₹1,20,000 की आर्थिक सहायता सूची।</p>
-          <a href="https://pmayg.nic.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #d97706, #b45309);">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> आवास योजना लाभार्थी सूची देखें
-          </a>
-        </div>
-
-        <div class="scheme-card" style="border-left: 4px solid #4f46e5;">
-          <h4 style="font-size:14px; color:#3730a3;"><i class="fa-solid fa-person-cane"></i> वृद्धावस्था / विधवा / दिव्यांग पेंशन (SSPY)</h4>
-          <p style="font-size:12px; color:#475569; margin:4px 0;">बुजुर्गों, विधवा माताओं व दिव्यांग भाई-बहनों को ₹1,000 प्रतिमाह सीधे बैंक खाते में।</p>
-          <a href="https://sspy-up.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #4f46e5, #3730a3);">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> पेंशन आवेदन एवं पात्रता सूची
-          </a>
-        </div>
-
-        <div class="scheme-card" style="border-left: 4px solid #0d9488;">
-          <h4 style="font-size:14px; color:#0f766e;"><i class="fa-solid fa-bowl-rice"></i> राशन कार्ड पात्रता सूची (NFSA Ration Card)</h4>
-          <p style="font-size:12px; color:#475569; margin:4px 0;">गाँव की राशन कार्ड यूनिट लिस्ट में अपना व परिवार का नाम ऑनलाइन चेक करें।</p>
-          <a href="https://fcs.up.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #0d9488, #0f766e);">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> पाकरपुर राशन कार्ड लिस्ट चेक करें
-          </a>
-        </div>
-
-        <div class="scheme-card" style="border-left: 4px solid #7c3aed;">
-          <h4 style="font-size:14px; color:#6d28d9;"><i class="fa-solid fa-map-location-dot"></i> यूपी भूलेख (खतौनी / खेत कागज़ात)</h4>
-          <p style="font-size:12px; color:#475569; margin:4px 0;">अपनी ज़मीन, खेत व गाटा संख्या की प्रमाणित खतौनी नकल मोबाइल पर ऑनलाइन निकालें।</p>
-          <a href="https://upbhulekh.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #7c3aed, #6d28d9);">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> खेत की खतौनी नकल देखें
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Citizen Account Form & Profile -->
-    <div id="vProfile" class="view-content">
-      <div class="card" id="userAuthBox">
-        <div class="card-title">
-          <i class="fa-solid fa-user-lock" style="color: var(--accent);"></i> नागरिक खाता (पंजीकरण / लॉगिन)
-        </div>
-
-        <div style="display:flex; gap:8px; margin-bottom:14px;">
-          <button class="btn btn-amber" id="btnSubReg" onclick="switchAuthTab('reg')">
-            <i class="fa-solid fa-user-plus"></i> नया पंजीकरण
-          </button>
-          <button class="btn btn-slate" id="btnSubLogin" onclick="switchAuthTab('login')">
-            <i class="fa-solid fa-right-to-bracket"></i> लॉगिन करें
-          </button>
-        </div>
-
-        <div id="boxReg">
-          <div id="regReqNotice" style="display:none; padding:10px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; font-size:12px; color:#1e40af; margin-bottom:10px;">
-            <i class="fa-solid fa-clock-rotate-left"></i> अनुरोध भेजा गया: खाता अनुमोदन हेतु लंबित है।
-          </div>
-
-          <div class="form-group"><label>पूरा नाम *</label><input type="text" id="rName" placeholder="अपना पूरा नाम दर्ज करें"></div>
-          <div class="form-group"><label>मोबाइल नंबर *</label><input type="tel" id="rPhone" maxlength="10" placeholder="10-अंकीय मोबाइल नंबर"></div>
-          <div class="form-group"><label>टोला / मोहल्ला *</label><input type="text" id="rWard" placeholder="उदा. उत्तर टोला"></div>
-          <div class="form-group"><label>पासवर्ड बनाएं *</label><input type="password" id="rPass" placeholder="कम से कम 4 अक्षर"></div>
-          <button class="btn btn-amber" onclick="submitCitizenRegistrationRequest()">
-            <i class="fa-solid fa-paper-plane"></i> प्रधान जी को खाता अनुमोदन अनुरोध भेजें
-          </button>
-        </div>
-
-        <div id="boxLogin" style="display:none;">
-          <div class="form-group"><label>पंजीकृत मोबाइल नंबर</label><input type="tel" id="lPhone" maxlength="10" placeholder="10-अंकीय नंबर"></div>
-          <div class="form-group"><label>पासवर्ड</label><input type="password" id="lPass" placeholder="अपना पासवर्ड दर्ज करें"></div>
-          <button class="btn btn-emerald" onclick="userLogin()"><i class="fa-solid fa-unlock"></i> लॉगिन करें</button>
-        </div>
-      </div>
-
-      <div class="card" id="userProfileBox" style="display:none;">
-        <div class="card-title"><i class="fa-solid fa-address-card" style="color: var(--primary);"></i> मेरी सक्रिय नागरिक प्रोफ़ाइल</div>
-        
-        <div class="user-profile-header">
-          <img id="uAvatarImg" class="user-avatar-circle zoomable-pic" src="" style="display:none;" onclick="zoomSpecificImage(this.src)" alt="User Pic">
-          <div id="uAvatarIcon" class="user-avatar-circle"><i class="fa-solid fa-user"></i></div>
-          <div>
-            <h3 id="pName" style="font-size:16px; color:#1e293b;"></h3>
-            <p style="font-size:12px; color:#16a34a; font-weight:600;"><i class="fa-solid fa-circle-check"></i> प्रमाणित ग्राम नागरिक</p>
-            <span id="pPhone" style="font-size:12px; color:#64748b;"></span>
-          </div>
-        </div>
-
-        <p style="margin-bottom:6px; font-size:13px;"><strong>निवास / टोला:</strong> <span id="pWard"></span></p>
-
-        <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:10px; margin-margin:12px 0;">
-          <label style="font-size:12px; color:#15803d; font-weight:700;"><i class="fa-solid fa-camera"></i> अपनी प्रोफाइल फोटो लगाएं / बदलें:</label>
-          <input type="file" accept="image/*" onchange="uploadUserAvatarCloud(event)" style="font-size:12px; padding:6px; margin-top:4px;">
-        </div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px dashed var(--border); padding-top:10px;">
-          <button class="btn btn-emerald" style="width:auto; padding:6px 14px;" onclick="switchAction('vNew')"><i class="fa-solid fa-feather-pointed"></i> शिकायत करें</button>
-          <button class="mini-logout-btn" onclick="userLogout()"><i class="fa-solid fa-power-off"></i> लॉगआउट</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ADMIN CONTROL PANEL -->
+    <!-- ADMIN VIEW CONTAINER -->
     <div id="vAdmin" class="view-content">
       <div class="card" id="adminGateBox" style="border: 2px solid var(--accent);">
         <div class="card-title" style="color: #b45309;">
           <i class="fa-solid fa-lock"></i> प्रधान / व्यवस्थापक लॉगिन
         </div>
         <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
-          कृपया अधिकृत पासवर्ड दर्ज करें:
+          कृपया अधिकृत पासवर्ड दर्ज करें (अधिकतम 2 डिवाइस में लॉगिन मान्य):
         </p>
         <div class="form-group">
           <label>एडमिन पासवर्ड</label>
@@ -768,133 +513,36 @@
             </div>
           </div>
 
-          <!-- ADMIN SQUARE GRID TILES -->
+          <!-- ADMIN SQUARE GRID TILES WITH ACTIVE USERS COUNT BADGE -->
           <div class="admin-square-grid">
-            <div class="admin-square-tile" onclick="openAdminSection('secBroadcastForm')">
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secBroadcastForm')">
               <div class="adm-tile-icon" style="background: #dc2626;"><i class="fa-solid fa-tower-broadcast"></i></div>
               <span>ब्रॉडकास्ट अलर्ट</span>
             </div>
-            <div class="admin-square-tile" onclick="openAdminSection('secNoticeForm')">
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secNoticeForm')">
               <div class="adm-tile-icon" style="background: #ea580c;"><i class="fa-solid fa-bullhorn"></i></div>
               <span>सूचना बोर्ड</span>
             </div>
-            <div class="admin-square-tile" onclick="openAdminSection('secDirForm')">
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secDirForm')">
               <div class="adm-tile-icon" style="background: #4f46e5;"><i class="fa-solid fa-address-book"></i></div>
               <span>हेल्पलाइन</span>
             </div>
-            <div class="admin-square-tile" onclick="openAdminSection('secKoshForm')">
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secKoshForm')">
               <div class="adm-tile-icon" style="background: #0d9488;"><i class="fa-solid fa-building-columns"></i></div>
               <span>विकास कोष</span>
             </div>
-            <div class="admin-square-tile" onclick="openAdminSection('secGalleryForm')">
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secGalleryForm')">
               <div class="adm-tile-icon" style="background: #e11d48;"><i class="fa-solid fa-images"></i></div>
               <span>विकास गैलरी</span>
             </div>
-            <div class="admin-square-tile" onclick="openAdminSection('secUsersForm')">
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secUsersForm')">
+              <span class="icon-badge" id="adminActiveBadge">0</span>
               <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-user-check"></i></div>
               <span>नागरिक खाते</span>
             </div>
-            <div class="admin-square-tile" onclick="openAdminSection('secAddSchemeForm')">
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secAddSchemeForm')">
               <div class="adm-tile-icon" style="background: #059669;"><i class="fa-solid fa-plus-circle"></i></div>
               <span>योजना जोड़ें</span>
-            </div>
-          </div>
-
-          <!-- ADMIN ADD NEW SARKARI YOJNA FORM -->
-          <div class="admin-accordion-body" id="secAddSchemeForm" style="background:#f0fdf4; border-color:#86efac;">
-            <h4 style="font-size:13px; color:#166534; margin-bottom:6px;"><i class="fa-solid fa-hand-holding-hand"></i> नई सरकारी योजना व डायरेक्ट लिंक जोड़ें</h4>
-            <div class="form-group"><input type="text" id="admSchTitle" placeholder="योजना का नाम (उदा. सुकन्या समृद्धि योजना)"></div>
-            <div class="form-group"><textarea id="admSchDesc" placeholder="योजना का लाभ व पात्रता (उदा. बेटियों हेतु बचत योजना)..." style="min-height:50px;"></textarea></div>
-            <div class="form-group"><input type="url" id="admSchLink" placeholder="सरकारी वेबसाइट का लिंक (उदा. https://...)"></div>
-            <button class="btn btn-emerald" style="padding:7px; font-size:12px;" onclick="saveCustomSchemeCloud()">योजना प्रकाशित करें</button>
-          </div>
-
-          <!-- 1. BROADCAST FORM BODY -->
-          <div class="admin-accordion-body" id="secBroadcastForm" style="background:#fef2f2; border-color:#fecaca;">
-            <h4 style="font-size:13px; color:#991b1b; margin-bottom:6px;"><i class="fa-solid fa-tower-broadcast"></i> सार्वजनिक ब्रॉडकास्ट अलर्ट</h4>
-            <div class="form-group"><input type="text" id="admBcTitle" placeholder="शीर्षक"></div>
-            <div class="form-group"><textarea id="admBcDesc" placeholder="पूरा विवरण..." style="min-height:50px;"></textarea></div>
-            <div style="display:flex; gap:6px;">
-              <button class="btn btn-crimson" style="padding:7px; font-size:12px;" onclick="saveBroadcastCloud()">प्रकाशित करें</button>
-              <button class="btn btn-slate" style="padding:7px; font-size:12px; width:auto;" onclick="clearBroadcastCloud()">हटाएं</button>
-            </div>
-          </div>
-
-          <!-- 2. NEW NOTICE FORM BODY -->
-          <div class="admin-accordion-body" id="secNoticeForm" style="background:#fff7ed; border-color:#fed7aa;">
-            <h4 style="font-size:13px; color:#c2410c; margin-bottom:6px;"><i class="fa-solid fa-bullhorn"></i> नया नोटिस जारी करें</h4>
-            <div class="form-group"><input type="text" id="admNoticeTitle" placeholder="सूचना शीर्षक"></div>
-            <div class="form-group"><textarea id="admNoticeDesc" placeholder="विस्तृत सूचना..." style="min-height:50px;"></textarea></div>
-            <button class="btn btn-amber" style="padding:7px; font-size:12px;" onclick="postAdminNoticeCloud()">सूचना प्रकाशित करें</button>
-          </div>
-
-          <!-- 3. HELPLINE MANAGEMENT (ADMIN LIST & CRUD) -->
-          <div class="admin-accordion-body" id="secDirForm" style="background:#eef2ff; border-color:#c7d2fe;">
-            <h4 style="font-size:13px; color:#3730a3; margin-bottom:6px;"><i class="fa-solid fa-address-book"></i> नई हेल्पलाइन जोड़ें</h4>
-            <div class="form-group"><input type="text" id="admDirRole" placeholder="पद / सेवा (उदा. ग्राम सचिव, लेखपाल)"></div>
-            <div class="form-group"><input type="text" id="admDirName" placeholder="नाम"></div>
-            <div class="form-group"><input type="tel" id="admDirPhone" maxlength="10" placeholder="10-अंकीय मोबाइल"></div>
-            <button class="btn btn-emerald" style="padding:7px; font-size:12px;" onclick="saveDirectoryContactCloud()">डायरेक्टरी में जोड़ें</button>
-
-            <div style="margin-top:12px; border-top:1px dashed #c7d2fe; padding-top:8px;">
-              <span style="font-weight:700; font-size:12px; color:#3730a3;">आपकी जोड़ी गई हेल्पलाइन सूची:</span>
-              <div id="admDirectoryListInner" style="max-height:180px; overflow-y:auto; margin-top:6px; font-size:12px;"></div>
-            </div>
-          </div>
-
-          <!-- 4. BANK KOSH BODY -->
-          <div class="admin-accordion-body" id="secKoshForm" style="background:#f0fdfa; border-color:#99f6e4;">
-            <h4 style="font-size:13px; color:#0f766e; margin-bottom:6px;"><i class="fa-solid fa-building-columns"></i> बैंक खाता लेन-देन</h4>
-            <div style="background:#fff; border:1px solid #ccfbf1; padding:8px; border-radius:8px; margin-bottom:10px;">
-              <h5 style="color:#0f766e; font-size:12px; margin-bottom:4px;">फंड आया:</h5>
-              <div class="form-group"><input type="text" id="admFundSource" placeholder="योजना / मद"></div>
-              <div class="form-group"><input type="number" id="admFundAmount" placeholder="राशि (₹)"></div>
-              <button class="btn btn-emerald" style="padding:6px; font-size:11px;" onclick="addGramFundCloud()">जोड़ें</button>
-            </div>
-            <div style="background:#fff; border:1px solid #fee2e2; padding:8px; border-radius:8px;">
-              <h5 style="color:#b91c1c; font-size:12px; margin-bottom:4px;">खर्च हुआ:</h5>
-              <div class="form-group"><input type="text" id="admExpWork" placeholder="कार्य नाम"></div>
-              <div class="form-group"><input type="number" id="admExpAmount" placeholder="राशि (₹)"></div>
-              <div class="form-group"><input type="text" id="admExpVendor" placeholder="ठेकेदार / मद"></div>
-              <button class="btn btn-crimson" style="padding:6px; font-size:11px;" onclick="addGramExpenseCloud()">दर्ज करें</button>
-            </div>
-          </div>
-
-          <!-- 5. GALLERY BODY -->
-          <div class="admin-accordion-body" id="secGalleryForm" style="background:#fff1f2; border-color:#fecdd3;">
-            <h4 style="font-size:13px; color:#be123c; margin-bottom:6px;"><i class="fa-solid fa-images"></i> विकास कार्य गैलरी जोड़ें</h4>
-            <div class="form-group"><input type="text" id="admGalTitle" placeholder="कार्य नाम"></div>
-            <div class="form-group"><label style="font-size:11px;">Before Photo:</label><input type="file" accept="image/*" onchange="handleBeforePhoto(event)"></div>
-            <div class="form-group"><label style="font-size:11px;">After Photo:</label><input type="file" accept="image/*" onchange="handleAfterPhoto(event)"></div>
-            <button class="btn btn-crimson" style="padding:7px; font-size:12px;" onclick="saveGalleryItemCloud()">प्रकाशित करें</button>
-          </div>
-
-          <!-- 6. USERS MANAGEMENT (BLOCK & UNBLOCK) -->
-          <div class="admin-accordion-body" id="secUsersForm" style="background:#f8fafc; border-color:#cbd5e1;">
-            <h4 style="font-size:13px; color:#1e293b; margin-bottom:6px;"><i class="fa-solid fa-users"></i> नागरिक पंजीकरण व सक्रिय नागरिक</h4>
-            <div style="margin-bottom:10px;">
-              <label style="font-size:11px;">अनुमोदन नीति:</label>
-              <select id="admApprovalModeSelect" onchange="changeApprovalModeCloud()">
-                <option value="manual">मैनुअल (प्रधान जी अनुमति दें)</option>
-                <option value="auto">ऑटो-एक्सेप्ट</option>
-              </select>
-            </div>
-
-            <div style="background:#fff7ed; border:1px solid #fed7aa; padding:8px; border-radius:8px; margin-bottom:8px;">
-              <span style="font-weight:700; font-size:11px; color:#9a3412;">लंबित अनुरोध (<span id="pendingReqCount">0</span>):</span>
-              <div id="pendingReqListDiv" style="font-size:11px; margin-top:4px;"></div>
-            </div>
-
-            <div style="background:#ffffff; border:1px solid #cbd5e1; padding:8px; border-radius:8px; margin-bottom:8px;">
-              <span style="font-weight:700; font-size:11px; color:#334155;">सक्रिय नागरिक (<span id="activeUserCount">0</span>):</span>
-              <div id="activeUserListDiv" style="max-height:160px; overflow-y:auto; font-size:11px; margin-top:4px;"></div>
-            </div>
-
-            <!-- BLOCKED USERS SECTION -->
-            <div style="background:#fef2f2; border:1px solid #fecaca; padding:8px; border-radius:8px;">
-              <span style="font-weight:700; font-size:11px; color:#991b1b;"><i class="fa-solid fa-user-slash"></i> प्रतिबंधित नागरिक सूची (<span id="blockedUserCount">0</span>):</span>
-              <p style="font-size:10px; color:#64748b; margin-bottom:4px;">अनुरोध आने पर नागरिक को दोबारा अनब्लॉक करें:</p>
-              <div id="blockedUserListDiv" style="max-height:140px; overflow-y:auto; font-size:11px;"></div>
             </div>
           </div>
 
@@ -951,6 +599,429 @@
     </div>
   </div>
 
+  <!-- ==================== USER SCREEN FULL POPUP MODALS ==================== -->
+
+  <!-- 1. POPUP: New Complaint -->
+  <div id="vNew" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vNew')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-feather-pointed" style="color: var(--primary);"></i> जन समस्या दर्ज करें
+      </div>
+      <form id="compForm" onsubmit="handleNewComp(event)">
+        <div class="form-group">
+          <label><i class="fa-solid fa-user"></i> आपका नाम *</label>
+          <input type="text" id="cName" required readonly style="background:#f8fafc;">
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-phone"></i> मोबाइल नंबर *</label>
+          <input type="tel" id="cPhone" maxlength="10" required readonly style="background:#f8fafc;">
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-layer-group"></i> समस्या का विभाग / श्रेणी *</label>
+          <select id="cCat" required>
+            <option value="">-- विभाग चुनें --</option>
+            <option value="सड़क व खड़ंजा">सड़क, खड़ंजा व नाली मरम्मत</option>
+            <option value="पेयजल व हैंडपंप">सरकारी हैंडपंप व पेयजल आपूर्ति</option>
+            <option value="स्ट्रीट लाइट / बिजली">स्ट्रीट लाइट / बिजली पोल व तार</option>
+            <option value="सफाई व्यवस्था">गाँव की सफाई व कचरा निस्तारण</option>
+            <option value="अन्य समस्या">अन्य पंचायत स्तरीय समस्या</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-location-dot"></i> गाँव में स्थान / मोहल्ला *</label>
+          <input type="text" id="cPlace" required placeholder="उदा. प्राथमिक विद्यालय के पास">
+        </div>
+        
+        <div class="form-group">
+          <button type="button" class="btn btn-slate" onclick="toggleMap()" style="font-size:12px; padding:7px;">
+            <i class="fa-solid fa-map-location-dot" style="color: var(--info);"></i> पाकरपुर सैटेलाइट नक्शा (Google Hybrid)
+          </button>
+          <div id="mapBox"><div id="mapDiv" style="height:100%; width:100%;"></div></div>
+          <input type="hidden" id="cCoords">
+          <div id="coordsNotice" style="font-size:11px; color:var(--primary); font-weight:700; margin-top:4px; display:none;"></div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-camera"></i> समस्या की फोटो जोड़ें (ऐच्छिक)</label>
+          <input type="file" accept="image/*" onchange="handleCompPhoto(event)">
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-comment-dots"></i> समस्या का विस्तृत विवरण *</label>
+          <textarea id="cDesc" required placeholder="समस्या क्या है, कब से है और किस जगह है..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-emerald">
+          <i class="fa-solid fa-paper-plane"></i> शिकायत सबमिट करें
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. POPUP: Complaints List -->
+  <div id="vList" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vList')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-clipboard-list" style="color: var(--info);"></i> पाकरपुर दर्ज शिकायतें (<span id="cCount">0</span>)
+      </div>
+      <p style="font-size:11px; color:#64748b; margin-bottom:10px;">
+        * सुरक्षा नियम: नागरिकों की निजता हेतु नाम व नंबर सार्वजनिक सूची में छिपे रहते हैं।
+      </p>
+      <div id="compListDiv"></div>
+    </div>
+  </div>
+
+  <!-- 3. POPUP: Track Complaint -->
+  <div id="vTrack" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vTrack')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-magnifying-glass-location" style="color: var(--accent);"></i> अपनी शिकायत ट्रैक करें
+      </div>
+      <div class="form-group">
+        <label>शिकायत रसीद संख्या (उदा. PKP-123) दर्ज करें:</label>
+        <input type="text" id="trackQueryInput" placeholder="PKP नंबर दर्ज करें">
+      </div>
+      <button class="btn btn-amber" onclick="executeComplaintTrack()"><i class="fa-solid fa-search"></i> स्थिति खोजें</button>
+      <div id="trackResultDiv" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- 4. POPUP: NOTICE BOARD -->
+  <div id="vNotice" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vNotice')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-bullhorn" style="color: var(--danger);"></i> ग्राम पंचायत सूचना बोर्ड
+      </div>
+      <div id="noticeListDiv"></div>
+    </div>
+  </div>
+
+  <!-- 5. POPUP: EMERGENCY DIRECTORY -->
+  <div id="vDirectory" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vDirectory')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-address-book" style="color: #4f46e5;"></i> आवश्यक एवं आपातकालीन संपर्क
+      </div>
+      <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
+        आपात स्थिति अथवा विभागीय कार्य हेतु एक क्लिक में संपर्क करें:
+      </p>
+      <div id="directoryListDiv"></div>
+    </div>
+  </div>
+
+  <!-- 6. POPUP: GRAM VIKAS KOSH -->
+  <div id="vBudget" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vBudget')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-building-columns" style="color: #0d9488;"></i> ग्राम विकास कोष एवं खर्च विवरण
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:14px; text-align:center;">
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:8px 4px; border-radius:10px;">
+          <span style="font-size:11px; color:#166534; font-weight:700;">कुल फंड</span>
+          <h4 id="koshTotalIn" style="font-size:14px; color:#15803d; margin-top:2px;">₹0</h4>
+        </div>
+        <div style="background:#fef2f2; border:1px solid #fecaca; padding:8px 4px; border-radius:10px;">
+          <span style="font-size:11px; color:#991b1b; font-weight:700;">कुल खर्च</span>
+          <h4 id="koshTotalOut" style="font-size:14px; color:#dc2626; margin-top:2px;">₹0</h4>
+        </div>
+        <div style="background:#eff6ff; border:1px solid #bfdbfe; padding:8px 4px; border-radius:10px;">
+          <span style="font-size:11px; color:#1e40af; font-weight:700;">बैलेंस</span>
+          <h4 id="koshBalance" style="font-size:14px; color:#0284c7; margin-top:2px;">₹0</h4>
+        </div>
+      </div>
+      <div id="koshExpensesDiv"></div>
+    </div>
+  </div>
+
+  <!-- 7. POPUP: VIKAS GALLERY -->
+  <div id="vGallery" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vGallery')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-images" style="color: #e11d48;"></i> ग्राम विकास कार्य गैलरी
+      </div>
+      <div id="galleryListDiv"></div>
+    </div>
+  </div>
+
+  <!-- 8. POPUP: PANCHAYAT TEAM -->
+  <div id="vTeam" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vTeam')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-users-gear" style="color: #7c3aed;"></i> ग्राम पंचायत पाकरपुर प्रतिनिधि मंडल
+      </div>
+      <div class="directory-card" style="border-left: 4px solid var(--primary);">
+        <h4 style="font-size:14px; color:var(--primary); font-weight:700;"><i class="fa-solid fa-user-tie"></i> ग्राम प्रधान</h4>
+        <p style="font-size:13px;" id="teamPradhanName">लोड हो रहा है...</p>
+        <p style="font-size:12px; color:#64748b;" id="teamPradhanPhone"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. POPUP: SARKARI YOJNA -->
+  <div id="vSchemes" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vSchemes')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-hand-holding-hand" style="color: var(--success);"></i> प्रमुख सरकारी योजनाएं एवं ऑनलाइन आवेदन
+      </div>
+      <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
+        योजना का लाभ लेने या स्टेटस चेक करने हेतु सीधे आधिकारिक सरकारी वेबसाइट पर जाएं:
+      </p>
+      
+      <div id="schemesDynamicListDiv"></div>
+
+      <div class="scheme-card" style="border-left: 4px solid #0284c7;">
+        <h4 style="font-size:14px; color:#0369a1;"><i class="fa-solid fa-id-card-clip"></i> आयुष्मान भारत कार्ड (Ayushman Card)</h4>
+        <p style="font-size:12px; color:#475569; margin:4px 0;">हर पात्र परिवार को सरकारी व निजी अस्पतालों में ₹5 लाख तक का सालाना मुफ़्त इलाज।</p>
+        <a href="https://beneficiary.nha.gov.in" target="_blank" class="btn-direct-gov">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> आयुष्मान कार्ड बनाएं / डाउनलोड करें
+        </a>
+      </div>
+
+      <div class="scheme-card" style="border-left: 4px solid #ea580c;">
+        <h4 style="font-size:14px; color:#c2410c;"><i class="fa-solid fa-person-digging"></i> ई-श्रम कार्ड (e-Shram Card)</h4>
+        <p style="font-size:12px; color:#475569; margin:4px 0;">असंगठित क्षेत्र के कामगारों, मजदूरों एवं कारीगरों हेतु ₹2 लाख दुर्घटना बीमा एवं सरकारी सहायता।</p>
+        <a href="https://eshram.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #ea580c, #c2410c);">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> ई-श्रम पोर्टल पर ऑनलाइन रजिस्ट्रेशन
+        </a>
+      </div>
+
+      <div class="scheme-card" style="border-left: 4px solid #16a34a;">
+        <h4 style="font-size:14px; color:#166534;"><i class="fa-solid fa-tractor"></i> पीएम किसान सम्मान निधि (PM Kisan)</h4>
+        <p style="font-size:12px; color:#475569; margin:4px 0;">किसान भाइयों को ₹6,000 सालाना (₹2,000 की 3 किस्तें)। e-KYC और किस्त स्टेटस चेक करें।</p>
+        <a href="https://pmkisan.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #16a34a, #15803d);">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> पीएम किसान e-KYC व किस्त देखें
+        </a>
+      </div>
+
+      <div class="scheme-card" style="border-left: 4px solid #d97706;">
+        <h4 style="font-size:14px; color:#b45309;"><i class="fa-solid fa-house-chimney"></i> प्रधानमंत्री आवास योजना (PMAY-G)</h4>
+        <p style="font-size:12px; color:#475569; margin:4px 0;">ग्रामीण बेघर परिवारों को पक्का मकान निर्माण हेतु ₹1,20,000 की आर्थिक सहायता सूची।</p>
+        <a href="https://pmayg.nic.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #d97706, #b45309);">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> आवास योजना लाभार्थी सूची देखें
+        </a>
+      </div>
+
+      <div class="scheme-card" style="border-left: 4px solid #4f46e5;">
+        <h4 style="font-size:14px; color:#3730a3;"><i class="fa-solid fa-person-cane"></i> वृद्धावस्था / विधवा / दिव्यांग पेंशन (SSPY)</h4>
+        <p style="font-size:12px; color:#475569; margin:4px 0;">बुजुर्गों, विधवा माताओं व दिव्यांग भाई-बहनों को ₹1,000 प्रतिमाह सीधे बैंक खाते में।</p>
+        <a href="https://sspy-up.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #4f46e5, #3730a3);">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> पेंशन आवेदन एवं पात्रता सूची
+        </a>
+      </div>
+
+      <div class="scheme-card" style="border-left: 4px solid #0d9488;">
+        <h4 style="font-size:14px; color:#0f766e;"><i class="fa-solid fa-bowl-rice"></i> राशन कार्ड पात्रता सूची (NFSA Ration Card)</h4>
+        <p style="font-size:12px; color:#475569; margin:4px 0;">गाँव की राशन कार्ड यूनिट लिस्ट में अपना व परिवार का नाम ऑनलाइन चेक करें।</p>
+        <a href="https://fcs.up.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #0d9488, #0f766e);">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> पाकरपुर राशन कार्ड लिस्ट चेक करें
+        </a>
+      </div>
+
+      <div class="scheme-card" style="border-left: 4px solid #7c3aed;">
+        <h4 style="font-size:14px; color:#6d28d9;"><i class="fa-solid fa-map-location-dot"></i> यूपी भूलेख (खतौनी / खेत कागज़ात)</h4>
+        <p style="font-size:12px; color:#475569; margin:4px 0;">अपनी ज़मीन, खेत व गाटा संख्या की प्रमाणित खतौनी नकल मोबाइल पर ऑनलाइन निकालें।</p>
+        <a href="https://upbhulekh.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #7c3aed, #6d28d9);">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> खेत की खतौनी नकल देखें
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. POPUP: Citizen Account & Profile -->
+  <div id="vProfile" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vProfile')" title="बंद करें">✕</button>
+
+      <div id="userAuthBox">
+        <div class="card-title">
+          <i class="fa-solid fa-user-lock" style="color: var(--accent);"></i> नागरिक खाता (पंजीकरण / लॉगिन)
+        </div>
+
+        <div style="display:flex; gap:8px; margin-bottom:14px;">
+          <button class="btn btn-amber" id="btnSubReg" onclick="switchAuthTab('reg')">
+            <i class="fa-solid fa-user-plus"></i> नया पंजीकरण
+          </button>
+          <button class="btn btn-slate" id="btnSubLogin" onclick="switchAuthTab('login')">
+            <i class="fa-solid fa-right-to-bracket"></i> लॉगिन करें
+          </button>
+        </div>
+
+        <div id="boxReg">
+          <div id="regReqNotice" style="display:none; padding:10px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; font-size:12px; color:#1e40af; margin-bottom:10px;">
+            <i class="fa-solid fa-clock-rotate-left"></i> अनुरोध भेजा गया: खाता अनुमोदन हेतु लंबित है।
+          </div>
+
+          <div class="form-group"><label>पूरा नाम *</label><input type="text" id="rName" placeholder="अपना पूरा नाम दर्ज करें"></div>
+          <div class="form-group"><label>मोबाइल नंबर *</label><input type="tel" id="rPhone" maxlength="10" placeholder="10-अंकीय मोबाइल नंबर"></div>
+          <div class="form-group"><label>टोला / मोहल्ला *</label><input type="text" id="rWard" placeholder="उदा. उत्तर टोला"></div>
+          <div class="form-group"><label>पासवर्ड बनाएं *</label><input type="password" id="rPass" placeholder="कम से कम 4 अक्षर"></div>
+          <button class="btn btn-amber" onclick="submitCitizenRegistrationRequest()">
+            <i class="fa-solid fa-paper-plane"></i> प्रधान जी को खाता अनुमोदन अनुरोध भेजें
+          </button>
+        </div>
+
+        <div id="boxLogin" style="display:none;">
+          <div class="form-group"><label>पंजीकृत मोबाइल नंबर</label><input type="tel" id="lPhone" maxlength="10" placeholder="10-अंकीय नंबर"></div>
+          <div class="form-group"><label>पासवर्ड</label><input type="password" id="lPass" placeholder="अपना पासवर्ड दर्ज करें"></div>
+          <button class="btn btn-emerald" onclick="userLogin()"><i class="fa-solid fa-unlock"></i> लॉगिन करें</button>
+        </div>
+      </div>
+
+      <div id="userProfileBox" style="display:none;">
+        <div class="card-title"><i class="fa-solid fa-address-card" style="color: var(--primary);"></i> मेरी सक्रिय नागरिक प्रोफ़ाइल</div>
+        
+        <div class="user-profile-header">
+          <img id="uAvatarImg" class="user-avatar-circle zoomable-pic" src="" style="display:none;" onclick="zoomSpecificImage(this.src)" alt="User Pic">
+          <div id="uAvatarIcon" class="user-avatar-circle"><i class="fa-solid fa-user"></i></div>
+          <div>
+            <h3 id="pName" style="font-size:16px; color:#1e293b;"></h3>
+            <p style="font-size:12px; color:#16a34a; font-weight:600;"><i class="fa-solid fa-circle-check"></i> प्रमाणित ग्राम नागरिक</p>
+            <span id="pPhone" style="font-size:12px; color:#64748b;"></span>
+          </div>
+        </div>
+
+        <p style="margin-bottom:6px; font-size:13px;"><strong>निवास / टोला:</strong> <span id="pWard"></span></p>
+
+        <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:10px; margin:12px 0;">
+          <label style="font-size:12px; color:#15803d; font-weight:700;"><i class="fa-solid fa-camera"></i> अपनी प्रोफाइल फोटो लगाएं / बदलें:</label>
+          <input type="file" accept="image/*" onchange="uploadUserAvatarCloud(event)" style="font-size:12px; padding:6px; margin-top:4px;">
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px dashed var(--border); padding-top:10px;">
+          <button class="btn btn-emerald" style="width:auto; padding:6px 14px;" onclick="closeScreenModal('vProfile'); openScreenModal('vNew');"><i class="fa-solid fa-feather-pointed"></i> शिकायत करें</button>
+          <button class="mini-logout-btn" onclick="userLogout()"><i class="fa-solid fa-power-off"></i> लॉगआउट</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ADMIN POPUP MODALS ==================== -->
+
+  <!-- ADMIN: 1. Broadcast Modal -->
+  <div id="secBroadcastForm" class="screen-modal">
+    <div class="screen-modal-card" style="border: 2px solid #fecaca; background: #fff5f5;">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secBroadcastForm')">✕</button>
+      <div class="card-title" style="color: #991b1b;"><i class="fa-solid fa-tower-broadcast"></i> सार्वजनिक ब्रॉडकास्ट अलर्ट</div>
+      <div class="form-group"><label>शीर्षक</label><input type="text" id="admBcTitle" placeholder="शीर्षक"></div>
+      <div class="form-group"><label>पूरा विवरण</label><textarea id="admBcDesc" placeholder="पूरा विवरण..." style="min-height:70px;"></textarea></div>
+      <div style="display:flex; gap:6px;">
+        <button class="btn btn-crimson" style="padding:8px;" onclick="saveBroadcastCloud()">प्रकाशित करें</button>
+        <button class="btn btn-slate" style="padding:8px; width:auto;" onclick="clearBroadcastCloud()">अलर्ट हटाएं</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN: 2. Notice Form Modal -->
+  <div id="secNoticeForm" class="screen-modal">
+    <div class="screen-modal-card" style="border: 2px solid #fed7aa; background: #fffaf5;">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secNoticeForm')">✕</button>
+      <div class="card-title" style="color: #c2410c;"><i class="fa-solid fa-bullhorn"></i> नया नोटिस जारी करें</div>
+      <div class="form-group"><label>सूचना शीर्षक</label><input type="text" id="admNoticeTitle" placeholder="सूचना शीर्षक"></div>
+      <div class="form-group"><label>विस्तृत विवरण</label><textarea id="admNoticeDesc" placeholder="विस्तृत सूचना..." style="min-height:70px;"></textarea></div>
+      <button class="btn btn-amber" style="padding:8px;" onclick="postAdminNoticeCloud()">सूचना प्रकाशित करें</button>
+    </div>
+  </div>
+
+  <!-- ADMIN: 3. Helpline Management Modal -->
+  <div id="secDirForm" class="screen-modal">
+    <div class="screen-modal-card" style="border: 2px solid #c7d2fe; background: #fbfbfe;">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secDirForm')">✕</button>
+      <div class="card-title" style="color: #3730a3;"><i class="fa-solid fa-address-book"></i> नई हेल्पलाइन जोड़ें</div>
+      <div class="form-group"><label>पद / सेवा</label><input type="text" id="admDirRole" placeholder="उदा. ग्राम सचिव, लेखपाल"></div>
+      <div class="form-group"><label>नाम</label><input type="text" id="admDirName" placeholder="नाम"></div>
+      <div class="form-group"><label>मोबाइल</label><input type="tel" id="admDirPhone" maxlength="10" placeholder="10-अंकीय मोबाइल"></div>
+      <button class="btn btn-emerald" style="padding:8px;" onclick="saveDirectoryContactCloud()">डायरेक्टरी में जोड़ें</button>
+
+      <div style="margin-top:14px; border-top:1px dashed #c7d2fe; padding-top:10px;">
+        <span style="font-weight:700; font-size:12px; color:#3730a3;">आपकी जोड़ी गई हेल्पलाइन सूची:</span>
+        <div id="admDirectoryListInner" style="max-height:220px; overflow-y:auto; margin-top:6px; font-size:12px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN: 4. Bank Kosh Modal -->
+  <div id="secKoshForm" class="screen-modal">
+    <div class="screen-modal-card" style="border: 2px solid #99f6e4; background: #f9fefd;">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secKoshForm')">✕</button>
+      <div class="card-title" style="color: #0f766e;"><i class="fa-solid fa-building-columns"></i> बैंक खाता लेन-देन प्रबंधन</div>
+      <div style="background:#fff; border:1px solid #ccfbf1; padding:10px; border-radius:8px; margin-bottom:12px;">
+        <h5 style="color:#0f766e; font-size:13px; margin-bottom:6px;">+ फंड आया:</h5>
+        <div class="form-group"><input type="text" id="admFundSource" placeholder="योजना / मद"></div>
+        <div class="form-group"><input type="number" id="admFundAmount" placeholder="राशि (₹)"></div>
+        <button class="btn btn-emerald" style="padding:7px; font-size:12px;" onclick="addGramFundCloud()">फंड जोड़ें</button>
+      </div>
+      <div style="background:#fff; border:1px solid #fee2e2; padding:10px; border-radius:8px;">
+        <h5 style="color:#b91c1c; font-size:13px; margin-bottom:6px;">- खर्च हुआ:</h5>
+        <div class="form-group"><input type="text" id="admExpWork" placeholder="कार्य नाम"></div>
+        <div class="form-group"><input type="number" id="admExpAmount" placeholder="राशि (₹)"></div>
+        <div class="form-group"><input type="text" id="admExpVendor" placeholder="ठेकेदार / मद"></div>
+        <button class="btn btn-crimson" style="padding:7px; font-size:12px;" onclick="addGramExpenseCloud()">खर्च दर्ज करें</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN: 5. Gallery Modal -->
+  <div id="secGalleryForm" class="screen-modal">
+    <div class="screen-modal-card" style="border: 2px solid #fecdd3; background: #fefcfc;">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secGalleryForm')">✕</button>
+      <div class="card-title" style="color: #be123c;"><i class="fa-solid fa-images"></i> विकास कार्य गैलरी जोड़ें</div>
+      <div class="form-group"><label>कार्य का नाम:</label><input type="text" id="admGalTitle" placeholder="कार्य नाम"></div>
+      <div class="form-group"><label style="font-size:11px;">कार्य पूर्व फोटो (Before):</label><input type="file" accept="image/*" onchange="handleBeforePhoto(event)"></div>
+      <div class="form-group"><label style="font-size:11px;">कार्य पूर्णता फोटो (After):</label><input type="file" accept="image/*" onchange="handleAfterPhoto(event)"></div>
+      <button class="btn btn-crimson" style="padding:8px;" onclick="saveGalleryItemCloud()">गैलरी में प्रकाशित करें</button>
+    </div>
+  </div>
+
+  <!-- ADMIN: 6. Users Management Modal -->
+  <div id="secUsersForm" class="screen-modal">
+    <div class="screen-modal-card" style="border: 2px solid #cbd5e1;">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secUsersForm')">✕</button>
+      <div class="card-title" style="color: #1e293b;"><i class="fa-solid fa-users"></i> नागरिक पंजीकरण व सक्रिय नागरिक</div>
+      <div style="margin-bottom:10px;">
+        <label style="font-size:11px;">अनुमोदन नीति:</label>
+        <select id="admApprovalModeSelect" onchange="changeApprovalModeCloud()">
+          <option value="manual">मैनुअल (प्रधान जी अनुमति दें)</option>
+          <option value="auto">ऑटो-एक्सेप्ट</option>
+        </select>
+      </div>
+
+      <div style="background:#fff7ed; border:1px solid #fed7aa; padding:8px; border-radius:8px; margin-bottom:8px;">
+        <span style="font-weight:700; font-size:11px; color:#9a3412;">लंबित अनुरोध (<span id="pendingReqCount">0</span>):</span>
+        <div id="pendingReqListDiv" style="font-size:11px; margin-top:4px;"></div>
+      </div>
+
+      <div style="background:#ffffff; border:1px solid #cbd5e1; padding:8px; border-radius:8px; margin-bottom:8px;">
+        <span style="font-weight:700; font-size:11px; color:#334155;">सक्रिय नागरिक (<span id="activeUserCount">0</span>):</span>
+        <div id="activeUserListDiv" style="max-height:180px; overflow-y:auto; font-size:11px; margin-top:4px;"></div>
+      </div>
+
+      <div style="background:#fef2f2; border:1px solid #fecaca; padding:8px; border-radius:8px;">
+        <span style="font-weight:700; font-size:11px; color:#991b1b;"><i class="fa-solid fa-user-slash"></i> प्रतिबंधित नागरिक सूची (<span id="blockedUserCount">0</span>):</span>
+        <p style="font-size:10px; color:#64748b; margin-bottom:4px;">अनुरोध आने पर नागरिक को दोबारा अनब्लॉक करें:</p>
+        <div id="blockedUserListDiv" style="max-height:140px; overflow-y:auto; font-size:11px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN: 7. Add Scheme Modal -->
+  <div id="secAddSchemeForm" class="screen-modal">
+    <div class="screen-modal-card" style="border: 2px solid #86efac; background: #f8fdf9;">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secAddSchemeForm')">✕</button>
+      <div class="card-title" style="color: #166534;"><i class="fa-solid fa-hand-holding-hand"></i> नई सरकारी योजना व डायरेक्ट लिंक जोड़ें</div>
+      <div class="form-group"><label>योजना का नाम</label><input type="text" id="admSchTitle" placeholder="उदा. सुकन्या समृद्धि योजना"></div>
+      <div class="form-group"><label>योजना का लाभ व पात्रता</label><textarea id="admSchDesc" placeholder="उदा. बेटियों हेतु बचत योजना..." style="min-height:60px;"></textarea></div>
+      <div class="form-group"><label>सरकारी वेबसाइट लिंक</label><input type="url" id="admSchLink" placeholder="https://..."></div>
+      <button class="btn btn-emerald" style="padding:8px;" onclick="saveCustomSchemeCloud()">योजना प्रकाशित करें</button>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     var firebaseConfig = {
@@ -985,7 +1056,7 @@
 
     var curUser = JSON.parse(localStorage.getItem('pkp_live_cur_u')) || null;
     var isAdminUnlocked = (localStorage.getItem('pkp_admin_logged_in') === 'true');
-    var lastActiveTab = localStorage.getItem('pkp_last_tab') || 'vNew';
+    var adminSessionId = localStorage.getItem('pkp_admin_session_id') || null;
 
     var PAKARPUR_LAT = 26.1685;
     var PAKARPUR_LNG = 82.3850;
@@ -1004,15 +1075,53 @@
       initFirebaseListeners();
       fetchPakarpurWeather();
 
-      if (lastActiveTab === 'vAdmin' && isAdminUnlocked) {
+      if (isAdminUnlocked) {
         openAdminGate();
       } else {
         applyUserGate();
-        if (curUser && lastActiveTab && document.getElementById(lastActiveTab)) {
-          switchAction(lastActiveTab);
-        }
       }
     };
+
+    /* POPUP MODAL HANDLERS FOR USER ICONS */
+    function openScreenModal(modalId) {
+      if (!curUser && modalId !== 'vProfile') {
+        applyUserGate();
+        return;
+      }
+      var target = document.getElementById(modalId);
+      if (target) {
+        target.classList.add('active');
+        if (modalId === 'vNew') {
+          document.getElementById('cName').value = curUser.name;
+          document.getElementById('cPhone').value = curUser.phone;
+        }
+        if (modalId === 'vList') drawComps();
+        if (modalId === 'vNotice') drawNotices();
+        if (modalId === 'vDirectory') drawDirectory();
+        if (modalId === 'vBudget') calcAndDrawBudget();
+        if (modalId === 'vGallery') drawGallery();
+        if (modalId === 'vSchemes') drawCustomSchemes();
+      }
+    }
+
+    function closeScreenModal(modalId) {
+      var target = document.getElementById(modalId);
+      if (target) target.classList.remove('active');
+    }
+
+    /* POPUP MODAL HANDLERS FOR ADMIN ICONS */
+    function openAdminPopupSection(secId) {
+      var target = document.getElementById(secId);
+      if (target) {
+        target.classList.add('active');
+        if (secId === 'secDirForm') renderAdminDirectoryInner();
+      }
+    }
+
+    function closeAdminPopupSection(secId) {
+      var target = document.getElementById(secId);
+      if (target) target.classList.remove('active');
+    }
 
     function zoomSpecificImage(srcUrl) {
       if (!srcUrl || srcUrl.includes('placeholder')) return;
@@ -1024,19 +1133,6 @@
 
     function closeUniversalImgModal() {
       document.getElementById('universalImageModal').classList.remove('active');
-    }
-
-    function openAdminSection(sectionId) {
-      var allSections = ['secBroadcastForm', 'secNoticeForm', 'secDirForm', 'secKoshForm', 'secGalleryForm', 'secUsersForm', 'secAddSchemeForm'];
-      allSections.forEach(function(sec) {
-        var el = document.getElementById(sec);
-        if (sec === sectionId) {
-          el.style.display = (el.style.display === 'block') ? 'none' : 'block';
-        } else {
-          el.style.display = 'none';
-        }
-      });
-      if (sectionId === 'secDirForm') renderAdminDirectoryInner();
     }
 
     function fetchPakarpurWeather() {
@@ -1131,7 +1227,6 @@
         guestGate.classList.remove('active');
       } else {
         grid.style.display = 'none';
-        document.querySelectorAll('.view-content').forEach(function(el){ el.classList.remove('active'); });
         guestGate.classList.add('active');
       }
     }
@@ -1179,12 +1274,25 @@
         if (isAdminUnlocked) renderRecycleBin();
       });
 
+      /* USERS LISTENER WITH STRICT SINGLE-DEVICE LOGIN CHECK */
       db.ref('users').on('value', function(snapshot) {
         var val = snapshot.val();
         users = val ? Object.values(val) : [];
+        
+        // Update live user count on Admin Tile Badge
+        var badge = document.getElementById('adminActiveBadge');
+        if (badge) badge.innerText = users.length;
+
         if (curUser) {
           var updatedSelf = users.find(function(u){ return u.phone === curUser.phone; });
           if (updatedSelf) {
+            // Check if logged in on another device
+            var localSessionId = localStorage.getItem('pkp_cur_session_id');
+            if (updatedSelf.currentSessionId && localSessionId && updatedSelf.currentSessionId !== localSessionId) {
+              alert("आपका खाता किसी अन्य मोबाइल / डिवाइस में लॉगिन हो चुका है। आप यहाँ से लॉगआउट हो रहे हैं।");
+              userLogout();
+              return;
+            }
             curUser = updatedSelf;
             localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
           } else {
@@ -1217,7 +1325,6 @@
         drawNotices();
       });
 
-      /* DIRECTORY REALTIME LISTENER - PURE DATABASE DRIVEN */
       db.ref('directory').on('value', function(snapshot) {
         var val = snapshot.val();
         directoryList = val ? Object.values(val) : [];
@@ -1284,37 +1391,7 @@
       document.getElementById('admPPhone').value = pradhanInfo.phone || "";
     }
 
-    function switchAction(viewId) {
-      if (!curUser && viewId !== 'vProfile') {
-        applyUserGate();
-        return;
-      }
-
-      localStorage.setItem('pkp_last_tab', viewId);
-      document.querySelectorAll('.view-content').forEach(function(el){ el.classList.remove('active'); });
-      document.querySelectorAll('.action-tile').forEach(function(el){ el.classList.remove('active'); });
-      
-      var target = document.getElementById(viewId);
-      if (target) target.classList.add('active');
-
-      if (viewId === 'vNew') {
-        document.getElementById('tileNew').classList.add('active');
-        document.getElementById('cName').value = curUser.name;
-        document.getElementById('cPhone').value = curUser.phone;
-      }
-      if (viewId === 'vList') { document.getElementById('tileList').classList.add('active'); drawComps(); }
-      if (viewId === 'vTrack') document.getElementById('tileTrack').classList.add('active');
-      if (viewId === 'vNotice') { document.getElementById('tileNotice').classList.add('active'); drawNotices(); }
-      if (viewId === 'vDirectory') { document.getElementById('tileDirectory').classList.add('active'); drawDirectory(); }
-      if (viewId === 'vBudget') { document.getElementById('tileBudget').classList.add('active'); calcAndDrawBudget(); }
-      if (viewId === 'vGallery') { document.getElementById('tileGallery').classList.add('active'); drawGallery(); }
-      if (viewId === 'vTeam') document.getElementById('tileTeam').classList.add('active');
-      if (viewId === 'vSchemes') { document.getElementById('tileSchemes').classList.add('active'); drawCustomSchemes(); }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    /* DIRECTORY / HELPLINE FULL CRUD - NO DUMMY DATA */
+    /* DIRECTORY / HELPLINE FULL CRUD */
     function drawDirectory() {
       var d = document.getElementById('directoryListDiv');
       if (directoryList.length === 0) {
@@ -1446,6 +1523,7 @@
         alert("सूचना प्रकाशित हो गई!");
         document.getElementById('admNoticeTitle').value = "";
         document.getElementById('admNoticeDesc').value = "";
+        closeAdminPopupSection('secNoticeForm');
       });
     }
 
@@ -1494,6 +1572,7 @@
         document.getElementById('admSchTitle').value = "";
         document.getElementById('admSchDesc').value = "";
         document.getElementById('admSchLink').value = "";
+        closeAdminPopupSection('secAddSchemeForm');
       });
     }
 
@@ -1656,12 +1735,14 @@
       if (!t || !m) return alert("कृपया शीर्षक और संदेश भरें!");
       db.ref('broadcast_alert').set({ active: true, title: t, message: m }).then(function() {
         alert("ब्रॉडकास्ट अलर्ट जारी कर दिया गया!");
+        closeAdminPopupSection('secBroadcastForm');
       });
     }
 
     function clearBroadcastCloud() {
       db.ref('broadcast_alert').set({ active: false, title: "", message: "" }).then(function() {
         alert("अलर्ट हटा दिया गया!");
+        closeAdminPopupSection('secBroadcastForm');
       });
     }
 
@@ -1699,6 +1780,7 @@
       db.ref('gallery/' + id).set({ id: id, title: t, before: tempBeforePhoto, after: tempAfterPhoto, date: new Date().toLocaleDateString('hi-IN') }).then(function() {
         alert("गैलरी में जुड़ गया!");
         document.getElementById('admGalTitle').value = "";
+        closeAdminPopupSection('secGalleryForm');
       });
     }
 
@@ -1707,10 +1789,7 @@
     }
 
     function openUserProfileDirect() {
-      localStorage.setItem('pkp_last_tab', 'vProfile');
-      document.querySelectorAll('.view-content').forEach(function(el){ el.classList.remove('active'); });
-      document.querySelectorAll('.action-tile').forEach(function(el){ el.classList.remove('active'); });
-      document.getElementById('vProfile').classList.add('active');
+      openScreenModal('vProfile');
     }
 
     function switchAuthTab(type) {
@@ -1729,16 +1808,19 @@
       if (!n || p.length < 10 || !w || !pass) return alert("कृपया सभी विवरण भरें!");
       if (blockedPhones.includes(p)) return alert("यह मोबाइल नंबर व्यवस्थापक द्वारा स्थायी रूप से प्रतिबंधित (Blocked) है!");
 
-      var newUserObj = { name: n, phone: p, ward: w, pass: pass, avatar: "", date: new Date().toLocaleDateString('hi-IN') };
+      var sessionId = "SESS_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+      var newUserObj = { name: n, phone: p, ward: w, pass: pass, avatar: "", date: new Date().toLocaleDateString('hi-IN'), currentSessionId: sessionId };
 
       if (approvalMode === 'auto') {
         db.ref('users/' + p).set(newUserObj);
         curUser = newUserObj;
         localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
+        localStorage.setItem('pkp_cur_session_id', sessionId);
         alert("खाता सक्रिय हो गया है!");
         syncUserState();
         applyUserGate();
-        switchAction('vNew');
+        closeScreenModal('vProfile');
+        openScreenModal('vNew');
       } else {
         db.ref('pending_users/' + p).set(newUserObj);
         document.getElementById('regReqNotice').style.display = 'block';
@@ -1746,6 +1828,7 @@
       }
     }
 
+    /* CITIZEN LOGIN WITH STRICT SINGLE SESSION LOGIC */
     function userLogin() {
       var p = document.getElementById('lPhone').value.trim();
       var pass = document.getElementById('lPass').value.trim();
@@ -1756,21 +1839,33 @@
 
       var found = users.find(function(u){ return u.phone === p && u.pass === pass; });
       if (found) {
-        curUser = found;
-        localStorage.setItem('pkp_live_cur_u', JSON.stringify(found));
-        alert("लॉगिन सफल!");
-        syncUserState();
-        applyUserGate();
-        switchAction('vNew');
+        var newSession = "SESS_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+        found.currentSessionId = newSession;
+
+        // Firebase पर नई सेशन आईडी अपडेट करें जिससे पुराना फ़ोन तुरंत लॉगआउट हो जाए
+        db.ref('users/' + p + '/currentSessionId').set(newSession).then(function() {
+          curUser = found;
+          localStorage.setItem('pkp_live_cur_u', JSON.stringify(found));
+          localStorage.setItem('pkp_cur_session_id', newSession);
+          alert("लॉगिन सफल!");
+          syncUserState();
+          applyUserGate();
+          closeScreenModal('vProfile');
+          openScreenModal('vNew');
+        });
       } else {
         alert("गलत नंबर या पासवर्ड!");
       }
     }
 
     function userLogout() {
+      if (curUser && curUser.phone) {
+        db.ref('users/' + curUser.phone + '/currentSessionId').remove();
+      }
       curUser = null;
       localStorage.removeItem('pkp_live_cur_u');
-      localStorage.setItem('pkp_last_tab', 'vGuestGate');
+      localStorage.removeItem('pkp_cur_session_id');
+      document.querySelectorAll('.screen-modal').forEach(function(m){ m.classList.remove('active'); });
       syncUserState();
       applyUserGate();
     }
@@ -1889,9 +1984,7 @@
     }
 
     function openAdminGate() {
-      localStorage.setItem('pkp_last_tab', 'vAdmin');
-      document.querySelectorAll('.view-content').forEach(function(el){ el.classList.remove('active'); });
-      document.querySelectorAll('.action-tile').forEach(function(el){ el.classList.remove('active'); });
+      document.querySelectorAll('.screen-modal').forEach(function(el){ el.classList.remove('active'); });
       document.getElementById('vAdmin').classList.add('active');
 
       if (!isAdminUnlocked) {
@@ -1905,6 +1998,7 @@
       }
     }
 
+    /* VERIFY ADMIN WITH MAX 2 DEVICES CONCURRENT LOGIN */
     function verifyAdminGate() {
       var pin = document.getElementById('adminGatePin').value.trim();
       var valid = false;
@@ -1915,21 +2009,46 @@
         if (!defaultCancelled && pin === "1234") valid = true;
       }
 
-      if (valid) {
-        isAdminUnlocked = true;
-        localStorage.setItem('pkp_admin_logged_in', 'true');
-        localStorage.setItem('pkp_last_tab', 'vAdmin');
-        document.getElementById('adminGateBox').style.display = 'none';
-        document.getElementById('adminMainDashBox').style.display = 'block';
-        renderAdminDashboard();
-        drawDirectory();
-        renderAdminDirectoryInner();
-        drawNotices();
-        drawCustomSchemes();
-        calcAndDrawBudget();
-      } else {
-        alert("अमान्य पासवर्ड!");
-      }
+      if (!valid) return alert("अमान्य पासवर्ड!");
+
+      // 2-Device Limit Check via Firebase
+      db.ref('admin_sessions').once('value', function(snapshot) {
+        var sessions = snapshot.val() || {};
+        var activeIds = Object.keys(sessions);
+
+        var existingSession = localStorage.getItem('pkp_admin_session_id');
+        if (existingSession && activeIds.includes(existingSession)) {
+          // Already one of the active sessions
+          loginAdminSuccess(existingSession);
+          return;
+        }
+
+        if (activeIds.length >= 2) {
+          alert("एडमिन लॉगिन सीमा पूर्ण है! अधिकतम 2 मोबाइल/डिवाइस में ही एडमिन लॉगिन की अनुमति है। कृपया किसी एक डिवाइस से लॉगआउट करें।");
+          return;
+        }
+
+        // Allocate slot for new device
+        var newSess = "ADM_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+        db.ref('admin_sessions/' + newSess).set({ time: Date.now() }).then(function() {
+          loginAdminSuccess(newSess);
+        });
+      });
+    }
+
+    function loginAdminSuccess(sessId) {
+      isAdminUnlocked = true;
+      adminSessionId = sessId;
+      localStorage.setItem('pkp_admin_logged_in', 'true');
+      localStorage.setItem('pkp_admin_session_id', sessId);
+      document.getElementById('adminGateBox').style.display = 'none';
+      document.getElementById('adminMainDashBox').style.display = 'block';
+      renderAdminDashboard();
+      drawDirectory();
+      renderAdminDirectoryInner();
+      drawNotices();
+      drawCustomSchemes();
+      calcAndDrawBudget();
     }
 
     function renderAdminDashboard() {
@@ -2334,23 +2453,26 @@
     function closeCompDetailModal() { document.getElementById('compDetailModal').classList.remove('active'); }
 
     function exitAdminView() {
-      localStorage.setItem('pkp_last_tab', 'vNew');
+      document.getElementById('vAdmin').classList.remove('active');
       applyUserGate();
-      if (curUser) switchAction('vNew');
     }
 
     function adminLogout() {
+      if (adminSessionId) {
+        db.ref('admin_sessions/' + adminSessionId).remove();
+      }
       isAdminUnlocked = false;
+      adminSessionId = null;
       localStorage.removeItem('pkp_admin_logged_in');
-      localStorage.setItem('pkp_last_tab', 'vNew');
+      localStorage.removeItem('pkp_admin_session_id');
       document.getElementById('adminGateBox').style.display = 'block';
       document.getElementById('adminMainDashBox').style.display = 'none';
+      document.getElementById('vAdmin').classList.remove('active');
       applyUserGate();
       drawDirectory();
       drawNotices();
       drawCustomSchemes();
       calcAndDrawBudget();
-      if (curUser) switchAction('vNew');
     }
 
     function toggleMap() {
@@ -2405,7 +2527,8 @@
         tempCompPhoto = "";
         alert("शिकायत दर्ज हो गई!\nरसीद संख्या: " + item.id);
         document.getElementById('compForm').reset();
-        switchAction('vList');
+        closeScreenModal('vNew');
+        openScreenModal('vList');
       });
     }
 
