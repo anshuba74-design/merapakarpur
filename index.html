@@ -134,6 +134,7 @@
     .btn-call { background: #16a34a; }
     .btn-wa { background: #25d366; }
 
+    /* GRID TILES */
     .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
     .action-tile {
       background: var(--card-bg); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 10px 4px;
@@ -141,13 +142,13 @@
       position: relative;
     }
     .action-tile:active {
-      border-color: var(--primary); background: #f0fdf4; transform: translateY(-2px);
+      border-color: var(--primary); background: #f0fdf4; transform: scale(0.96);
     }
     .tile-icon {
-      width: 36px; height: 36px; border-radius: 10px; margin: 0 auto 5px; display: flex; align-items: center;
-      justify-content: center; font-size: 15px; color: #fff;
+      width: 38px; height: 38px; border-radius: 10px; margin: 0 auto 5px; display: flex; align-items: center;
+      justify-content: center; font-size: 16px; color: #fff;
     }
-    .action-tile span { display: block; font-size: 11px; font-weight: 700; color: #334155; }
+    .action-tile span { display: block; font-size: 11px; font-weight: 700; color: #334155; line-height: 1.2; }
 
     .admin-square-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
     .admin-square-tile {
@@ -162,31 +163,22 @@
     }
     .admin-square-tile span { display: block; font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.2; }
 
-    /* Badge on admin user tile */
     .icon-badge {
-      position: absolute;
-      top: -5px;
-      right: -3px;
-      background: #dc2626;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 800;
-      border-radius: 10px;
-      padding: 1px 6px;
-      border: 1.5px solid #fff;
+      position: absolute; top: -5px; right: -3px; background: #dc2626; color: #fff;
+      font-size: 10px; font-weight: 800; border-radius: 10px; padding: 1px 6px; border: 1.5px solid #fff;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
-    /* Views Modal Styling */
     .view-content { display: none; }
     .view-content.active { display: block; }
 
-    /* User Screen Modal Popup */
+    /* FULLSCREEN POPUP MODAL */
     .screen-modal {
-      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px);
       z-index: 1500; display: none; align-items: center; justify-content: center; padding: 12px;
     }
     .screen-modal.active { display: flex; animation: fadeIn 0.2s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
     .screen-modal-card {
       background: #ffffff; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
@@ -407,8 +399,8 @@
       </div>
     </div>
 
-    <!-- 8-GRID NAVIGATION ICONS -->
-    <div class="actions-grid" id="mainActionsGrid" style="display:none;">
+    <!-- 10-GRID NAVIGATION ICONS FOR USERS -->
+    <div class="actions-grid" id="mainActionsGrid">
       <div class="action-tile" id="tileNew" onclick="openScreenModal('vNew')">
         <div class="tile-icon" style="background: #15803d;"><i class="fa-solid fa-feather-pointed"></i></div>
         <span>नई शिकायत</span>
@@ -419,7 +411,11 @@
       </div>
       <div class="action-tile" id="tileTrack" onclick="openScreenModal('vTrack')">
         <div class="tile-icon" style="background: #d97706;"><i class="fa-solid fa-magnifying-glass-location"></i></div>
-        <span>ट्रैक स्थिति</span>
+        <span>शिकायत स्थिति</span>
+      </div>
+      <div class="action-tile" id="tileUserProf" onclick="openUserProfileDirect()">
+        <div class="tile-icon" style="background: #059669;"><i class="fa-solid fa-address-card"></i></div>
+        <span>मेरा खाता / प्रोफाइल</span>
       </div>
       <div class="action-tile" id="tileNotice" onclick="openScreenModal('vNotice')">
         <div class="tile-icon" style="background: #dc2626;"><i class="fa-solid fa-bullhorn"></i></div>
@@ -427,7 +423,7 @@
       </div>
       <div class="action-tile" id="tileDirectory" onclick="openScreenModal('vDirectory')">
         <div class="tile-icon" style="background: #4f46e5;"><i class="fa-solid fa-address-book"></i></div>
-        <span>हेल्पलाइन</span>
+        <span>हेल्पलाइन नंबर</span>
       </div>
       <div class="action-tile" id="tileBudget" onclick="openScreenModal('vBudget')">
         <div class="tile-icon" style="background: #0d9488;"><i class="fa-solid fa-building-columns"></i></div>
@@ -442,24 +438,8 @@
         <span>पंचायत टीम</span>
       </div>
       <div class="action-tile" id="tileSchemes" onclick="openScreenModal('vSchemes')">
-        <div class="tile-icon" style="background: #059669;"><i class="fa-solid fa-hand-holding-hand"></i></div>
+        <div class="tile-icon" style="background: #2563eb;"><i class="fa-solid fa-hand-holding-hand"></i></div>
         <span>सरकारी योजना</span>
-      </div>
-    </div>
-
-    <!-- GUEST LOCK GATE -->
-    <div id="vGuestGate" class="view-content active">
-      <div class="card" style="text-align:center; padding:22px 16px; border: 2px dashed #86efac;">
-        <div style="width:58px; height:58px; background:#dcfce7; color:#15803d; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:24px;">
-          <i class="fa-solid fa-wheat-awn"></i>
-        </div>
-        <h3 style="font-size:17px; margin-bottom:6px; color:#14532d;">ग्राम पाकरपुर डिजिटल सेवा में स्वागत है</h3>
-        <p style="font-size:13px; color:#475569; margin-bottom:16px;">
-          गाँव की सुरक्षा और पारदर्शिता हेतु शिकायत दर्ज करने या अन्य सेवाएं देखने से पहले लॉगिन करना आवश्यक है।
-        </p>
-        <button class="btn btn-emerald" onclick="openUserProfileDirect()">
-          <i class="fa-solid fa-user-plus"></i> नागरिक पंजीकरण / लॉगिन करें
-        </button>
       </div>
     </div>
 
@@ -606,7 +586,7 @@
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vNew')" title="बंद करें">✕</button>
       <div class="card-title">
-        <i class="fa-solid fa-feather-pointed" style="color: var(--primary);"></i> जन समस्या दर्ज करें
+        <i class="fa-solid fa-feather-pointed" style="color: var(--primary);"></i> नई जन समस्या दर्ज करें
       </div>
       <form id="compForm" onsubmit="handleNewComp(event)">
         <div class="form-group">
@@ -671,12 +651,12 @@
     </div>
   </div>
 
-  <!-- 3. POPUP: Track Complaint -->
+  <!-- 3. POPUP: Track Complaint Status -->
   <div id="vTrack" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vTrack')" title="बंद करें">✕</button>
       <div class="card-title">
-        <i class="fa-solid fa-magnifying-glass-location" style="color: var(--accent);"></i> अपनी शिकायत ट्रैक करें
+        <i class="fa-solid fa-magnifying-glass-location" style="color: var(--accent);"></i> अपनी शिकायत की स्थिति ट्रैक करें
       </div>
       <div class="form-group">
         <label>शिकायत रसीद संख्या (उदा. PKP-123) दर्ज करें:</label>
@@ -703,7 +683,7 @@
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vDirectory')" title="बंद करें">✕</button>
       <div class="card-title">
-        <i class="fa-solid fa-address-book" style="color: #4f46e5;"></i> आवश्यक एवं आपातकालीन संपर्क
+        <i class="fa-solid fa-address-book" style="color: #4f46e5;"></i> आवश्यक एवं आपातकालीन हेल्पलाइन
       </div>
       <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
         आपात स्थिति अथवा विभागीय कार्य हेतु एक क्लिक में संपर्क करें:
@@ -768,7 +748,7 @@
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vSchemes')" title="बंद करें">✕</button>
       <div class="card-title">
-        <i class="fa-solid fa-hand-holding-hand" style="color: var(--success);"></i> प्रमुख सरकारी योजनाएं एवं ऑनलाइन आवेदन
+        <i class="fa-solid fa-hand-holding-hand" style="color: var(--success);"></i> प्रमुख सरकारी योजनाएं एवं ऑनलाइन पोर्टल
       </div>
       <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
         योजना का लाभ लेने या स्टेटस चेक करने हेतु सीधे आधिकारिक सरकारी वेबसाइट पर जाएं:
@@ -834,7 +814,7 @@
     </div>
   </div>
 
-  <!-- 10. POPUP: Citizen Account & Profile -->
+  <!-- 10. POPUP: Citizen Account & Profile (Auto-Opens on First Visit for Guest) -->
   <div id="vProfile" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vProfile')" title="बंद करें">✕</button>
@@ -895,7 +875,7 @@
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px dashed var(--border); padding-top:10px;">
-          <button class="btn btn-emerald" style="width:auto; padding:6px 14px;" onclick="closeScreenModal('vProfile'); openScreenModal('vNew');"><i class="fa-solid fa-feather-pointed"></i> शिकायत करें</button>
+          <button class="btn btn-emerald" style="width:auto; padding:6px 14px;" onclick="closeScreenModal('vProfile'); openScreenModal('vNew');"><i class="fa-solid fa-feather-pointed"></i> नई शिकायत</button>
           <button class="mini-logout-btn" onclick="userLogout()"><i class="fa-solid fa-power-off"></i> लॉगआउट</button>
         </div>
       </div>
@@ -1078,14 +1058,17 @@
       if (isAdminUnlocked) {
         openAdminGate();
       } else {
-        applyUserGate();
+        // यदि यूजर लॉग इन नहीं है तो सीधे स्क्रीन पर रजिस्ट्रेशन/लॉगिन पॉपअप खोलें
+        if (!curUser) {
+          openUserProfileDirect();
+        }
       }
     };
 
     /* POPUP MODAL HANDLERS FOR USER ICONS */
     function openScreenModal(modalId) {
       if (!curUser && modalId !== 'vProfile') {
-        applyUserGate();
+        openUserProfileDirect();
         return;
       }
       var target = document.getElementById(modalId);
@@ -1219,18 +1202,6 @@
       scrollDiv.innerHTML = h;
     }
 
-    function applyUserGate() {
-      var grid = document.getElementById('mainActionsGrid');
-      var guestGate = document.getElementById('vGuestGate');
-      if (curUser) {
-        grid.style.display = 'grid';
-        guestGate.classList.remove('active');
-      } else {
-        grid.style.display = 'none';
-        guestGate.classList.add('active');
-      }
-    }
-
     function initFirebaseListeners() {
       db.ref('pradhan_profile').on('value', function(snapshot) {
         var val = snapshot.val();
@@ -1274,22 +1245,20 @@
         if (isAdminUnlocked) renderRecycleBin();
       });
 
-      /* USERS LISTENER WITH STRICT SINGLE-DEVICE LOGIN CHECK */
+      /* USERS LISTENER WITH SINGLE SESSION CHECK */
       db.ref('users').on('value', function(snapshot) {
         var val = snapshot.val();
         users = val ? Object.values(val) : [];
         
-        // Update live user count on Admin Tile Badge
         var badge = document.getElementById('adminActiveBadge');
         if (badge) badge.innerText = users.length;
 
         if (curUser) {
           var updatedSelf = users.find(function(u){ return u.phone === curUser.phone; });
           if (updatedSelf) {
-            // Check if logged in on another device
             var localSessionId = localStorage.getItem('pkp_cur_session_id');
             if (updatedSelf.currentSessionId && localSessionId && updatedSelf.currentSessionId !== localSessionId) {
-              alert("आपका खाता किसी अन्य मोबाइल / डिवाइस में लॉगिन हो चुका है। आप यहाँ से लॉगआउट हो रहे हैं।");
+              alert("आपका खाता किसी अन्य डिवाइस में लॉगिन हो चुका है। आप यहाँ से लॉगआउट हो रहे हैं।");
               userLogout();
               return;
             }
@@ -1818,7 +1787,6 @@
         localStorage.setItem('pkp_cur_session_id', sessionId);
         alert("खाता सक्रिय हो गया है!");
         syncUserState();
-        applyUserGate();
         closeScreenModal('vProfile');
         openScreenModal('vNew');
       } else {
@@ -1842,14 +1810,12 @@
         var newSession = "SESS_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
         found.currentSessionId = newSession;
 
-        // Firebase पर नई सेशन आईडी अपडेट करें जिससे पुराना फ़ोन तुरंत लॉगआउट हो जाए
         db.ref('users/' + p + '/currentSessionId').set(newSession).then(function() {
           curUser = found;
           localStorage.setItem('pkp_live_cur_u', JSON.stringify(found));
           localStorage.setItem('pkp_cur_session_id', newSession);
           alert("लॉगिन सफल!");
           syncUserState();
-          applyUserGate();
           closeScreenModal('vProfile');
           openScreenModal('vNew');
         });
@@ -1867,7 +1833,7 @@
       localStorage.removeItem('pkp_cur_session_id');
       document.querySelectorAll('.screen-modal').forEach(function(m){ m.classList.remove('active'); });
       syncUserState();
-      applyUserGate();
+      openUserProfileDirect();
     }
 
     function uploadUserAvatarCloud(e) {
@@ -2011,14 +1977,12 @@
 
       if (!valid) return alert("अमान्य पासवर्ड!");
 
-      // 2-Device Limit Check via Firebase
       db.ref('admin_sessions').once('value', function(snapshot) {
         var sessions = snapshot.val() || {};
         var activeIds = Object.keys(sessions);
 
         var existingSession = localStorage.getItem('pkp_admin_session_id');
         if (existingSession && activeIds.includes(existingSession)) {
-          // Already one of the active sessions
           loginAdminSuccess(existingSession);
           return;
         }
@@ -2028,7 +1992,6 @@
           return;
         }
 
-        // Allocate slot for new device
         var newSess = "ADM_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
         db.ref('admin_sessions/' + newSess).set({ time: Date.now() }).then(function() {
           loginAdminSuccess(newSess);
@@ -2454,7 +2417,6 @@
 
     function exitAdminView() {
       document.getElementById('vAdmin').classList.remove('active');
-      applyUserGate();
     }
 
     function adminLogout() {
@@ -2468,7 +2430,6 @@
       document.getElementById('adminGateBox').style.display = 'block';
       document.getElementById('adminMainDashBox').style.display = 'none';
       document.getElementById('vAdmin').classList.remove('active');
-      applyUserGate();
       drawDirectory();
       drawNotices();
       drawCustomSchemes();
@@ -2506,7 +2467,7 @@
 
     function handleNewComp(e) {
       e.preventDefault();
-      if (!curUser) return alert("कृपया पहले लॉगिन करें!");
+      if (!curUser) return openUserProfileDirect();
 
       var compId = "PKP-" + Math.floor(100 + Math.random() * 900);
       var item = {
