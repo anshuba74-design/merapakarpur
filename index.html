@@ -150,47 +150,23 @@
     }
     .action-tile span { display: block; font-size: 11px; font-weight: 700; color: #334155; line-height: 1.2; }
 
-    /* SEPARATE SMALLER PROFILE SECTION AT BOTTOM */
+    /* SEPARATE PROFILE BUTTON AT BOTTOM */
     .profile-tile-bottom-wrap {
-      display: flex;
-      justify-content: center;
-      margin: 10px 0 16px;
+      display: flex; justify-content: center; margin: 10px 0 16px;
     }
     .profile-tile-small {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: #ffffff;
-      border: 1.5px solid #86efac;
-      border-radius: 30px;
-      padding: 6px 18px 6px 8px;
-      cursor: pointer;
-      box-shadow: 0 3px 10px rgba(22, 163, 74, 0.12);
-      transition: all 0.2s ease;
+      display: inline-flex; align-items: center; gap: 10px; background: #ffffff;
+      border: 1.5px solid #86efac; border-radius: 30px; padding: 6px 18px 6px 8px;
+      cursor: pointer; box-shadow: 0 3px 10px rgba(22, 163, 74, 0.12); transition: all 0.2s ease;
     }
-    .profile-tile-small:active {
-      transform: scale(0.95);
-      background: #f0fdf4;
-      border-color: var(--primary);
-    }
+    .profile-tile-small:active { transform: scale(0.95); background: #f0fdf4; border-color: var(--primary); }
     .profile-tile-small .tile-icon-small {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: #16a34a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      color: #fff;
+      width: 26px; height: 26px; border-radius: 50%; background: #16a34a;
+      display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff;
     }
-    .profile-tile-small span {
-      font-size: 12px;
-      font-weight: 700;
-      color: #166534;
-      line-height: 1;
-    }
+    .profile-tile-small span { font-size: 12px; font-weight: 700; color: #166534; line-height: 1; }
 
+    /* ADMIN EXCLUSIVE SQUARE GRID TILES */
     .admin-square-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0; }
     .admin-square-tile {
       background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 6px;
@@ -199,8 +175,8 @@
     }
     .admin-square-tile:active { transform: scale(0.95); background: #f8fafc; }
     .adm-tile-icon {
-      width: 42px; height: 42px; border-radius: 10px; margin: 0 auto 6px; display: flex; align-items: center;
-      justify-content: center; font-size: 18px; color: #fff;
+      width: 44px; height: 44px; border-radius: 12px; margin: 0 auto 6px; display: flex; align-items: center;
+      justify-content: center; font-size: 20px; color: #fff;
     }
     .admin-square-tile span { display: block; font-size: 12px; font-weight: 700; color: #1e293b; line-height: 1.2; }
 
@@ -425,7 +401,7 @@
       </div>
     </div>
 
-    <!-- 9 MAIN SERVICE TILES (PROFILE IS MOVED BELOW SEPARATELY) -->
+    <!-- CITIZEN PORTAL GRID TILES -->
     <div class="actions-grid" id="mainActionsGrid">
       <div class="action-tile" onclick="openScreenModal('vNew')">
         <div class="tile-icon" style="background: #15803d;"><i class="fa-solid fa-feather-pointed"></i></div>
@@ -471,7 +447,7 @@
       </div>
     </div>
 
-    <!-- SEPARATE COMPACT PROFILE BUTTON AT BOTTOM -->
+    <!-- COMPACT PROFILE BUTTON AT BOTTOM -->
     <div class="profile-tile-bottom-wrap">
       <div class="profile-tile-small" onclick="openUserProfileDirect()" title="मेरी प्रोफ़ाइल / नागरिक खाता">
         <div class="tile-icon-small"><i class="fa-solid fa-id-card"></i></div>
@@ -479,14 +455,14 @@
       </div>
     </div>
 
-    <!-- ADMIN VIEW CONTAINER -->
+    <!-- DEDICATED ADMIN MANAGEMENT WORKSPACE -->
     <div id="vAdmin" class="view-content">
       <div class="card" id="adminGateBox" style="border: 2px solid var(--accent);">
         <div class="card-title" style="color: #b45309;">
-          <i class="fa-solid fa-lock"></i> प्रधान / व्यवस्थापक लॉगिन
+          <i class="fa-solid fa-lock"></i> प्रधान / व्यवस्थापक नियंत्रण लॉगिन
         </div>
         <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
-          कृपया अधिकृत पासवर्ड दर्ज करें (अधिकतम 2 डिवाइस में लॉगिन मान्य):
+          कृपया अधिकृत पासवर्ड दर्ज करें (सुरक्षा नियम: अधिकतम 2 डिवाइस में लॉगिन मान्य):
         </p>
         <div class="form-group">
           <label>एडमिन पासवर्ड</label>
@@ -501,7 +477,7 @@
       <div id="adminMainDashBox" style="display: none;">
         <div class="card">
           <div class="card-title">
-            <i class="fa-solid fa-sliders" style="color: var(--primary);"></i> व्यवस्थापक नियंत्रण कक्ष
+            <i class="fa-solid fa-sliders" style="color: var(--primary);"></i> प्रधान कार्यपालक नियंत्रण डेस्क
           </div>
 
           <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:10px; margin-bottom:12px;">
@@ -529,44 +505,36 @@
             </div>
           </div>
 
-          <!-- ADMIN GRID TILES -->
+          <!-- PURE ADMIN CONTROL ICONS (EXCLUSIVELY FOR SUPERVISION) -->
           <div class="admin-square-grid">
-            <div class="admin-square-tile" onclick="openAdminPopupSection('secBroadcastForm')">
-              <div class="adm-tile-icon" style="background: #dc2626;"><i class="fa-solid fa-tower-broadcast"></i></div>
-              <span>ब्रॉडकास्ट अलर्ट</span>
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secAdminGrievanceModal')">
+              <span class="icon-badge" id="adminPendingCompBadge">0</span>
+              <div class="adm-tile-icon" style="background: #15803d;"><i class="fa-solid fa-list-check"></i></div>
+              <span>शिकायत समीक्षा व एक्शन</span>
             </div>
+
             <div class="admin-square-tile" onclick="openAdminPopupSection('secUsersForm')">
               <span class="icon-badge" id="adminActiveBadge">0</span>
-              <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-user-check"></i></div>
-              <span>नागरिक खाते प्रबंधन</span>
-            </div>
-          </div>
-
-          <!-- Grievance Management Section -->
-          <div style="margin-top:14px; border-top:1px solid #e2e8f0; padding-top:12px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-              <h4 style="font-size:14px; color:var(--primary-dark);"><i class="fa-solid fa-list-check"></i> शिकायतों की समीक्षा व निस्तारण:</h4>
-            </div>
-            
-            <div class="form-group">
-              <label style="font-size:12px;">विभाग अनुसार फ़िल्टर करें:</label>
-              <select id="admCatFilterSelect" onchange="filterAdminComplaints()" style="padding:6px; font-size:13px;">
-                <option value="ALL">-- सभी सक्रिय शिकायतें देखें --</option>
-                <option value="सड़क व खड़ंजा">सड़क, खड़ंजा व नाली मरम्मत</option>
-                <option value="पेयजल व हैंडपंप">सरकारी हैंडपंप व पेयजल आपूर्ति</option>
-                <option value="स्ट्रीट लाइट / बिजली">स्ट्रीट लाइट / बिजली पोल व तार</option>
-                <option value="सफाई व्यवस्था">गाँव की सफाई व कचरा निस्तारण</option>
-                <option value="अन्य समस्या">अन्य पंचायत स्तरीय समस्या</option>
-              </select>
+              <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-users-gear"></i></div>
+              <span>नागरिक व सुरक्षा नियंत्रण</span>
             </div>
 
-            <div id="adminListDiv"></div>
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secAdminMarketModal')">
+              <span class="icon-badge" id="adminMarketBadge">0</span>
+              <div class="adm-tile-icon" style="background: #ea580c;"><i class="fa-solid fa-shop-lock"></i></div>
+              <span>क्रय-विक्रय बाज़ार नियंत्रण</span>
+            </div>
+
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secBroadcastForm')">
+              <div class="adm-tile-icon" style="background: #dc2626;"><i class="fa-solid fa-tower-broadcast"></i></div>
+              <span>सार्वजनिक ब्रॉडकास्ट अलर्ट</span>
+            </div>
           </div>
 
           <!-- RECYCLE BIN -->
-          <div style="background:#fef2f2; border:1.5px dashed #f87171; padding:12px; border-radius:10px; margin-top:16px;">
+          <div style="background:#fef2f2; border:1.5px dashed #f87171; padding:12px; border-radius:10px; margin-top:14px;">
             <div style="font-weight:700; font-size:13px; color:#991b1b; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
-              <span><i class="fa-solid fa-trash-can"></i> रीसायकल बिन (<span id="binCount">0</span>)</span>
+              <span><i class="fa-solid fa-trash-can"></i> शिकायत रीसायकल बिन (<span id="binCount">0</span>)</span>
               <button onclick="toggleBinView()" style="background:#dc2626; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">देखें / छिपाएं</button>
             </div>
             <div id="recycleBinDiv" style="display:none; max-height:220px; overflow-y:auto; font-size:12px;"></div>
@@ -914,19 +882,29 @@
     </div>
   </div>
 
-  <!-- ==================== ADMIN POPUP MODALS ==================== -->
+  <!-- ==================== EXCLUSIVE ADMIN MODALS ==================== -->
 
-  <!-- ADMIN: 1. Broadcast Modal -->
-  <div id="secBroadcastForm" class="screen-modal">
-    <div class="screen-modal-card" style="border: 2px solid #fecaca; background: #fff5f5;">
-      <button class="red-close-btn" onclick="closeAdminPopupSection('secBroadcastForm')">✕</button>
-      <div class="card-title" style="color: #991b1b;"><i class="fa-solid fa-tower-broadcast"></i> सार्वजनिक ब्रॉडकास्ट अलर्ट</div>
-      <div class="form-group"><label>शीर्षक</label><input type="text" id="admBcTitle" placeholder="शीर्षक"></div>
-      <div class="form-group"><label>पूरा विवरण</label><textarea id="admBcDesc" placeholder="पूरा विवरण..." style="min-height:70px;"></textarea></div>
-      <div style="display:flex; gap:6px;">
-        <button class="btn btn-crimson" style="padding:8px;" onclick="saveBroadcastCloud()">प्रकाशित करें</button>
-        <button class="btn btn-slate" style="padding:8px; width:auto;" onclick="clearBroadcastCloud()">अलर्ट हटाएं</button>
+  <!-- ADMIN: 1. Grievance Management Modal Desk -->
+  <div id="secAdminGrievanceModal" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secAdminGrievanceModal')">✕</button>
+      <div class="card-title" style="color: var(--primary);">
+        <i class="fa-solid fa-list-check"></i> जन शिकायत समीक्षा एवं निस्तारण नियंत्रण
       </div>
+
+      <div class="form-group">
+        <label style="font-size:12px;">विभाग अनुसार फ़िल्टर करें:</label>
+        <select id="admCatFilterSelect" onchange="filterAdminComplaints()" style="padding:6px; font-size:13px;">
+          <option value="ALL">-- सभी सक्रिय शिकायतें देखें --</option>
+          <option value="सड़क व खड़ंजा">सड़क, खड़ंजा व नाली मरम्मत</option>
+          <option value="पेयजल व हैंडपंप">सरकारी हैंडपंप व पेयजल आपूर्ति</option>
+          <option value="स्ट्रीट लाइट / बिजली">स्ट्रीट लाइट / बिजली पोल व तार</option>
+          <option value="सफाई व्यवस्था">गाँव की सफाई व कचरा निस्तारण</option>
+          <option value="अन्य समस्या">अन्य पंचायत स्तरीय समस्या</option>
+        </select>
+      </div>
+
+      <div id="adminListDiv"></div>
     </div>
   </div>
 
@@ -957,6 +935,34 @@
         <span style="font-weight:700; font-size:11px; color:#991b1b;"><i class="fa-solid fa-user-slash"></i> प्रतिबंधित नागरिक सूची (<span id="blockedUserCount">0</span>):</span>
         <p style="font-size:10px; color:#64748b; margin-bottom:4px;">अनुरोध आने पर नागरिक को दोबारा अनब्लॉक करें:</p>
         <div id="blockedUserListDiv" style="max-height:140px; overflow-y:auto; font-size:11px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN: 3. Marketplace Moderator Control Modal -->
+  <div id="secAdminMarketModal" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secAdminMarketModal')">✕</button>
+      <div class="card-title" style="color: #ea580c;">
+        <i class="fa-solid fa-shop-lock"></i> क्रय-विक्रय बाज़ार मॉडरेशन
+      </div>
+      <p style="font-size:12px; color:#64748b; margin-bottom:10px;">
+        गाँव के बाज़ार में नागरिकों द्वारा पोस्ट की गई सामग्री देखें एवं अनुचित सामग्री को हटाएं:
+      </p>
+      <div id="adminMarketModeratorListDiv"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN: 4. Broadcast Modal -->
+  <div id="secBroadcastForm" class="screen-modal">
+    <div class="screen-modal-card" style="border: 2px solid #fecaca; background: #fff5f5;">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secBroadcastForm')">✕</button>
+      <div class="card-title" style="color: #991b1b;"><i class="fa-solid fa-tower-broadcast"></i> सार्वजनिक ब्रॉडकास्ट अलर्ट</div>
+      <div class="form-group"><label>शीर्षक</label><input type="text" id="admBcTitle" placeholder="शीर्षक"></div>
+      <div class="form-group"><label>पूरा विवरण</label><textarea id="admBcDesc" placeholder="पूरा विवरण..." style="min-height:70px;"></textarea></div>
+      <div style="display:flex; gap:6px;">
+        <button class="btn btn-crimson" style="padding:8px;" onclick="saveBroadcastCloud()">प्रकाशित करें</button>
+        <button class="btn btn-slate" style="padding:8px; width:auto;" onclick="clearBroadcastCloud()">अलर्ट हटाएं</button>
       </div>
     </div>
   </div>
@@ -1088,7 +1094,7 @@
              '<span style="font-size:12px; font-weight:800; color:#b45309;">मूल्य: '+item.price+'</span>' +
              '</div>';
 
-        if (isMine || isAdminUnlocked) {
+        if (isMine) {
           h += '<button onclick="deleteMarketPostCloud(\''+item.id+'\')" class="adm-btn-del" title="हटाएं"><i class="fa-solid fa-trash"></i> हटाएं</button>';
         }
 
@@ -1106,6 +1112,28 @@
              '<a href="https://wa.me/91'+item.userPhone+'" target="_blank" class="action-circle-btn btn-wa" style="width:30px; height:30px; font-size:12px;"><i class="fa-brands fa-whatsapp"></i></a>' +
              '</div>' +
              '</div>' +
+             '</div>';
+      });
+      div.innerHTML = h;
+    }
+
+    /* ADMIN MARKETPLACE MODERATOR VIEW */
+    function renderAdminMarketModerator() {
+      var div = document.getElementById('adminMarketModeratorListDiv');
+      if (!div) return;
+      if (marketPosts.length === 0) {
+        div.innerHTML = "<p style='color:#64748b; font-size:12px; padding:10px;'>बाज़ार में कोई सक्रिय पोस्ट नहीं है।</p>";
+        return;
+      }
+      var h = "";
+      marketPosts.forEach(function(item) {
+        h += '<div class="market-card" style="border:1px solid #fed7aa; margin-bottom:8px;">' +
+             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+             '<div><b>' + item.title + '</b> (' + item.type + ')<br><span style="color:#b45309; font-size:11px;">मूल्य: ' + item.price + '</span></div>' +
+             '<button onclick="deleteMarketPostCloud(\''+item.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i> हटाएं</button>' +
+             '</div>' +
+             '<p style="font-size:12px; color:#475569; margin:4px 0;">' + item.desc + '</p>' +
+             '<div style="font-size:11px; color:#64748b;">नागरिक: ' + item.userName + ' (' + item.userPhone + ')</div>' +
              '</div>';
       });
       div.innerHTML = h;
@@ -1149,7 +1177,11 @@
     /* POPUP MODAL HANDLERS FOR ADMIN ICONS */
     function openAdminPopupSection(secId) {
       var target = document.getElementById(secId);
-      if (target) target.classList.add('active');
+      if (target) {
+        target.classList.add('active');
+        if (secId === 'secAdminGrievanceModal') filterAdminComplaints();
+        if (secId === 'secAdminMarketModal') renderAdminMarketModerator();
+      }
     }
 
     function closeAdminPopupSection(secId) {
@@ -1286,6 +1318,11 @@
         comps = val ? Object.values(val) : [];
         comps.reverse();
         drawComps();
+        
+        var pendingCount = comps.filter(function(c){ return c.status === "लंबित" || c.status === "प्रगति पर"; }).length;
+        var compBadge = document.getElementById('adminPendingCompBadge');
+        if (compBadge) compBadge.innerText = pendingCount;
+
         if (isAdminUnlocked) filterAdminComplaints();
       });
 
@@ -1301,6 +1338,10 @@
         marketPosts = val ? Object.values(val) : [];
         marketPosts.reverse();
         drawMarket();
+
+        var mBadge = document.getElementById('adminMarketBadge');
+        if (mBadge) mBadge.innerText = marketPosts.length;
+        if (isAdminUnlocked) renderAdminMarketModerator();
       });
 
       db.ref('users').on('value', function(snapshot) {
@@ -1775,6 +1816,7 @@
       renderBlockedUsers();
       filterAdminComplaints();
       renderRecycleBin();
+      renderAdminMarketModerator();
     }
 
     function toggleEditProfileBox() {
@@ -1975,7 +2017,7 @@
           out += '<div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:8px; margin-bottom:6px;">' +
                  '<span class="badge" style="background:'+bg+'; font-size:10px;">'+c.status+'</span>' +
                  '<strong>'+c.id+' - '+c.cat+'</strong>' +
-                 '<div style="font-size:11px; color:#64748b; margin-2px 0;">स्थान: '+c.place+'</div>' +
+                 '<div style="font-size:11px; color:#64748b; margin:2px 0;">स्थान: '+c.place+'</div>' +
                  '<div style="font-size:12px; color:#334155;">'+c.desc+'</div>';
           if (c.resolutionPhoto) {
             out += '<div style="font-size:10px; color:#16a34a; font-weight:700; margin-top:4px;"><i class="fa-solid fa-image"></i> काम पूरा होने की फोटो जुड़ी है</div>';
@@ -2184,9 +2226,6 @@
       document.getElementById('adminGateBox').style.display = 'block';
       document.getElementById('adminMainDashBox').style.display = 'none';
       document.getElementById('vAdmin').classList.remove('active');
-      drawDirectory();
-      drawNotices();
-      calcAndDrawBudget();
     }
 
     function toggleMap() {
