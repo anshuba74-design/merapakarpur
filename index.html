@@ -264,7 +264,6 @@
     }
     @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
 
-    /* Custom Tables for Mandi Rates */
     .mandi-table {
       width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;
     }
@@ -417,27 +416,22 @@
         <div class="tile-icon" style="background: #d97706;"><i class="fa-solid fa-magnifying-glass-location"></i></div>
         <span>ट्रैक स्थिति</span>
       </div>
-      <!-- NEW: MANDI RATES -->
       <div class="action-tile" id="tileMandi" onclick="switchAction('vMandi')">
         <div class="tile-icon" style="background: #16a34a;"><i class="fa-solid fa-wheat-awn"></i></div>
         <span>दैनिक मंडी भाव</span>
       </div>
-      <!-- NEW: ROZGAR & SKILL DIRECTORY -->
       <div class="action-tile" id="tileRozgar" onclick="switchAction('vRozgar')">
         <div class="tile-icon" style="background: #ea580c;"><i class="fa-solid fa-user-gear"></i></div>
         <span>मिस्त्री / रोज़गार</span>
       </div>
-      <!-- NEW: GRAMIN BAZAAR -->
       <div class="action-tile" id="tileMarket" onclick="switchAction('vMarket')">
         <div class="tile-icon" style="background: #0891b2;"><i class="fa-solid fa-shop"></i></div>
         <span>ग्रामीण हाट</span>
       </div>
-      <!-- NEW: RATION & BIJLI SCHEDULE -->
       <div class="action-tile" id="tileRationBijli" onclick="switchAction('vRationBijli')">
         <div class="tile-icon" style="background: #e11d48;"><i class="fa-solid fa-bolt"></i></div>
         <span>राशन व बिजली</span>
       </div>
-      <!-- NEW: DOWNLOADABLE FORMS -->
       <div class="action-tile" id="tileForms" onclick="switchAction('vForms')">
         <div class="tile-icon" style="background: #6366f1;"><i class="fa-solid fa-file-arrow-down"></i></div>
         <span>फॉर्म डाउनलोड</span>
@@ -585,7 +579,7 @@
       </div>
     </div>
 
-    <!-- 4. VIEW: MANDI RATES (दैनिक मंडी भाव) -->
+    <!-- 4. VIEW: MANDI RATES -->
     <div id="vMandi" class="view-content">
       <div class="card">
         <div class="card-title">
@@ -608,7 +602,7 @@
       </div>
     </div>
 
-    <!-- 5. VIEW: MISTRI & ROZGAR DIRECTORY (स्थानीय हुनर व मिस्त्री) -->
+    <!-- 5. VIEW: MISTRI & ROZGAR DIRECTORY -->
     <div id="vRozgar" class="view-content">
       <div class="card">
         <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
@@ -618,7 +612,6 @@
           </button>
         </div>
         
-        <!-- Rozgar Post Form -->
         <div id="boxAddRozgar" style="display:none; background:#fff7ed; border:1px solid #fed7aa; padding:12px; border-radius:10px; margin-bottom:12px;">
           <h4 style="font-size:13px; color:#c2410c; margin-bottom:8px;"><i class="fa-solid fa-bullhorn"></i> अपने कार्य का विज्ञापन दर्ज करें</h4>
           <div class="form-group"><input type="text" id="rzName" placeholder="आपका पूरा नाम *" required></div>
@@ -648,7 +641,7 @@
       </div>
     </div>
 
-    <!-- 6. VIEW: GRAMIN HAAT / BAZAAR (पशु, अनाज, कृषि यंत्र क्रय-विक्रय) -->
+    <!-- 6. VIEW: GRAMIN HAAT / BAZAAR -->
     <div id="vMarket" class="view-content">
       <div class="card">
         <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
@@ -658,7 +651,6 @@
           </button>
         </div>
 
-        <!-- Add Market Ad Form -->
         <div id="boxAddMarket" style="display:none; background:#ecfeff; border:1px solid #a5f3fc; padding:12px; border-radius:10px; margin-bottom:12px;">
           <h4 style="font-size:13px; color:#0e7490; margin-bottom:8px;"><i class="fa-solid fa-tag"></i> सामान / पशु बेचने का विज्ञापन लगाएं</h4>
           <div class="form-group"><input type="text" id="mktItemTitle" placeholder="सामान का नाम (उदा. मुर्रा भैंस, ट्रैक्टर रोटावेटर, सरसों भूसा) *" required></div>
@@ -684,35 +676,57 @@
       </div>
     </div>
 
-    <!-- 7. VIEW: RATION & BIJLI SCHEDULE -->
+    <!-- 7. VIEW: RATION & BIJLI SCHEDULE (DYNAMIC WITH CALL ACTION) -->
     <div id="vRationBijli" class="view-content">
       <div class="card">
         <div class="card-title">
           <i class="fa-solid fa-bolt" style="color: #e11d48;"></i> राशन वितरण एवं बिजली रोस्टर
         </div>
 
-        <!-- Ration Card Module -->
-        <div style="background:#fff1f2; border:1px solid #fecdd3; border-radius:10px; padding:12px; margin-bottom:14px;">
-          <h4 style="font-size:14px; color:#be123c; margin-bottom:6px;"><i class="fa-solid fa-bowl-rice"></i> गाँव राशन वितरण सूचना</h4>
-          <p style="font-size:12px; color:#334155; margin-bottom:4px;"><strong>कोटेदार:</strong> <span id="rationDealerName">लोड हो रहा है...</span></p>
-          <p style="font-size:12px; color:#334155; margin-bottom:4px;"><strong>वितरण स्थिति:</strong> <span id="rationStatusBadge" style="background:#16a34a; color:#fff; font-size:11px; padding:2px 8px; border-radius:8px; font-weight:700;">सक्रिय</span></p>
-          <p style="font-size:12px; color:#334155;" id="rationTimingsText">मशीन चालू समय: प्रातः 08:00 से सायं 06:00 बजे तक</p>
+        <!-- Dynamic Ration Module -->
+        <div style="background:#fff1f2; border:1px solid #fecdd3; border-radius:12px; padding:14px; margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <h4 style="font-size:14px; color:#be123c;"><i class="fa-solid fa-bowl-rice"></i> गाँव राशन वितरण सूचना</h4>
+              <p style="font-size:13px; color:#1e293b; font-weight:700; margin-top:3px;">
+                कोटेदार: <span id="rationDealerName">लोड हो रहा है...</span>
+              </p>
+              <p style="font-size:12px; color:#475569;" id="rationPhoneText">संपर्क: लोड हो रहा है...</p>
+            </div>
+            <a href="#" id="rationCallBtn" class="action-circle-btn btn-call" title="कोटेदार को कॉल करें"><i class="fa-solid fa-phone"></i></a>
+          </div>
+
+          <div style="margin-top:8px; border-top:1px dashed #fca5a5; padding-top:8px; font-size:12px;">
+            <p><strong>वितरण स्थिति:</strong> <span id="rationStatusBadge" style="background:#16a34a; color:#fff; font-size:11px; padding:2px 8px; border-radius:8px; font-weight:700;">सक्रिय</span></p>
+            <p style="margin-top:3px;"><strong>वितरण समय / दिनांक:</strong> <span id="rationTimingsText" style="color:#991b1b; font-weight:700;">प्रातः 08:00 से सायं 06:00 बजे तक</span></p>
+          </div>
         </div>
 
-        <!-- Electricity Roster Module -->
-        <div style="background:#fefce8; border:1px solid #fef08a; border-radius:10px; padding:12px;">
-          <h4 style="font-size:14px; color:#a16207; margin-bottom:6px;"><i class="fa-solid fa-plug-circle-bolt"></i> पाकरपुर फीडर बिजली रोस्टर</h4>
-          <div style="font-size:12px; color:#334155; line-height:1.6;">
-            <p><strong>दिन की आपूर्ति:</strong> 06:00 AM से 12:00 PM</p>
-            <p><strong>दोपहर रोस्टर कटौती:</strong> 12:00 PM से 03:00 PM</p>
-            <p><strong>शाम व रात आपूर्ति:</strong> 03:00 PM से 06:00 AM</p>
-            <p style="font-size:11px; color:#d97706; margin-top:4px;">* आपातकालीन फॉल्ट या मौसम खराबी पर आपूर्ति समय में परिवर्तन संभव है।</p>
+        <!-- Dynamic Electricity Module -->
+        <div style="background:#fefce8; border:1px solid #fef08a; border-radius:12px; padding:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <h4 style="font-size:14px; color:#a16207;"><i class="fa-solid fa-plug-circle-bolt"></i> पाकरपुर फीडर बिजली व्यवस्था</h4>
+              <p style="font-size:13px; color:#1e293b; font-weight:700; margin-top:3px;">
+                लाइनमैन / प्रभारी: <span id="bijliStaffName">लोड हो रहा है...</span>
+              </p>
+              <p style="font-size:12px; color:#475569;" id="bijliPhoneText">संपर्क: लोड हो रहा है...</p>
+            </div>
+            <a href="#" id="bijliCallBtn" class="action-circle-btn btn-call" title="लाइनमैन को कॉल करें"><i class="fa-solid fa-phone"></i></a>
+          </div>
+
+          <div style="margin-top:8px; border-top:1px dashed #fcd34d; padding-top:8px; font-size:12px;">
+            <p><strong>वर्तमान स्थिति:</strong> <span id="bijliStatusBadge" style="background:#0284c7; color:#fff; font-size:11px; padding:2px 8px; border-radius:8px; font-weight:700;">आपूर्ति सामान्य</span></p>
+            <p style="margin-top:4px;"><strong>तय बिजली रोस्टर समय:</strong></p>
+            <p id="bijliRosterText" style="color:#854d0e; font-weight:700; background:#fff; padding:6px; border-radius:6px; border:1px solid #fde047; margin-top:2px;">
+              सुबह 06:00 से 12:00 बजे | शाम 03:00 से रात 11:00 बजे तक
+            </p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 8. VIEW: DOWNLOADABLE FORMS (फॉर्म डाउनलोड) -->
+    <!-- 8. VIEW: DOWNLOADABLE FORMS -->
     <div id="vForms" class="view-content">
       <div class="card">
         <div class="card-title">
@@ -933,12 +947,22 @@
             </div>
           </div>
 
-          <!-- ADMIN SQUARE GRID TILES WITH AUTO-CLEARING BADGES -->
+          <!-- ADMIN SQUARE GRID TILES WITH SPECIFIC RATION & BIJLI CONTROLS -->
           <div class="admin-square-grid">
             <div class="admin-square-tile" onclick="openAdminSection('secUsersForm')">
               <span class="notify-badge" id="badgePendingUsers">0</span>
               <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-user-check"></i></div>
               <span>नागरिक खाते</span>
+            </div>
+            <!-- RATION UPDATE TILE -->
+            <div class="admin-square-tile" onclick="openAdminSection('secRationForm')">
+              <div class="adm-tile-icon" style="background: #e11d48;"><i class="fa-solid fa-bowl-rice"></i></div>
+              <span>राशन वितरण सेट</span>
+            </div>
+            <!-- BIJLI UPDATE TILE -->
+            <div class="admin-square-tile" onclick="openAdminSection('secBijliForm')">
+              <div class="adm-tile-icon" style="background: #d97706;"><i class="fa-solid fa-bolt"></i></div>
+              <span>बिजली रोस्टर सेट</span>
             </div>
             <div class="admin-square-tile" onclick="openAdminSection('secMandiForm')">
               <div class="adm-tile-icon" style="background: #16a34a;"><i class="fa-solid fa-wheat-awn"></i></div>
@@ -964,13 +988,41 @@
               <div class="adm-tile-icon" style="background: #be185d;"><i class="fa-solid fa-images"></i></div>
               <span>विकास गैलरी</span>
             </div>
-            <div class="admin-square-tile" onclick="openAdminSection('secAddSchemeForm')">
-              <div class="adm-tile-icon" style="background: #059669;"><i class="fa-solid fa-plus-circle"></i></div>
-              <span>योजना जोड़ें</span>
-            </div>
           </div>
 
-          <!-- ADMIN UPDATE MANDI RATES SECTION -->
+          <!-- 1. ADMIN UPDATE RATION FORM -->
+          <div class="admin-accordion-body" id="secRationForm" style="background:#fff1f2; border-color:#fecdd3;">
+            <h4 style="font-size:13px; color:#be123c; margin-bottom:8px;"><i class="fa-solid fa-bowl-rice"></i> कोटेदार व राशन वितरण समय सेट करें</h4>
+            <div class="form-group"><label>कोटेदार का नाम:</label><input type="text" id="admRationDealer" placeholder="उदा. श्री रामप्रकाश पाल"></div>
+            <div class="form-group"><label>कोटेदार का मोबाइल नंबर:</label><input type="tel" id="admRationPhone" maxlength="10" placeholder="10-अंकीय नंबर"></div>
+            <div class="form-group"><label>वितरण स्थिति:</label>
+              <select id="admRationStatus">
+                <option value="सक्रिय (वितरण जारी)">सक्रिय (वितरण जारी है)</option>
+                <option value="लंबित (शीघ्र शुरू होगा)">लंबित (शीघ्र शुरू होगा)</option>
+                <option value="समाप्त (इस माह का वितरण पूर्ण)">समाप्त (इस माह का वितरण पूर्ण)</option>
+              </select>
+            </div>
+            <div class="form-group"><label>वितरण का समय व तारीख:</label><input type="text" id="admRationTiming" placeholder="उदा. 15 से 25 तारीख, प्रातः 08:00 से सायं 06:00 बजे"></div>
+            <button class="btn btn-crimson" style="padding:7px; font-size:12px;" onclick="saveRationInfoCloud()">राशन विवरण प्रकाशित करें</button>
+          </div>
+
+          <!-- 2. ADMIN UPDATE BIJLI FORM -->
+          <div class="admin-accordion-body" id="secBijliForm" style="background:#fefce8; border-color:#fef08a;">
+            <h4 style="font-size:13px; color:#a16207; margin-bottom:8px;"><i class="fa-solid fa-bolt"></i> बिजली रोस्टर व लाइनमैन विवरण सेट करें</h4>
+            <div class="form-group"><label>लाइनमैन / बिजली कर्मचारी का नाम:</label><input type="text" id="admBijliStaff" placeholder="उदा. संतोष कुमार (लाइनमैन)"></div>
+            <div class="form-group"><label>कर्मचारी का मोबाइल नंबर:</label><input type="tel" id="admBijliPhone" maxlength="10" placeholder="10-अंकीय नंबर"></div>
+            <div class="form-group"><label>आपूर्ति स्थिति:</label>
+              <select id="admBijliStatus">
+                <option value="आपूर्ति सामान्य (Normal)">आपूर्ति सामान्य (Normal)</option>
+                <option value="रोस्टर कटौती (Power Cut)">रोस्टर कटौती (Power Cut)</option>
+                <option value="फॉल्ट सुधार कार्य जारी">फॉल्ट सुधार कार्य जारी (Temporary Off)</option>
+              </select>
+            </div>
+            <div class="form-group"><label>तय बिजली समय (रोस्टर विवरण):</label><textarea id="admBijliRoster" placeholder="उदा. सुबह 06:00 से 12:00 बजे | शाम 03:00 से रात 11:00 बजे तक..." style="min-height:50px;"></textarea></div>
+            <button class="btn btn-amber" style="padding:7px; font-size:12px;" onclick="saveBijliInfoCloud()">बिजली रोस्टर प्रकाशित करें</button>
+          </div>
+
+          <!-- 3. ADMIN UPDATE MANDI RATES SECTION -->
           <div class="admin-accordion-body" id="secMandiForm" style="background:#f0fdf4; border-color:#86efac;">
             <h4 style="font-size:13px; color:#166534; margin-bottom:6px;"><i class="fa-solid fa-wheat-awn"></i> दैनिक मंडी भाव अपडेट करें</h4>
             <div class="form-group">
@@ -985,15 +1037,6 @@
             <div class="form-group"><input type="text" id="admMandiCrop" placeholder="फसल/सब्जी (उदा. गेहूं, धान, आलू, टमाटर)"></div>
             <div class="form-group"><input type="text" id="admMandiPrice" placeholder="भाव (उदा. ₹2450 / क्विंटल या ₹20 / किलो)"></div>
             <button class="btn btn-emerald" style="padding:7px; font-size:12px;" onclick="saveMandiRateCloud()">मंडी भाव प्रकाशित करें</button>
-          </div>
-
-          <!-- ADMIN ADD NEW SCHEME FORM -->
-          <div class="admin-accordion-body" id="secAddSchemeForm" style="background:#f0fdf4; border-color:#86efac;">
-            <h4 style="font-size:13px; color:#166534; margin-bottom:6px;"><i class="fa-solid fa-hand-holding-hand"></i> नई योजना व डायरेक्ट लिंक जोड़ें</h4>
-            <div class="form-group"><input type="text" id="admSchTitle" placeholder="योजना नाम"></div>
-            <div class="form-group"><textarea id="admSchDesc" placeholder="विवरण..." style="min-height:50px;"></textarea></div>
-            <div class="form-group"><input type="url" id="admSchLink" placeholder="वेबसाइट लिंक https://..."></div>
-            <button class="btn btn-emerald" style="padding:7px; font-size:12px;" onclick="saveCustomSchemeCloud()">योजना प्रकाशित करें</button>
           </div>
 
           <!-- BROADCAST FORM -->
@@ -1220,7 +1263,7 @@
     }
 
     function openAdminSection(sectionId) {
-      var allSections = ['secBroadcastForm', 'secNoticeForm', 'secDirForm', 'secKoshForm', 'secGalleryForm', 'secUsersForm', 'secAddSchemeForm', 'secMandiForm'];
+      var allSections = ['secBroadcastForm', 'secNoticeForm', 'secDirForm', 'secKoshForm', 'secGalleryForm', 'secUsersForm', 'secMandiForm', 'secRationForm', 'secBijliForm'];
       allSections.forEach(function(sec) {
         var el = document.getElementById(sec);
         if (sec === sectionId) {
@@ -1452,14 +1495,12 @@
         drawCustomSchemes();
       });
 
-      // MANDI RATES LISTENER
       db.ref('mandi_rates').on('value', function(snapshot) {
         var val = snapshot.val();
         mandiRatesList = val ? Object.values(val) : [];
         renderMandiRates();
       });
 
-      // ROZGAR / MISTRI LISTENER
       db.ref('rozgar_registry').on('value', function(snapshot) {
         var val = snapshot.val();
         rozgarList = val ? Object.values(val) : [];
@@ -1467,7 +1508,6 @@
         drawRozgarList();
       });
 
-      // GRAMIN BAZAAR LISTENER
       db.ref('gramin_market').on('value', function(snapshot) {
         var val = snapshot.val();
         marketList = val ? Object.values(val) : [];
@@ -1475,13 +1515,39 @@
         drawMarketList();
       });
 
-      // RATION & BIJLI INFO
+      // REALTIME RATION INFO LISTENER
       db.ref('ration_info').on('value', function(snapshot) {
         var val = snapshot.val();
         if (val) {
           document.getElementById('rationDealerName').innerText = val.dealer || "श्री रामप्रकाश पाल";
-          document.getElementById('rationStatusBadge').innerText = val.status || "सक्रिय (वितरण जारी)";
+          document.getElementById('rationPhoneText').innerText = val.phone ? "संपर्क: +91 " + val.phone : "संपर्क उपलब्ध नहीं";
+          document.getElementById('rationCallBtn').href = val.phone ? "tel:" + val.phone : "#";
+          document.getElementById('rationStatusBadge').innerText = val.status || "सक्रिय";
           document.getElementById('rationTimingsText').innerText = val.timing || "प्रातः 08:00 से सायं 06:00 बजे तक";
+
+          // Admin Form Auto-fill
+          document.getElementById('admRationDealer').value = val.dealer || "";
+          document.getElementById('admRationPhone').value = val.phone || "";
+          document.getElementById('admRationStatus').value = val.status || "सक्रिय (वितरण जारी)";
+          document.getElementById('admRationTiming').value = val.timing || "";
+        }
+      });
+
+      // REALTIME BIJLI INFO LISTENER
+      db.ref('bijli_info').on('value', function(snapshot) {
+        var val = snapshot.val();
+        if (val) {
+          document.getElementById('bijliStaffName').innerText = val.staff || "श्री संतोष कुमार (लाइनमैन)";
+          document.getElementById('bijliPhoneText').innerText = val.phone ? "संपर्क: +91 " + val.phone : "संपर्क उपलब्ध नहीं";
+          document.getElementById('bijliCallBtn').href = val.phone ? "tel:" + val.phone : "#";
+          document.getElementById('bijliStatusBadge').innerText = val.status || "आपूर्ति सामान्य";
+          document.getElementById('bijliRosterText').innerText = val.roster || "सुबह 06:00 से 12:00 बजे | शाम 03:00 से रात 11:00 बजे तक";
+
+          // Admin Form Auto-fill
+          document.getElementById('admBijliStaff').value = val.staff || "";
+          document.getElementById('admBijliPhone').value = val.phone || "";
+          document.getElementById('admBijliStatus').value = val.status || "आपूर्ति सामान्य (Normal)";
+          document.getElementById('admBijliRoster').value = val.roster || "";
         }
       });
     }
@@ -1526,21 +1592,51 @@
       }
     }
 
+    /* RATION & BIJLI SAVE FUNCTIONS FOR ADMIN */
+    function saveRationInfoCloud() {
+      var d = document.getElementById('admRationDealer').value.trim();
+      var p = document.getElementById('admRationPhone').value.trim();
+      var s = document.getElementById('admRationStatus').value;
+      var t = document.getElementById('admRationTiming').value.trim();
+
+      if (!d || !p) return alert("कृपया कोटेदार का नाम और मोबाइल नंबर भरें!");
+
+      db.ref('ration_info').set({
+        dealer: d, phone: p, status: s, timing: t, date: new Date().toLocaleDateString('hi-IN')
+      }).then(function() {
+        alert("राशन वितरण विवरण सफलतापूर्वक सुरक्षित हो गया!");
+      });
+    }
+
+    function saveBijliInfoCloud() {
+      var staff = document.getElementById('admBijliStaff').value.trim();
+      var p = document.getElementById('admBijliPhone').value.trim();
+      var s = document.getElementById('admBijliStatus').value;
+      var r = document.getElementById('admBijliRoster').value.trim();
+
+      if (!staff || !p) return alert("कृपया लाइनमैन का नाम और मोबाइल नंबर भरें!");
+
+      db.ref('bijli_info').set({
+        staff: staff, phone: p, status: s, roster: r, date: new Date().toLocaleDateString('hi-IN')
+      }).then(function() {
+        alert("बिजली रोस्टर व लाइनमैन विवरण सफलतापूर्वक सुरक्षित हो गया!");
+      });
+    }
+
     /* 1. MANDI RATES FUNCTIONS */
     function renderMandiRates() {
       var city = document.getElementById('mandiSelect').value;
       var div = document.getElementById('mandiTableDiv');
       var filtered = mandiRatesList.filter(function(m){ return m.city === city; });
 
-      // Fallback base data if database empty
       if (filtered.length === 0) {
         filtered = [
-          { crop: "गेहूँ (Wheat)", price: "₹2,425 / क्विंटल", date: "आज" },
-          { crop: "धान (Paddy)", price: "₹2,183 / क्विंटल", date: "आज" },
-          { crop: "सरसों (Mustard)", price: "₹5,400 / क्विंटल", date: "आज" },
-          { crop: "आलू (Potato)", price: "₹18 - ₹22 / किलो", date: "आज" },
-          { crop: "टमाटर (Tomato)", price: "₹25 - ₹30 / किलो", date: "आज" },
-          { crop: "प्याज (Onion)", price: "₹35 - ₹40 / किलो", date: "आज" }
+          { crop: "गेहूँ (Wheat)", price: "₹2,425 / क्विंटल" },
+          { crop: "धान (Paddy)", price: "₹2,183 / क्विंटल" },
+          { crop: "सरसों (Mustard)", price: "₹5,400 / क्विंटल" },
+          { crop: "आलू (Potato)", price: "₹18 - ₹22 / किलो" },
+          { crop: "टमाटर (Tomato)", price: "₹25 - ₹30 / किलो" },
+          { crop: "प्याज (Onion)", price: "₹35 - ₹40 / किलो" }
         ];
       }
 
@@ -1562,7 +1658,7 @@
       db.ref('mandi_rates/' + id).set({
         id: id, city: city, crop: crop, price: price, date: new Date().toLocaleDateString('hi-IN')
       }).then(function() {
-        alert(city + " मंडी का भाव सफलतापूर्वक अपडेट हो गया!");
+        alert(city + " मंडी का भाव अपडेट हो गया!");
         document.getElementById('admMandiCrop').value = "";
         document.getElementById('admMandiPrice').value = "";
       });
@@ -1585,13 +1681,13 @@
       var r = document.getElementById('rzRate').value.trim();
       var exp = document.getElementById('rzExp').value.trim();
 
-      if (!n || p.length < 10 || !s || !r) return alert("कृपया सभी आवश्यक विवरण (*) भरें!");
+      if (!n || p.length < 10 || !s || !r) return alert("कृपया सभी आवश्यक विवरण भरें!");
 
       var id = "RZG-" + Date.now();
       var obj = { id: id, name: n, phone: p, skill: s, rate: r, exp: exp, date: new Date().toLocaleDateString('hi-IN') };
 
       db.ref('rozgar_registry/' + id).set(obj).then(function() {
-        alert("आपकी रोज़गार प्रोफाइल सफलतापूर्वक जुड़ गई है!");
+        alert("आपकी रोज़गार प्रोफाइल जुड़ गई है!");
         document.getElementById('boxAddRozgar').style.display = 'none';
         document.getElementById('rzRate').value = "";
         document.getElementById('rzExp').value = "";
@@ -1601,7 +1697,7 @@
     function drawRozgarList() {
       var d = document.getElementById('rozgarListDiv');
       if (rozgarList.length === 0) {
-        d.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>अभी कोई मिस्त्री/कारीगर सूची में नहीं है। 'अपना काम जोड़ें' से पंजीकरण करें।</p>";
+        d.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>अभी कोई मिस्त्री/कारीगर सूची में नहीं है।</p>";
         return;
       }
       var h = "";
@@ -1625,9 +1721,7 @@
     }
 
     function deleteRozgarCloud(id) {
-      if (confirm("क्या आप इस प्रोफाइल को हटाना चाहते हैं?")) {
-        db.ref('rozgar_registry/' + id).remove();
-      }
+      if (confirm("प्रोफाइल हटाना चाहते हैं?")) db.ref('rozgar_registry/' + id).remove();
     }
 
     /* 3. GRAMIN BAZAAR FUNCTIONS */
@@ -1684,7 +1778,7 @@
              (item.desc ? '<p style="font-size:11px; color:#64748b; margin-top:2px;">' + item.desc + '</p>' : '') +
              '</div>' +
              '<div style="text-align:right;">' +
-             '<a href="tel:' + item.phone + '" class="action-circle-btn btn-call" title="खरीदने हेतु कॉल करें"><i class="fa-solid fa-phone"></i></a>';
+             '<a href="tel:' + item.phone + '" class="action-circle-btn btn-call" title="कॉल करें"><i class="fa-solid fa-phone"></i></a>';
         if (isAdminUnlocked) {
           h += '<br><button onclick="deleteMarketCloud(\''+item.id+'\')" class="adm-btn-del" style="margin-top:6px;"><i class="fa-solid fa-trash"></i></button>';
         }
@@ -1699,9 +1793,7 @@
     }
 
     function deleteMarketCloud(id) {
-      if (confirm("क्या आप इस विज्ञापन को हटाना चाहते हैं?")) {
-        db.ref('gramin_market/' + id).remove();
-      }
+      if (confirm("विज्ञापन हटाना चाहते हैं?")) db.ref('gramin_market/' + id).remove();
     }
 
     /* AUDIO RECORDING ENGINE */
@@ -1849,7 +1941,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* DIRECTORY / HELPLINE FULL CRUD */
     function drawDirectory() {
       var d = document.getElementById('directoryListDiv');
       if (directoryList.length === 0) {
@@ -1881,7 +1972,7 @@
       if (!d) return;
 
       if (directoryList.length === 0) {
-        d.innerHTML = "<p style='color:#64748b; font-size:11px; padding:6px;'>कोई हेल्पलाइन नंबर नहीं है। ऊपर दिए फॉर्म से नया नंबर जोड़ें।</p>";
+        d.innerHTML = "<p style='color:#64748b; font-size:11px; padding:6px;'>कोई हेल्पलाइन नंबर नहीं है।</p>";
         return;
       }
 
@@ -1901,11 +1992,11 @@
       var r = document.getElementById('admDirRole').value.trim();
       var n = document.getElementById('admDirName').value.trim();
       var p = document.getElementById('admDirPhone').value.trim();
-      if (!r || !n || !p) return alert("कृपया पद, नाम और मोबाइल नंबर भरें!");
+      if (!r || !n || !p) return alert("कृपया सभी फ़ील्ड भरें!");
 
       var id = "DIR-" + Date.now();
       db.ref('directory/' + id).set({ id: id, role: r, name: n, phone: p }).then(function() {
-        alert("हेल्पलाइन नंबर सफलतापूर्वक जुड़ गया!");
+        alert("हेल्पलाइन नंबर जुड़ गया!");
         document.getElementById('admDirRole').value = "";
         document.getElementById('admDirName').value = "";
         document.getElementById('admDirPhone').value = "";
@@ -1920,7 +2011,7 @@
       var body = '<div class="form-group"><label>पद / सेवा:</label><input type="text" id="editDirRole" value="'+item.role+'"></div>' +
                  '<div class="form-group"><label>नाम:</label><input type="text" id="editDirName" value="'+item.name+'"></div>' +
                  '<div class="form-group"><label>मोबाइल नंबर:</label><input type="tel" id="editDirPhone" maxlength="10" value="'+item.phone+'"></div>' +
-                 '<button class="btn btn-emerald" onclick="saveEditedDirectory(\''+item.id+'\')"><i class="fa-solid fa-check"></i> अपडेट सुरक्षित करें</button>';
+                 '<button class="btn btn-emerald" onclick="saveEditedDirectory(\''+item.id+'\')"><i class="fa-solid fa-check"></i> सुरक्षित करें</button>';
       document.getElementById('adminEditModalBody').innerHTML = body;
       document.getElementById('adminEditModal').classList.add('active');
     }
@@ -1929,23 +2020,18 @@
       var r = document.getElementById('editDirRole').value.trim();
       var n = document.getElementById('editDirName').value.trim();
       var p = document.getElementById('editDirPhone').value.trim();
-      if (!r || !n || !p) return alert("कृपया सभी फ़ील्ड भरें!");
+      if (!r || !n || !p) return alert("सभी फ़ील्ड भरें!");
 
       db.ref('directory/' + id).update({ role: r, name: n, phone: p }).then(function() {
-        alert("हेल्पलाइन विवरण अपडेट हो गया!");
+        alert("अपडेट हो गया!");
         closeAdminEditModal();
       });
     }
 
     function deleteDirContactCloud(id) {
-      if (confirm("क्या आप इस हेल्पलाइन नंबर को हटाना चाहते हैं?")) {
-        db.ref('directory/' + id).remove().then(function() {
-          alert("नंबर हटा दिया गया!");
-        });
-      }
+      if (confirm("हेल्पलाइन नंबर हटाना चाहते हैं?")) db.ref('directory/' + id).remove();
     }
 
-    /* NOTICE BOARD FULL CRUD */
     function drawNotices() {
       var d = document.getElementById('noticeListDiv');
       if (notices.length === 0) {
@@ -1960,12 +2046,9 @@
              '<span style="font-size:10px; color:#64748b;">' + n.date + '</span>' +
              '</div>' +
              '<p style="font-size:13px; color:#334155; margin-top:6px;">' + n.desc + '</p>';
-        
         if (isAdminUnlocked) {
           h += '<div class="adm-action-btn-group" style="margin-top:8px;">' +
-               '<button onclick="openEditNoticeModal(\''+n.id+'\')" class="adm-btn-edit"><i class="fa-solid fa-pen"></i> एडिट</button>' +
-               '<button onclick="deleteNoticeCloud(\''+n.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i> हटाएं</button>' +
-               '</div>';
+               '<button onclick="deleteNoticeCloud(\''+n.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i> हटाएं</button></div>';
         }
         h += '</div>';
       });
@@ -1975,7 +2058,7 @@
     function postAdminNoticeCloud() {
       var t = document.getElementById('admNoticeTitle').value.trim();
       var d = document.getElementById('admNoticeDesc').value.trim();
-      if (!t || !d) return alert("कृपया शीर्षक और विवरण भरें!");
+      if (!t || !d) return alert("शीर्षक और विवरण भरें!");
       var id = "NOT-" + Date.now();
       db.ref('notices/' + id).set({ id: id, title: t, desc: d, date: new Date().toLocaleDateString('hi-IN') }).then(function() {
         alert("सूचना प्रकाशित हो गई!");
@@ -1984,52 +2067,8 @@
       });
     }
 
-    function openEditNoticeModal(id) {
-      var n = notices.find(function(item){ return item.id === id; });
-      if (!n) return;
-
-      document.getElementById('adminEditModalTitle').innerHTML = '<i class="fa-solid fa-bullhorn"></i> नोटिस संपादित करें';
-      var body = '<div class="form-group"><label>सूचना शीर्षक:</label><input type="text" id="editNoticeTitle" value="'+n.title+'"></div>' +
-                 '<div class="form-group"><label>विस्तृत विवरण:</label><textarea id="editNoticeDesc">'+n.desc+'</textarea></div>' +
-                 '<button class="btn btn-emerald" onclick="saveEditedNotice(\''+n.id+'\')"><i class="fa-solid fa-check"></i> नोटिस अपडेट करें</button>';
-      document.getElementById('adminEditModalBody').innerHTML = body;
-      document.getElementById('adminEditModal').classList.add('active');
-    }
-
-    function saveEditedNotice(id) {
-      var t = document.getElementById('editNoticeTitle').value.trim();
-      var d = document.getElementById('editNoticeDesc').value.trim();
-      if (!t || !d) return alert("कृपया शीर्षक और विवरण भरें!");
-
-      db.ref('notices/' + id).update({ title: t, desc: d }).then(function() {
-        alert("नोटिस सफलता पूर्वक अपडेट हो गया!");
-        closeAdminEditModal();
-      });
-    }
-
     function deleteNoticeCloud(id) {
-      if (confirm("क्या आप इस नोटिस को हटाना चाहते हैं?")) {
-        db.ref('notices/' + id).remove();
-      }
-    }
-
-    /* CUSTOM SCHEMES CRUD */
-    function saveCustomSchemeCloud() {
-      var t = document.getElementById('admSchTitle').value.trim();
-      var d = document.getElementById('admSchDesc').value.trim();
-      var l = document.getElementById('admSchLink').value.trim();
-
-      if (!t || !d || !l) return alert("कृपया योजना नाम, विवरण और लिंक भरें!");
-
-      var id = "SCH-" + Date.now();
-      db.ref('custom_schemes/' + id).set({
-        id: id, title: t, desc: d, link: l, date: new Date().toLocaleDateString('hi-IN')
-      }).then(function() {
-        alert("योजना जुड़ गई!");
-        document.getElementById('admSchTitle').value = "";
-        document.getElementById('admSchDesc').value = "";
-        document.getElementById('admSchLink').value = "";
-      });
+      if (confirm("नोटिस हटाना चाहते हैं?")) db.ref('notices/' + id).remove();
     }
 
     function drawCustomSchemes() {
@@ -2041,32 +2080,15 @@
       ];
 
       var h = "";
-      customSchemesList.forEach(function(s) {
-        h += '<div class="scheme-card" style="border-left: 4px solid var(--success);">' +
-             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
-             '<h4 style="font-size:14px; color:#166534;"><i class="fa-solid fa-star" style="color:#eab308;"></i> ' + s.title + '</h4>';
-        if (isAdminUnlocked) {
-          h += '<button onclick="deleteCustomSchemeCloud(\''+s.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i></button>';
-        }
-        h += '</div><p style="font-size:12px; color:#475569; margin:4px 0;">' + s.desc + '</p>' +
-             '<a href="' + s.link + '" target="_blank" class="btn-direct-gov"><i class="fa-solid fa-arrow-up-right-from-square"></i> ऑनलाइन पोर्टल पर जाएं</a></div>';
-      });
-
       baseSchemes.forEach(function(s) {
         h += '<div class="scheme-card" style="border-left: 4px solid #0284c7;">' +
              '<h4 style="font-size:14px; color:#0369a1;">' + s.title + '</h4>' +
              '<p style="font-size:12px; color:#475569; margin:4px 0;">' + s.desc + '</p>' +
              '<a href="' + s.link + '" target="_blank" class="btn-direct-gov"><i class="fa-solid fa-arrow-up-right-from-square"></i> वेबसाइट पर जाएं</a></div>';
       });
-
       d.innerHTML = h;
     }
 
-    function deleteCustomSchemeCloud(id) {
-      if (confirm("योजना हटाना चाहते हैं?")) db.ref('custom_schemes/' + id).remove();
-    }
-
-    /* KOSH & BUDGET CRUD */
     function calcAndDrawBudget() {
       var totalIn = 0, totalOut = 0;
       fundsList.forEach(function(f){ totalIn += Number(f.amount || 0); });
@@ -2136,7 +2158,7 @@
       var m = document.getElementById('admBcDesc').value.trim();
       if (!t || !m) return alert("शीर्षक और संदेश भरें!");
       db.ref('broadcast_alert').set({ active: true, title: t, message: m }).then(function() {
-        alert("ब्रॉडकास्ट अलर्ट जारी कर दिया गया!");
+        alert("अलर्ट प्रकाशित हो गया!");
       });
     }
 
@@ -2520,17 +2542,17 @@
     function rejectCitizenCloud(phone) { db.ref('pending_users/' + phone).remove(); }
 
     function blockCitizenPermanentlyCloud(phone) {
-      if (confirm("क्या आप सचमुच नागरिक (" + phone + ") को हमेशा के लिए ब्लॉक करना चाहते हैं?")) {
+      if (confirm("क्या आप सचमुच नागरिक (" + phone + ") को ब्लॉक करना चाहते हैं?")) {
         db.ref('blocked_phones/' + phone).set(phone).then(function() {
           db.ref('pending_users/' + phone).remove();
           db.ref('users/' + phone).remove();
-          alert("मोबाइल नंबर (" + phone + ") ब्लॉक हो गया!");
+          alert("मोबाइल नंबर ब्लॉक हो गया!");
         });
       }
     }
 
     function unblockCitizenCloud(phone) {
-      if (confirm("नागरिक (" + phone + ") को अनब्लॉक करना चाहते हैं?")) {
+      if (confirm("नागरिक को अनब्लॉक करना चाहते हैं?")) {
         db.ref('blocked_phones/' + phone).remove().then(function() {
           alert("नागरिक अनब्लॉक हो चुका है!");
         });
@@ -2551,7 +2573,7 @@
         h += '<div style="display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid #e2e8f0; padding:6px 10px; border-radius:6px; margin-bottom:5px;">' +
              '<div style="display:flex; align-items:center;">' + avatarThumbnail + '<div><b>' + u.name + '</b> (' + u.phone + ')<br><span style="color:#64748b; font-size:10px;">टोला: ' + u.ward + '</span></div></div>' +
              '<div style="display:flex; gap:6px;">' +
-             '<button onclick="openCitizenDetailModal(\''+u.phone+'\')" style="background:#0284c7; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-eye"></i> विवरण</button>' +
+             '<button onclick="openCitizenDetailModal(\''+u.phone+'\')" style="background:#0284c7; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">विवरण</button>' +
              '<button onclick="blockCitizenPermanentlyCloud(\''+u.phone+'\')" class="adm-btn-block"><i class="fa-solid fa-ban"></i></button>' +
              '<button onclick="deleteCitizenUserCloud(\''+u.phone+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i></button>' +
              '</div></div>';
