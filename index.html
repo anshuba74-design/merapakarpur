@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta name="google-site-verification" content="jQKv4rlBXQ0Z-Q0c-sPl0SgRGPl1UUu2W--Hnz3WEio" />
+  <meta name="google-site-verification" content="jQKv4rlBXQ0Z-Q0c-sPl0SgRGPl1UUu2W--Hnz3WEio" />
 
   <title>मेरा पाकरपुर - ग्राम जन समस्या निवारण एवं सेवा पोर्टल</title>
   <meta name="description" content="मेरा पाकरपुर ग्राम पंचायत का आधिकारिक डिजिटल पोर्टल। जन शिकायतें, सूचना बोर्ड, 7-दिवसीय मौसम, विकास कोष व सरकारी योजनाएं।">
@@ -172,6 +172,7 @@
     label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #334155; }
     input, select, textarea {
       width: 100%; padding: 9px 11px; border: 1.5px solid var(--border); border-radius: 9px; font-size: 14px; outline: none; background: #ffffff; font-family: inherit;
+      touch-action: manipulation;
     }
     textarea { min-height: 70px; resize: vertical; }
 
@@ -185,15 +186,15 @@
     .btn-whatsapp { background: #25d366; color: #fff; }
     .btn-direct-gov { background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; padding: 8px 12px; font-size: 12px; border-radius: 8px; margin-top: 8px; display: inline-flex; }
 
-    /* Admin Action Mini Buttons */
-    .adm-action-btn-group {
-      display: flex; gap: 5px; align-items: center;
-    }
+    .adm-action-btn-group { display: flex; gap: 5px; align-items: center; }
     .adm-btn-edit {
       background: #eff6ff; color: #0284c7; border: 1px solid #93c5fd; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
     }
     .adm-btn-del {
       background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+    .adm-btn-block {
+      background: #450a0a; color: #fecaca; border: 1px solid #dc2626; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
     }
 
     .complaint-card, .notice-card, .directory-card, .scheme-card, .fund-item-card, .gallery-card {
@@ -522,7 +523,7 @@
       </div>
     </div>
 
-    <!-- 5. VIEW: EMERGENCY DIRECTORY (UPDATED WITH ADMIN EDIT/DELETE) -->
+    <!-- 5. VIEW: EMERGENCY DIRECTORY -->
     <div id="vDirectory" class="view-content">
       <div class="card">
         <div class="card-title">
@@ -583,7 +584,7 @@
       </div>
     </div>
 
-    <!-- 9. VIEW: SARKARI YOJNA (DIRECT PORTAL LINKS) -->
+    <!-- 9. VIEW: SARKARI YOJNA -->
     <div id="vSchemes" class="view-content">
       <div class="card">
         <div class="card-title">
@@ -595,7 +596,6 @@
         
         <div id="schemesDynamicListDiv"></div>
 
-        <!-- Default Essential Central & State Schemes -->
         <div class="scheme-card" style="border-left: 4px solid #0284c7;">
           <h4 style="font-size:14px; color:#0369a1;"><i class="fa-solid fa-id-card-clip"></i> आयुष्मान भारत कार्ड (Ayushman Card)</h4>
           <p style="font-size:12px; color:#475569; margin:4px 0;">हर पात्र परिवार को सरकारी व निजी अस्पतालों में ₹5 लाख तक का सालाना मुफ़्त इलाज।</p>
@@ -828,13 +828,18 @@
             <button class="btn btn-amber" style="padding:7px; font-size:12px;" onclick="postAdminNoticeCloud()">सूचना प्रकाशित करें</button>
           </div>
 
-          <!-- 3. HELPLINE FORM BODY -->
+          <!-- 3. HELPLINE MANAGEMENT (ADMIN LIST & CRUD) -->
           <div class="admin-accordion-body" id="secDirForm" style="background:#eef2ff; border-color:#c7d2fe;">
-            <h4 style="font-size:13px; color:#3730a3; margin-bottom:6px;"><i class="fa-solid fa-address-book"></i> हेल्पलाइन जोड़ें</h4>
+            <h4 style="font-size:13px; color:#3730a3; margin-bottom:6px;"><i class="fa-solid fa-address-book"></i> नई हेल्पलाइन जोड़ें</h4>
             <div class="form-group"><input type="text" id="admDirRole" placeholder="पद / सेवा (उदा. ग्राम सचिव, लेखपाल)"></div>
             <div class="form-group"><input type="text" id="admDirName" placeholder="नाम"></div>
             <div class="form-group"><input type="tel" id="admDirPhone" maxlength="10" placeholder="10-अंकीय मोबाइल"></div>
             <button class="btn btn-emerald" style="padding:7px; font-size:12px;" onclick="saveDirectoryContactCloud()">डायरेक्टरी में जोड़ें</button>
+
+            <div style="margin-top:12px; border-top:1px dashed #c7d2fe; padding-top:8px;">
+              <span style="font-weight:700; font-size:12px; color:#3730a3;">मौजूदा हेल्पलाइन सूची (Edit / Delete करें):</span>
+              <div id="admDirectoryListInner" style="max-height:180px; overflow-y:auto; margin-top:6px; font-size:12px;"></div>
+            </div>
           </div>
 
           <!-- 4. BANK KOSH BODY -->
@@ -864,7 +869,7 @@
             <button class="btn btn-crimson" style="padding:7px; font-size:12px;" onclick="saveGalleryItemCloud()">प्रकाशित करें</button>
           </div>
 
-          <!-- 6. USERS MANAGEMENT BODY -->
+          <!-- 6. USERS MANAGEMENT (BLOCK & UNBLOCK) -->
           <div class="admin-accordion-body" id="secUsersForm" style="background:#f8fafc; border-color:#cbd5e1;">
             <h4 style="font-size:13px; color:#1e293b; margin-bottom:6px;"><i class="fa-solid fa-users"></i> नागरिक पंजीकरण व सक्रिय नागरिक</h4>
             <div style="margin-bottom:10px;">
@@ -880,10 +885,16 @@
               <div id="pendingReqListDiv" style="font-size:11px; margin-top:4px;"></div>
             </div>
 
-            <div style="background:#ffffff; border:1px solid #cbd5e1; padding:8px; border-radius:8px;">
+            <div style="background:#ffffff; border:1px solid #cbd5e1; padding:8px; border-radius:8px; margin-bottom:8px;">
               <span style="font-weight:700; font-size:11px; color:#334155;">सक्रिय नागरिक (<span id="activeUserCount">0</span>):</span>
-              <p style="font-size:10px; color:#64748b; margin-bottom:4px;">* विवरण और शिकायत स्टेटस देखने हेतु नागरिक पर क्लिक करें:</p>
-              <div id="activeUserListDiv" style="max-height:160px; overflow-y:auto; font-size:11px;"></div>
+              <div id="activeUserListDiv" style="max-height:160px; overflow-y:auto; font-size:11px; margin-top:4px;"></div>
+            </div>
+
+            <!-- BLOCKED USERS SECTION -->
+            <div style="background:#fef2f2; border:1px solid #fecaca; padding:8px; border-radius:8px;">
+              <span style="font-weight:700; font-size:11px; color:#991b1b;"><i class="fa-solid fa-user-slash"></i> प्रतिबंधित नागरिक सूची (<span id="blockedUserCount">0</span>):</span>
+              <p style="font-size:10px; color:#64748b; margin-bottom:4px;">अनुरोध आने पर नागरिक को दोबारा अनब्लॉक करें:</p>
+              <div id="blockedUserListDiv" style="max-height:140px; overflow-y:auto; font-size:11px;"></div>
             </div>
           </div>
 
@@ -1025,6 +1036,7 @@
           el.style.display = 'none';
         }
       });
+      if (sectionId === 'secDirForm') renderAdminDirectoryInner();
     }
 
     function fetchPakarpurWeather() {
@@ -1175,6 +1187,12 @@
           if (updatedSelf) {
             curUser = updatedSelf;
             localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
+          } else {
+            // User was removed or blocked
+            if (!isAdminUnlocked) {
+              alert("आपका खाता उपलब्ध नहीं है या व्यवस्थापक द्वारा प्रतिबंधित कर दिया गया है।");
+              userLogout();
+            }
           }
         }
         syncUserState();
@@ -1189,7 +1207,8 @@
 
       db.ref('blocked_phones').on('value', function(snapshot) {
         var val = snapshot.val();
-        blockedPhones = val ? Object.values(val) : [];
+        blockedPhones = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
+        if (isAdminUnlocked) renderBlockedUsers();
       });
 
       db.ref('notices').on('value', function(snapshot) {
@@ -1203,6 +1222,7 @@
         var val = snapshot.val();
         directoryList = val ? Object.values(val) : [];
         drawDirectory();
+        if (isAdminUnlocked) renderAdminDirectoryInner();
       });
 
       db.ref('gram_funds').on('value', function(snapshot) {
@@ -1294,7 +1314,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* DIRECTORY / HELPLINE FULL CRUD (ADD, EDIT, DELETE) */
+    /* DIRECTORY / HELPLINE FULL CRUD & ADMIN LIVE VIEW */
     function drawDirectory() {
       var d = document.getElementById('directoryListDiv');
       var list = (directoryList.length > 0) ? directoryList : [
@@ -1315,12 +1335,34 @@
              '<div style="display:flex; align-items:center; gap:6px;">' +
              '<a href="tel:' + c.phone + '" class="action-circle-btn btn-call" style="width:34px; height:34px; font-size:14px;"><i class="fa-solid fa-phone"></i></a>';
         
-        // ADMIN EDIT & DELETE BUTTONS
         if (isAdminUnlocked) {
           h += '<button onclick="openEditDirectoryModal(\''+c.id+'\')" class="adm-btn-edit" title="संशोधित करें"><i class="fa-solid fa-pen"></i></button>' +
                '<button onclick="deleteDirContactCloud(\''+c.id+'\')" class="adm-btn-del" title="हटाएं"><i class="fa-solid fa-trash"></i></button>';
         }
         h += '</div></div>';
+      });
+      d.innerHTML = h;
+    }
+
+    function renderAdminDirectoryInner() {
+      var d = document.getElementById('admDirectoryListInner');
+      if (!d) return;
+      var list = (directoryList.length > 0) ? directoryList : [
+        { id: "DEF-1", role: "ग्राम सचिव (VDO)", name: "श्रीमान पंचायत सचिव", phone: "9876543210" },
+        { id: "DEF-2", role: "हल्का लेखपाल / पटवारी", name: "श्रीमान लेखपाल जी", phone: "9876543211" },
+        { id: "DEF-3", role: "गाँव आशा बहु (स्वास्थ्य)", name: "आशा कार्यकत्री", phone: "9876543212" },
+        { id: "DEF-4", role: "बिजली लाइनमैन (पाकरपुर)", name: "लाइनमैन", phone: "9876543213" },
+        { id: "DEF-5", role: "सरकारी एम्बुलेंस सेवा", name: "108 एम्बुलेंस", phone: "108" }
+      ];
+
+      var h = "";
+      list.forEach(function(c) {
+        h += '<div style="display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid #c7d2fe; padding:6px 8px; border-radius:6px; margin-bottom:5px;">' +
+             '<div><b>' + c.role + '</b> (' + c.name + ')<br><span style="color:#16a34a; font-size:11px;">+91 ' + c.phone + '</span></div>' +
+             '<div class="adm-action-btn-group">' +
+             '<button onclick="openEditDirectoryModal(\''+c.id+'\')" class="adm-btn-edit"><i class="fa-solid fa-pen"></i></button>' +
+             '<button onclick="deleteDirContactCloud(\''+c.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i></button>' +
+             '</div></div>';
       });
       d.innerHTML = h;
     }
@@ -1343,7 +1385,6 @@
     function openEditDirectoryModal(id) {
       var item = directoryList.find(function(c){ return c.id === id; });
       if (!item) {
-        // If it's one of default
         if (id === "DEF-1") item = { id: id, role: "ग्राम सचिव (VDO)", name: "श्रीमान पंचायत सचिव", phone: "9876543210" };
         else if (id === "DEF-2") item = { id: id, role: "हल्का लेखपाल / पटवारी", name: "श्रीमान लेखपाल जी", phone: "9876543211" };
         else if (id === "DEF-3") item = { id: id, role: "गाँव आशा बहु (स्वास्थ्य)", name: "आशा कार्यकत्री", phone: "9876543212" };
@@ -1382,7 +1423,7 @@
       }
     }
 
-    /* NOTICE BOARD FULL CRUD (ADD, EDIT, DELETE) */
+    /* NOTICE BOARD FULL CRUD */
     function drawNotices() {
       var d = document.getElementById('noticeListDiv');
       if (notices.length === 0) {
@@ -1450,7 +1491,7 @@
       }
     }
 
-    /* CUSTOM SCHEMES CRUD (ADD, EDIT, DELETE) */
+    /* CUSTOM SCHEMES CRUD */
     function saveCustomSchemeCloud() {
       var t = document.getElementById('admSchTitle').value.trim();
       var d = document.getElementById('admSchDesc').value.trim();
@@ -1528,7 +1569,7 @@
       }
     }
 
-    /* KOSH & BUDGET EDIT & DELETE */
+    /* KOSH & BUDGET CRUD */
     function calcAndDrawBudget() {
       var totalIn = 0, totalOut = 0;
       fundsList.forEach(function(f){ totalIn += Number(f.amount || 0); });
@@ -1699,7 +1740,7 @@
       var pass = document.getElementById('rPass').value.trim();
 
       if (!n || p.length < 10 || !w || !pass) return alert("कृपया सभी विवरण भरें!");
-      if (blockedPhones.includes(p)) return alert("यह मोबाइल नंबर प्रतिबंधित है!");
+      if (blockedPhones.includes(p)) return alert("यह मोबाइल नंबर व्यवस्थापक द्वारा स्थायी रूप से प्रतिबंधित (Blocked) है!");
 
       var newUserObj = { name: n, phone: p, ward: w, pass: pass, avatar: "", date: new Date().toLocaleDateString('hi-IN') };
 
@@ -1721,6 +1762,10 @@
     function userLogin() {
       var p = document.getElementById('lPhone').value.trim();
       var pass = document.getElementById('lPass').value.trim();
+
+      if (blockedPhones.includes(p)) {
+        return alert("यह खाता व्यवस्थापक द्वारा प्रतिबंधित (Blocked) है। कृपया ग्राम प्रधान जी से संपर्क करें।");
+      }
 
       var found = users.find(function(u){ return u.phone === p && u.pass === pass; });
       if (found) {
@@ -1891,6 +1936,7 @@
         document.getElementById('adminMainDashBox').style.display = 'block';
         renderAdminDashboard();
         drawDirectory();
+        renderAdminDirectoryInner();
         drawNotices();
         drawCustomSchemes();
         calcAndDrawBudget();
@@ -1902,8 +1948,10 @@
     function renderAdminDashboard() {
       renderPendingRequests();
       renderActiveUsers();
+      renderBlockedUsers();
       filterAdminComplaints();
       renderRecycleBin();
+      renderAdminDirectoryInner();
     }
 
     function toggleEditProfileBox() {
@@ -1984,7 +2032,7 @@
              '<div style="display:flex; gap:6px; margin-top:6px;">' +
              '<button onclick="approveCitizenCloud(\''+u.phone+'\')" style="background:#16a34a; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:700; cursor:pointer;">स्वीकारें</button>' +
              '<button onclick="rejectCitizenCloud(\''+u.phone+'\')" style="background:#d97706; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:700; cursor:pointer;">हटाएं</button>' +
-             '<button onclick="blockCitizenCloud(\''+u.phone+'\')" style="background:#dc2626; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:700; cursor:pointer;">ब्लॉक</button>' +
+             '<button onclick="blockCitizenPermanentlyCloud(\''+u.phone+'\')" style="background:#dc2626; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:700; cursor:pointer;">ब्लॉक</button>' +
              '</div></div>';
       });
       div.innerHTML = h;
@@ -1999,10 +2047,23 @@
       });
     }
     function rejectCitizenCloud(phone) { db.ref('pending_users/' + phone).remove(); }
-    function blockCitizenCloud(phone) {
-      db.ref('blocked_phones/' + phone).set(phone);
-      db.ref('pending_users/' + phone).remove();
-      db.ref('users/' + phone).remove();
+
+    function blockCitizenPermanentlyCloud(phone) {
+      if (confirm("क्या आप सचमुच नागरिक (" + phone + ") को हमेशा के लिए ब्लॉक करना चाहते हैं?")) {
+        db.ref('blocked_phones/' + phone).set(phone).then(function() {
+          db.ref('pending_users/' + phone).remove();
+          db.ref('users/' + phone).remove();
+          alert("मोबाइल नंबर (" + phone + ") को सफलतापूर्वक ब्लॉक कर दिया गया!");
+        });
+      }
+    }
+
+    function unblockCitizenCloud(phone) {
+      if (confirm("क्या आप नागरिक (" + phone + ") को अनब्लॉक करना चाहते हैं?")) {
+        db.ref('blocked_phones/' + phone).remove().then(function() {
+          alert("मोबाइल नंबर (" + phone + ") अनब्लॉक हो चुका है। अब वे पुनः पोर्टल पर लॉगिन या पंजीकरण कर सकते हैं!");
+        });
+      }
     }
 
     function renderActiveUsers() {
@@ -2020,8 +2081,26 @@
              '<div style="display:flex; align-items:center;">' + avatarThumbnail + '<div><b>' + u.name + '</b> (' + u.phone + ')<br><span style="color:#64748b; font-size:10px;">टोला: ' + u.ward + '</span></div></div>' +
              '<div style="display:flex; gap:6px;">' +
              '<button onclick="openCitizenDetailModal(\''+u.phone+'\')" style="background:#0284c7; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-eye"></i> विवरण</button>' +
-             '<button onclick="deleteCitizenUserCloud(\''+u.phone+'\')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">हटाएं</button>' +
+             '<button onclick="blockCitizenPermanentlyCloud(\''+u.phone+'\')" class="adm-btn-block" title="ब्लॉक करें"><i class="fa-solid fa-ban"></i> ब्लॉक</button>' +
+             '<button onclick="deleteCitizenUserCloud(\''+u.phone+'\')" class="adm-btn-del" title="हटाएं"><i class="fa-solid fa-trash"></i></button>' +
              '</div></div>';
+      });
+      div.innerHTML = h;
+    }
+
+    function renderBlockedUsers() {
+      var div = document.getElementById('blockedUserListDiv');
+      document.getElementById('blockedUserCount').innerText = blockedPhones.length;
+      if (blockedPhones.length === 0) {
+        div.innerHTML = "<p style='color:#64748b;'>कोई नागरिक ब्लॉक नहीं है।</p>";
+        return;
+      }
+      var h = "";
+      blockedPhones.forEach(function(phone) {
+        h += '<div style="display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid #fecaca; padding:6px 10px; border-radius:6px; margin-bottom:4px;">' +
+             '<div><b style="color:#991b1b;"><i class="fa-solid fa-ban"></i> +91 ' + phone + '</b></div>' +
+             '<button onclick="unblockCitizenCloud(\''+phone+'\')" style="background:#16a34a; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-lock-open"></i> Unblock करें</button>' +
+             '</div>';
       });
       div.innerHTML = h;
     }
@@ -2060,8 +2139,10 @@
                 '<h4>' + countRejected + '</h4></div>' +
                 '</div>' +
 
+                '<div style="margin:10px 0;"><button onclick="blockCitizenPermanentlyCloud(\''+u.phone+'\')" class="btn btn-crimson" style="padding:6px; font-size:12px;"><i class="fa-solid fa-ban"></i> इस नागरिक को स्थायी रूप से ब्लॉक करें</button></div>' +
+
                 '<h5 style="font-size:12px; margin:10px 0 6px; color:#334155;"><i class="fa-solid fa-list-check"></i> नागरिक की सभी शिकायतें (' + userComps.length + '):</h5>' +
-                '<div style="max-height:240px; overflow-y:auto;">';
+                '<div style="max-height:220px; overflow-y:auto;">';
 
       if (userComps.length === 0) {
         out += "<p style='color:#94a3b8; font-size:11px; text-align:center; padding:10px;'>इस नागरिक ने अभी कोई शिकायत दर्ज नहीं की है।</p>";
