@@ -108,7 +108,6 @@
       position: relative;
     }
     
-    /* Super Admin Master Button - Hidden by default for others */
     .super-admin-btn {
       background: rgba(220, 38, 38, 0.25); border: 1px solid rgba(248, 113, 113, 0.6);
       color: #fecaca; width: 36px; height: 36px; border-radius: 10px; display: none; align-items: center; justify-content: center; font-size: 15px; cursor: pointer;
@@ -531,7 +530,7 @@
             </div>
           </div>
 
-          <!-- ADMIN SQUARE GRID TILES -->
+          <!-- ADMIN SQUARE GRID TILES (EACH OPENS POPUP ON SCREEN) -->
           <div class="admin-square-grid">
             <div class="admin-square-tile" onclick="openAdminModal('admSecUsers')">
               <span class="active-users-badge" id="admActiveUsersBadge" title="सक्रिय नागरिक">0</span>
@@ -1032,7 +1031,7 @@
       <div style="background:#fff; border:1px solid #fee2e2; padding:8px; border-radius:8px;">
         <h5 style="color:#b91c1c; font-size:12px; margin-bottom:4px;">खर्च हुआ:</h5>
         <div class="form-group"><input type="text" id="admExpWork" placeholder="कार्य नाम"></div>
-        <div class="form-group"><input type="number" id="admExpAmount" placeholder="खर्च राशि (₹)"></div>
+        <div class="form-group"><input type="number" id="admExpAmount" placeholder="खर्च राशि (₹)" style="margin-top:4px;"></div>
         <div class="form-group"><input type="text" id="admExpVendor" placeholder="ठेकेदार / मद"></div>
         <button class="btn btn-crimson" onclick="addGramExpenseCloud()">दर्ज करें</button>
       </div>
@@ -1148,7 +1147,7 @@
     var adminCustomPassword = null;
     var defaultCancelled = false;
     var approvalMode = 'manual';
-    var superAdminMasterPin = null; // Will fetch from DB; if not set, fallback to 9999
+    var superAdminMasterPin = null;
 
     var comps = [];
     var binComps = [];
@@ -1198,7 +1197,7 @@
       fetchPakarpurWeather();
       applyUserGate();
 
-      // Check if this device is authorized as owner in localStorage
+      // Show Owner Master Key if device is verified owner
       if (localStorage.getItem('pkp_is_owner_device') === 'true') {
         document.getElementById('btnSuperOwnerKey').style.display = 'flex';
       }
@@ -1207,6 +1206,9 @@
         openSuperAdminGate();
       } else if (isAdminUnlocked) {
         openAdminGate();
+      } else if (!curUser) {
+        // Automatically open the registration / login modal on load for new/guest visitors
+        openUserProfileDirect();
       }
     };
 
@@ -1231,6 +1233,7 @@
     function openPopupModal(modalId) {
       if (modalId !== 'vProfile' && !curUser) {
         applyUserGate();
+        openUserProfileDirect();
         return;
       }
       var target = document.getElementById(modalId);
@@ -1310,14 +1313,12 @@
       }
 
       if (valid) {
-        // Enforce max 2 devices for Admin
         db.ref('admin_active_devices').once('value', function(snapshot) {
           var devices = snapshot.val() || [];
           if (!Array.isArray(devices)) devices = Object.values(devices);
           
           if (!devices.includes(myDeviceSessionToken)) {
             devices.push(myDeviceSessionToken);
-            // If more than 2 devices, kick out the oldest device
             if (devices.length > 2) {
               devices.shift();
             }
@@ -1384,7 +1385,6 @@
         isSuperAdminUnlocked = true;
         localStorage.setItem('pkp_super_admin_logged_in', 'true');
         
-        // Single session token stamp for Super Admin
         db.ref('super_admin_session_token').set(myDeviceSessionToken);
 
         document.getElementById('superGateBox').style.display = 'none';
@@ -1492,7 +1492,6 @@
         }
       });
 
-      // Master Pin Listener
       db.ref('super_master_pin').on('value', function(snapshot) {
         var val = snapshot.val();
         if (val) superAdminMasterPin = val;
@@ -1722,7 +1721,7 @@
              '<div style="display:flex; justify-content:space-between; align-items:flex-start;">' +
              '<div>' +
              '<span class="badge" style="background:#0891b2; font-size:10px;">' + item.cat + '</span>' +
-             '<h4 style="font-size:14px; font-weight:700; color:#1e293b;">' + item.title + '</h4>' +
+             '<h4 style="font-size:14px; font-weight:700;">' + item.title + '</h4>' +
              '<h3 style="font-size:16px; color:#15803d; margin:4px 0;">₹ ' + Number(item.price).toLocaleString('en-IN') + '</h3>' +
              '<p style="font-size:12px; color:#475569;">विक्रेता: <strong>' + item.seller + '</strong></p>' +
              (item.desc ? '<p style="font-size:12px; color:#64748b; margin-top:3px;">' + item.desc + '</p>' : '') +
@@ -2200,7 +2199,6 @@
 
       var found = users.find(function(u){ return u.phone === p && u.pass === pass; });
       if (found) {
-        // Enforce Single Device Session for Citizens
         found.activeSessionToken = myDeviceSessionToken;
         db.ref('users/' + p + '/activeSessionToken').set(myDeviceSessionToken);
 
@@ -2224,6 +2222,7 @@
       syncUserState();
       applyUserGate();
       closePopupModal('vProfile');
+      openUserProfileDirect();
     }
 
     function uploadUserAvatarCloud(e) {
@@ -2304,7 +2303,7 @@
         out += '<div style="margin:8px 0;"><span style="font-size:11px; font-weight:700;">समस्या फोटो:</span><br><img src="'+c.photo+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:200px; object-fit:contain; border-radius:8px;"></div>';
       }
       if (c.resolutionPhoto) {
-        out += '<div style="background:#f0fdf4; border:1px solid #86efac; padding:6px; border-radius:8px; margin-top:6px;">' +
+        out += '<div style="margin:8px 0; background:#f0fdf4; border:1px solid #86efac; padding:6px; border-radius:8px;">' +
                '<span style="font-size:11px; font-weight:700; color:#15803d;"><i class="fa-solid fa-circle-check"></i> काम पूरा होने की फोटो:</span><br>' +
                '<img src="'+c.resolutionPhoto+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:220px; object-fit:contain; border-radius:8px;"></div>';
       }
@@ -2406,214 +2405,4 @@
              '</div>' +
 
              '<div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;">' +
-             '<button class="btn btn-emerald" onclick="saveAdminActionCloud(\''+c.id+'\')" style="padding:6px 10px; font-size:11px; width:auto;">' +
-             '<i class="fa-solid fa-floppy-disk"></i> स्थिति व फोटो सेव करें</button>' +
-             '<button class="btn btn-whatsapp" onclick="sendWhatsAppResolution(\''+c.id+'\')" style="padding:6px 10px; font-size:11px; width:auto;">' +
-             '<i class="fa-brands fa-whatsapp"></i> WhatsApp</button>' +
-             '<button class="btn btn-slate" onclick="sendSMSResolution(\''+c.id+'\')" style="padding:6px 10px; font-size:11px; width:auto;">SMS</button>' +
-             '</div>' +
-             '</div></div>';
-      });
-      d.innerHTML = h;
-    }
-
-    function handleResolutionPhotoUpload(e, compId) {
-      compressPhoto(e.target.files[0], function(b64){
-        tempResolutionPhoto[compId] = b64;
-      });
-    }
-
-    function saveAdminActionCloud(id) {
-      var s = document.getElementById('admStatus_' + id).value;
-      var r = document.getElementById('admReply_' + id).value.trim();
-
-      var updates = { status: s, reply: r };
-      if (tempResolutionPhoto[id]) {
-        updates.resolutionPhoto = tempResolutionPhoto[id];
-      }
-
-      db.ref('complaints/' + id).update(updates).then(function() {
-        alert("स्थिति व उत्तर सुरक्षित हो गया!");
-      });
-    }
-
-    function sendWhatsAppResolution(id) {
-      var c = comps.find(function(item){ return item.id === id; });
-      if (!c) return;
-      var status = document.getElementById('admStatus_' + id).value;
-      var reply = document.getElementById('admReply_' + id).value.trim();
-
-      var msg = "नमस्ते " + c.name + " जी,\n\n" +
-                "ग्राम पंचायत पाकरपुर पोर्टल पर आपकी शिकायत (ID: " + c.id + ") का स्टेटस अपडेट कर दिया गया है:\n\n" +
-                "📌 समस्या: " + c.cat + "\n" +
-                "⚡ स्थिति: *" + status + "*\n" +
-                "📝 प्रधान उत्तर: " + (reply || "कार्य पूर्ण हो चुका है।");
-      
-      window.open("https://wa.me/91" + c.phone + "?text=" + encodeURIComponent(msg), '_blank');
-    }
-
-    function sendSMSResolution(id) {
-      var c = comps.find(function(item){ return item.id === id; });
-      if (!c) return;
-      var status = document.getElementById('admStatus_' + id).value;
-      var reply = document.getElementById('admReply_' + id).value.trim();
-      var msg = "पाकरपुर पोर्टल: शिकायत ID " + c.id + " स्थिति [" + status + "] है। उत्तर: " + (reply || "पोर्टल देखें।");
-      window.location.href = "sms:+91" + c.phone + "?body=" + encodeURIComponent(msg);
-    }
-
-    function moveToRecycleBin(id) {
-      if (confirm("कचरा पेटी में डालना चाहते हैं?")) {
-        var c = comps.find(function(item){ return item.id === id; });
-        if (!c) return;
-        c.status = "निरस्त (फ़र्ज़ी)";
-        db.ref('complaints_bin/' + id).set(c).then(function() {
-          db.ref('complaints/' + id).remove();
-        });
-      }
-    }
-
-    function renderRecycleBin() {
-      var d = document.getElementById('recycleBinDiv');
-      document.getElementById('binCount').innerText = binComps.length;
-      if (binComps.length === 0) {
-        d.innerHTML = "<p style='color:#64748b; padding:6px;'>कचरा पेटी खाली है।</p>";
-        return;
-      }
-      var h = "";
-      binComps.forEach(function(c) {
-        h += '<div style="background:#fff; border:1px solid #fca5a5; padding:8px; border-radius:8px; margin-bottom:6px;">' +
-             '<strong>' + c.id + ' - ' + c.cat + '</strong>' +
-             '<div style="font-size:11px;">नागरिक: ' + c.name + ' (' + c.phone + ')</div>' +
-             '<div style="display:flex; gap:6px; margin-top:6px;">' +
-             '<button onclick="restoreFromBin(\''+c.id+'\')" style="background:#16a34a; color:#fff; border:none; padding:3px 8px; border-radius:6px; font-size:11px; cursor:pointer;">रीस्टोर</button>' +
-             '<button onclick="permanentDeleteComp(\''+c.id+'\')" style="background:#dc2626; color:#fff; border:none; padding:3px 8px; border-radius:6px; font-size:11px; cursor:pointer;">मिटाएं</button>' +
-             '</div></div>';
-      });
-      d.innerHTML = h;
-    }
-
-    function restoreFromBin(id) {
-      var c = binComps.find(function(item){ return item.id === id; });
-      if (!c) return;
-      c.status = "लंबित";
-      db.ref('complaints/' + id).set(c).then(function() { db.ref('complaints_bin/' + id).remove(); });
-    }
-
-    function permanentDeleteComp(id) {
-      if (confirm("हमेशा के लिए मिटाना चाहते हैं?")) db.ref('complaints_bin/' + id).remove();
-    }
-
-    function openCompDetailModal(id) {
-      var c = comps.find(function(item){ return item.id === id; });
-      if (!c) return;
-      var body = document.getElementById('modalCompBody');
-      var out = '<p style="margin-bottom:6px;"><strong>रसीद:</strong> ' + c.id + '</p>' +
-                '<p style="margin-bottom:6px;"><strong>दिनांक:</strong> ' + (c.date || "N/A") + '</p>' +
-                '<p style="margin-bottom:6px;"><strong>विभाग:</strong> ' + c.cat + '</p>' +
-                '<p style="margin-bottom:6px;"><strong>नागरिक:</strong> ' + c.name + ' (<a href="tel:'+c.phone+'" style="color:#16a34a; font-weight:700;">+91 '+c.phone+'</a>)</p>' +
-                '<p style="margin-bottom:6px;"><strong>स्थान:</strong> ' + c.place + '</p>' +
-                '<p style="margin-bottom:8px;"><strong>समस्या:</strong> ' + c.desc + '</p>';
-      
-      if (c.audio) {
-        out += '<div style="background:#fef2f2; border:1px solid #fca5a5; padding:8px; border-radius:8px; margin-bottom:8px;">' +
-               '<p style="font-size:11px; font-weight:700; color:#dc2626;"><i class="fa-solid fa-microphone-lines"></i> दर्ज ऑडियो विवरण:</p>' +
-               '<audio controls src="'+c.audio+'" style="width:100%; height:32px; margin-top:4px;"></audio></div>';
-      }
-
-      if (c.coords) {
-        out += '<p style="margin-bottom:8px;"><strong>GPS:</strong> ' + c.coords + ' <a href="https://www.google.com/maps?q='+c.coords+'" target="_blank" style="color:#0284c7;">[Maps देखें]</a></p>';
-      }
-      if (c.photo) {
-        out += '<p style="font-size:11px; font-weight:700;">शिकायत की फोटो:</p><img src="'+c.photo+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:220px; object-fit:contain; border-radius:8px; margin-bottom:8px;">';
-      }
-      if (c.resolutionPhoto) {
-        out += '<div style="background:#f0fdf4; border:1px solid #86efac; padding:6px; border-radius:8px; margin-top:6px;">' +
-               '<p style="font-size:11px; font-weight:700; color:#15803d;"><i class="fa-solid fa-circle-check"></i> काम पूरा होने की फोटो:</p>' +
-               '<img src="'+c.resolutionPhoto+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:240px; object-fit:contain; border-radius:8px;"></div>';
-      }
-      if (c.reply) {
-        out += '<div style="background:#f0fdf4; border-left:3px solid #16a34a; padding:8px; font-size:12px; color:#166534; border-radius:6px; margin-top:6px;"><b>प्रधान उत्तर:</b> '+c.reply+'</div>';
-      }
-      body.innerHTML = out;
-      document.getElementById('compDetailModal').classList.add('active');
-    }
-    function closeCompDetailModal() { document.getElementById('compDetailModal').classList.remove('active'); }
-
-    function toggleMap() {
-      var box = document.getElementById('mapBox');
-      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
-      if (box.style.display === 'block' && !mapInst) {
-        mapInst = L.map('mapDiv').setView([PAKARPUR_LAT, PAKARPUR_LNG], 16);
-        L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { maxZoom: 20 }).addTo(mapInst);
-        selectedMarker = L.marker([PAKARPUR_LAT, PAKARPUR_LNG], { draggable: true }).addTo(mapInst);
-        selectedMarker.on('dragend', function(){
-          var pos = selectedMarker.getLatLng();
-          var val = pos.lat.toFixed(5) + ", " + pos.lng.toFixed(5);
-          document.getElementById('cCoords').value = val;
-          document.getElementById('coordsNotice').style.display = 'block';
-          document.getElementById('coordsNotice').innerText = "GPS: " + val;
-        });
-      }
-      setTimeout(function(){ if (mapInst) mapInst.invalidateSize(); }, 200);
-    }
-
-    function handleCompPhoto(e) { compressPhoto(e.target.files[0], function(b64){ tempCompPhoto = b64; }); }
-
-    function handleNewComp(e) {
-      e.preventDefault();
-      if (!curUser) return alert("कृपया पहले लॉगिन करें!");
-
-      var descText = document.getElementById('cDesc').value.trim();
-      if (!descText && !tempCompAudio) {
-        return alert("कृपया समस्या का विवरण लिखें या बोलकर आवाज़ (Audio) रिकॉर्ड करें!");
-      }
-
-      var compId = "PKP-" + Date.now().toString().slice(-6) + Math.floor(10 + Math.random() * 90);
-      var item = {
-        id: compId,
-        name: curUser.name,
-        phone: curUser.phone,
-        cat: document.getElementById('cCat').value,
-        place: document.getElementById('cPlace').value.trim(),
-        coords: document.getElementById('cCoords').value || "",
-        desc: descText || "(नागरिक द्वारा ऑडियो शिकायत दर्ज की गई)",
-        photo: tempCompPhoto || "",
-        audio: tempCompAudio || "",
-        status: "लंबित",
-        reply: "",
-        resolutionPhoto: "",
-        date: new Date().toLocaleDateString('hi-IN')
-      };
-
-      db.ref('complaints/' + compId).set(item).then(function() {
-        tempCompPhoto = "";
-        tempCompAudio = "";
-        document.getElementById('audioPreviewPlayer').style.display = "none";
-        document.getElementById('audioPreviewPlayer').src = "";
-        document.getElementById('recordStatusText').innerText = "(माइक परमिशन मांगी जाएगी)";
-        alert("शिकायत सफलतापूर्वक दर्ज हो गई!\nआपकी रसीद संख्या: " + item.id);
-        document.getElementById('compForm').reset();
-        closePopupModal('vNew');
-      });
-    }
-
-    function compressPhoto(file, callback) {
-      if (!file) return;
-      var r = new FileReader();
-      r.onload = function(evt) {
-        var im = new Image();
-        im.onload = function() {
-          var cv = document.createElement("canvas");
-          var w = im.width, h = im.height, max = 320;
-          if (w > max) { h *= max / w; w = max; }
-          cv.width = w; cv.height = h;
-          cv.getContext("2d").drawImage(im, 0, 0, w, h);
-          callback(cv.toDataURL("image/jpeg", 0.75));
-        };
-        im.src = evt.target.result;
-      };
-      r.readAsDataURL(file);
-    }
-  </script>
-</body>
-</html>
+             '<button class="btn btn-emerald" onclick="saveAdminActionCloud(\''+c.
