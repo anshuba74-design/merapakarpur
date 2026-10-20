@@ -166,19 +166,19 @@
     }
     .profile-tile-small span { font-size: 12px; font-weight: 700; color: #166534; line-height: 1; }
 
-    /* ADMIN EXCLUSIVE SQUARE GRID TILES (3 PURE ADMIN CONTROLS) */
-    .admin-square-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+    /* ADMIN EXCLUSIVE SQUARE GRID TILES */
+    .admin-square-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0; }
     .admin-square-tile {
-      background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 4px;
+      background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 6px;
       text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
       position: relative;
     }
     .admin-square-tile:active { transform: scale(0.95); background: #f8fafc; }
     .adm-tile-icon {
-      width: 40px; height: 40px; border-radius: 10px; margin: 0 auto 6px; display: flex; align-items: center;
-      justify-content: center; font-size: 18px; color: #fff;
+      width: 44px; height: 44px; border-radius: 12px; margin: 0 auto 6px; display: flex; align-items: center;
+      justify-content: center; font-size: 20px; color: #fff;
     }
-    .admin-square-tile span { display: block; font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.2; }
+    .admin-square-tile span { display: block; font-size: 12px; font-weight: 700; color: #1e293b; line-height: 1.2; }
 
     .icon-badge {
       position: absolute; top: -5px; right: -3px; background: #dc2626; color: #fff;
@@ -401,7 +401,7 @@
       </div>
     </div>
 
-    <!-- 9 MAIN SERVICE TILES (PROFILE IS MOVED BELOW SEPARATELY) -->
+    <!-- CITIZEN PORTAL GRID TILES -->
     <div class="actions-grid" id="mainActionsGrid">
       <div class="action-tile" onclick="openScreenModal('vNew')">
         <div class="tile-icon" style="background: #15803d;"><i class="fa-solid fa-feather-pointed"></i></div>
@@ -447,7 +447,7 @@
       </div>
     </div>
 
-    <!-- SEPARATE COMPACT PROFILE BUTTON AT BOTTOM -->
+    <!-- COMPACT PROFILE BUTTON AT BOTTOM -->
     <div class="profile-tile-bottom-wrap">
       <div class="profile-tile-small" onclick="openUserProfileDirect()" title="मेरी प्रोफ़ाइल / नागरिक खाता">
         <div class="tile-icon-small"><i class="fa-solid fa-id-card"></i></div>
@@ -455,7 +455,7 @@
       </div>
     </div>
 
-    <!-- DEDICATED ADMIN MANAGEMENT WORKSPACE (NO USERS ICON INSIDE) -->
+    <!-- DEDICATED ADMIN MANAGEMENT WORKSPACE -->
     <div id="vAdmin" class="view-content">
       <div class="card" id="adminGateBox" style="border: 2px solid var(--accent);">
         <div class="card-title" style="color: #b45309;">
@@ -505,12 +505,18 @@
             </div>
           </div>
 
-          <!-- PURE ADMIN CONTROL ICONS (3 ESSENTIAL OPERATIONS - USERS ICON COMPLETELY REMOVED) -->
+          <!-- PURE ADMIN CONTROL ICONS (EXCLUSIVELY FOR SUPERVISION) -->
           <div class="admin-square-grid">
             <div class="admin-square-tile" onclick="openAdminPopupSection('secAdminGrievanceModal')">
               <span class="icon-badge" id="adminPendingCompBadge">0</span>
               <div class="adm-tile-icon" style="background: #15803d;"><i class="fa-solid fa-list-check"></i></div>
               <span>शिकायत समीक्षा व एक्शन</span>
+            </div>
+
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secUsersForm')">
+              <span class="icon-badge" id="adminActiveBadge">0</span>
+              <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-users-gear"></i></div>
+              <span>नागरिक व सुरक्षा नियंत्रण</span>
             </div>
 
             <div class="admin-square-tile" onclick="openAdminPopupSection('secAdminMarketModal')">
@@ -902,7 +908,38 @@
     </div>
   </div>
 
-  <!-- ADMIN: 2. Marketplace Moderator Control Modal -->
+  <!-- ADMIN: 2. Users Management Modal -->
+  <div id="secUsersForm" class="screen-modal">
+    <div class="screen-modal-card" style="border: 2px solid #cbd5e1;">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secUsersForm')">✕</button>
+      <div class="card-title" style="color: #1e293b;"><i class="fa-solid fa-users"></i> नागरिक पंजीकरण व सक्रिय नागरिक</div>
+      <div style="margin-bottom:10px;">
+        <label style="font-size:11px;">अनुमोदन नीति:</label>
+        <select id="admApprovalModeSelect" onchange="changeApprovalModeCloud()">
+          <option value="manual">मैनुअल (प्रधान जी अनुमति दें)</option>
+          <option value="auto">ऑटो-एक्सेप्ट</option>
+        </select>
+      </div>
+
+      <div style="background:#fff7ed; border:1px solid #fed7aa; padding:8px; border-radius:8px; margin-bottom:8px;">
+        <span style="font-weight:700; font-size:11px; color:#9a3412;">लंबित अनुरोध (<span id="pendingReqCount">0</span>):</span>
+        <div id="pendingReqListDiv" style="font-size:11px; margin-top:4px;"></div>
+      </div>
+
+      <div style="background:#ffffff; border:1px solid #cbd5e1; padding:8px; border-radius:8px; margin-bottom:8px;">
+        <span style="font-weight:700; font-size:11px; color:#334155;">सक्रिय नागरिक (<span id="activeUserCount">0</span>):</span>
+        <div id="activeUserListDiv" style="max-height:180px; overflow-y:auto; font-size:11px; margin-top:4px;"></div>
+      </div>
+
+      <div style="background:#fef2f2; border:1px solid #fecaca; padding:8px; border-radius:8px;">
+        <span style="font-weight:700; font-size:11px; color:#991b1b;"><i class="fa-solid fa-user-slash"></i> प्रतिबंधित नागरिक सूची (<span id="blockedUserCount">0</span>):</span>
+        <p style="font-size:10px; color:#64748b; margin-bottom:4px;">अनुरोध आने पर नागरिक को दोबारा अनब्लॉक करें:</p>
+        <div id="blockedUserListDiv" style="max-height:140px; overflow-y:auto; font-size:11px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN: 3. Marketplace Moderator Control Modal -->
   <div id="secAdminMarketModal" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secAdminMarketModal')">✕</button>
@@ -916,7 +953,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: 3. Broadcast Modal -->
+  <!-- ADMIN: 4. Broadcast Modal -->
   <div id="secBroadcastForm" class="screen-modal">
     <div class="screen-modal-card" style="border: 2px solid #fecaca; background: #fff5f5;">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secBroadcastForm')">✕</button>
@@ -1192,904 +1229,4 @@
     }
 
     function openWeatherModal() {
-      if (!fullWeatherData) return alert("मौसम डेटा लोड हो रहा है!");
-      document.getElementById('weatherFullModal').classList.add('active');
-      renderWeatherDaysTabs();
-      renderHourlyWeather(0);
-    }
-    function closeWeatherModal() { document.getElementById('weatherFullModal').classList.remove('active'); }
-
-    function renderWeatherDaysTabs() {
-      var d = document.getElementById('weatherDayTabs');
-      var daily = fullWeatherData.daily;
-      var h = "";
-      for (var i = 0; i < 7; i++) {
-        var dateObj = new Date(daily.time[i]);
-        var dayName = (i === 0) ? "आज" : (i === 1 ? "कल" : dateObj.toLocaleDateString('hi-IN', { weekday: 'short' }));
-        var max = Math.round(daily.temperature_2m_max[i]);
-        var min = Math.round(daily.temperature_2m_min[i]);
-        var activeClass = (i === selectedDayIndex) ? "active" : "";
-        h += '<div class="day-tab ' + activeClass + '" onclick="selectWeatherDay(' + i + ')">' +
-             '<div>' + dayName + '</div>' +
-             '<div style="font-size:10px;">' + max + '°/' + min + '°</div></div>';
-      }
-      d.innerHTML = h;
-    }
-
-    function selectWeatherDay(index) {
-      selectedDayIndex = index;
-      renderWeatherDaysTabs();
-      renderHourlyWeather(index);
-    }
-
-    function renderHourlyWeather(dayIndex) {
-      var hourly = fullWeatherData.hourly;
-      var startIdx = dayIndex * 24;
-      var endIdx = startIdx + 24;
-      var currentTemp = (dayIndex === 0) ? Math.round(fullWeatherData.current_weather.temperature) : Math.round(fullWeatherData.daily.temperature_2m_max[dayIndex]);
-      var code = (dayIndex === 0) ? fullWeatherData.current_weather.weathercode : fullWeatherData.daily.weathercode[dayIndex];
-      var condInfo = getWeatherDesc(code);
-
-      document.getElementById('wtModalTemp').innerText = currentTemp + "°C";
-      document.getElementById('wtModalCond').innerText = condInfo.text;
-      document.getElementById('wtModalIcon').innerHTML = '<i class="fa-solid ' + condInfo.icon + '"></i>';
-
-      var scrollDiv = document.getElementById('weatherHourlySlider');
-      var h = "";
-      for (var i = startIdx; i < endIdx; i++) {
-        var timeStr = hourly.time[i].split("T")[1];
-        var temp = Math.round(hourly.temperature_2m[i]);
-        var hCode = hourly.weathercode[i];
-        h += '<div class="hourly-card">' +
-             '<span style="font-weight:700;">' + timeStr + '</span>' +
-             '<div style="font-size:16px; margin:4px 0; color:#0284c7;"><i class="fa-solid ' + getWeatherDesc(hCode).icon + '"></i></div>' +
-             '<strong>' + temp + '°C</strong></div>';
-      }
-      scrollDiv.innerHTML = h;
-    }
-
-    function initFirebaseListeners() {
-      db.ref('pradhan_profile').on('value', function(snapshot) {
-        var val = snapshot.val();
-        if (val) { pradhanInfo = val; drawPradhanHeader(); }
-      });
-
-      db.ref('broadcast_alert').on('value', function(snapshot) {
-        var val = snapshot.val();
-        var banner = document.getElementById('broadcastBanner');
-        if (val && val.active) {
-          document.getElementById('broadcastTitleText').innerText = val.title || "महत्वपूर्ण सूचना";
-          document.getElementById('broadcastMessageText').innerText = val.message || "";
-          banner.style.display = 'block';
-        } else {
-          banner.style.display = 'none';
-        }
-      });
-
-      db.ref('admin_settings').on('value', function(snapshot) {
-        var val = snapshot.val();
-        if (val) {
-          adminCustomPassword = val.customPassword || null;
-          defaultCancelled = val.defaultCancelled || false;
-          approvalMode = val.approvalMode || 'manual';
-        }
-      });
-
-      db.ref('complaints').on('value', function(snapshot) {
-        var val = snapshot.val();
-        comps = val ? Object.values(val) : [];
-        comps.reverse();
-        drawComps();
-        
-        var pendingCount = comps.filter(function(c){ return c.status === "लंबित" || c.status === "प्रगति पर"; }).length;
-        var compBadge = document.getElementById('adminPendingCompBadge');
-        if (compBadge) compBadge.innerText = pendingCount;
-
-        if (isAdminUnlocked) filterAdminComplaints();
-      });
-
-      db.ref('complaints_bin').on('value', function(snapshot) {
-        var val = snapshot.val();
-        binComps = val ? Object.values(val) : [];
-        binComps.reverse();
-        if (isAdminUnlocked) renderRecycleBin();
-      });
-
-      db.ref('market_posts').on('value', function(snapshot) {
-        var val = snapshot.val();
-        marketPosts = val ? Object.values(val) : [];
-        marketPosts.reverse();
-        drawMarket();
-
-        var mBadge = document.getElementById('adminMarketBadge');
-        if (mBadge) mBadge.innerText = marketPosts.length;
-        if (isAdminUnlocked) renderAdminMarketModerator();
-      });
-
-      db.ref('users').on('value', function(snapshot) {
-        var val = snapshot.val();
-        users = val ? Object.values(val) : [];
-
-        if (curUser) {
-          var updatedSelf = users.find(function(u){ return u.phone === curUser.phone; });
-          if (updatedSelf) {
-            var localSessionId = localStorage.getItem('pkp_cur_session_id');
-            if (updatedSelf.currentSessionId && localSessionId && updatedSelf.currentSessionId !== localSessionId) {
-              alert("आपका खाता किसी अन्य डिवाइस में लॉगिन हो चुका है। आप यहाँ से लॉगआउट हो रहे हैं।");
-              userLogout();
-              return;
-            }
-            curUser = updatedSelf;
-            localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
-          } else {
-            if (!isAdminUnlocked) {
-              alert("आपका खाता उपलब्ध नहीं है या व्यवस्थापक द्वारा प्रतिबंधित कर दिया गया है।");
-              userLogout();
-            }
-          }
-        }
-        syncUserState();
-      });
-
-      db.ref('pending_users').on('value', function(snapshot) {
-        var val = snapshot.val();
-        pendingUsers = val ? Object.values(val) : [];
-      });
-
-      db.ref('blocked_phones').on('value', function(snapshot) {
-        var val = snapshot.val();
-        blockedPhones = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
-      });
-
-      db.ref('notices').on('value', function(snapshot) {
-        var val = snapshot.val();
-        notices = val ? Object.values(val) : [];
-        notices.reverse();
-        drawNotices();
-      });
-
-      db.ref('directory').on('value', function(snapshot) {
-        var val = snapshot.val();
-        directoryList = val ? Object.values(val) : [];
-        drawDirectory();
-      });
-
-      db.ref('gram_funds').on('value', function(snapshot) {
-        var val = snapshot.val();
-        fundsList = val ? Object.values(val) : [];
-        calcAndDrawBudget();
-      });
-
-      db.ref('gram_expenses').on('value', function(snapshot) {
-        var val = snapshot.val();
-        expensesList = val ? Object.values(val) : [];
-        expensesList.reverse();
-        calcAndDrawBudget();
-      });
-
-      db.ref('gallery').on('value', function(snapshot) {
-        var val = snapshot.val();
-        galleryList = val ? Object.values(val) : [];
-        galleryList.reverse();
-        drawGallery();
-      });
-    }
-
-    function drawPradhanHeader() {
-      document.getElementById('headPradhanName').innerText = pradhanInfo.name || "प्रधान प्रोफाइल";
-      document.getElementById('headPradhanPhone').innerText = pradhanInfo.phone ? "+91 " + pradhanInfo.phone : "नंबर उपलब्ध नहीं";
-      document.getElementById('pradhanTel').href = pradhanInfo.phone ? "tel:" + pradhanInfo.phone : "#";
-      document.getElementById('pradhanWa').href = pradhanInfo.phone ? "https://wa.me/91" + pradhanInfo.phone : "#";
-
-      var headerLogo = document.getElementById('headerPanchayatLogo');
-      if (pradhanInfo.headerLogo) {
-        headerLogo.src = pradhanInfo.headerLogo;
-      }
-
-      document.getElementById('teamPradhanName').innerText = pradhanInfo.name || "प्रधान प्रोफाइल";
-      document.getElementById('teamPradhanPhone').innerText = pradhanInfo.phone ? "संपर्क: +91 " + pradhanInfo.phone : "";
-
-      var img = document.getElementById('headPradhanImg');
-      var ico = document.getElementById('headPradhanIcon');
-      if (pradhanInfo.pic) {
-        img.src = pradhanInfo.pic;
-        img.style.display = "block";
-        ico.style.display = "none";
-      } else {
-        img.style.display = "none";
-        ico.style.display = "flex";
-      }
-
-      document.getElementById('dashPradhanName').innerText = pradhanInfo.name || "प्रधान प्रोफाइल";
-      document.getElementById('dashPradhanPhone').innerText = pradhanInfo.phone ? "+91 " + pradhanInfo.phone : "";
-      document.getElementById('admPName').value = pradhanInfo.name || "";
-      document.getElementById('admPPhone').value = pradhanInfo.phone || "";
-    }
-
-    /* DIRECTORY / HELPLINE FULL CRUD */
-    function drawDirectory() {
-      var d = document.getElementById('directoryListDiv');
-      if (directoryList.length === 0) {
-        d.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>अभी कोई हेल्पलाइन नंबर दर्ज नहीं है।</p>";
-        return;
-      }
-
-      var h = "";
-      directoryList.forEach(function(c) {
-        h += '<div class="directory-card" style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid #4f46e5;">' +
-             '<div>' +
-             '<h4 style="font-size:13px; font-weight:700; color:#1e293b;">' + c.role + '</h4>' +
-             '<p style="font-size:12px; color:#475569;">' + c.name + ' - <span style="color:#16a34a; font-weight:700;">+91 ' + c.phone + '</span></p>' +
-             '</div>' +
-             '<div style="display:flex; align-items:center; gap:6px;">' +
-             '<a href="tel:' + c.phone + '" class="action-circle-btn btn-call" style="width:34px; height:34px; font-size:14px;"><i class="fa-solid fa-phone"></i></a>' +
-             '</div></div>';
-      });
-      d.innerHTML = h;
-    }
-
-    /* NOTICE BOARD */
-    function drawNotices() {
-      var d = document.getElementById('noticeListDiv');
-      if (notices.length === 0) {
-        d.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:15px;'>कोई नोटिस नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      notices.forEach(function(n) {
-        h += '<div class="notice-card" style="border-left: 4px solid var(--danger);">' +
-             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
-             '<h4 style="color:#991b1b; font-size:14px;"><i class="fa-solid fa-thumbtack"></i> ' + n.title + '</h4>' +
-             '<span style="font-size:10px; color:#64748b;">' + n.date + '</span>' +
-             '</div>' +
-             '<p style="font-size:13px; color:#334155; margin-top:6px;">' + n.desc + '</p>' +
-             '</div>';
-      });
-      d.innerHTML = h;
-    }
-
-    /* KOSH & BUDGET */
-    function calcAndDrawBudget() {
-      var totalIn = 0, totalOut = 0;
-      fundsList.forEach(function(f){ totalIn += Number(f.amount || 0); });
-      expensesList.forEach(function(e){ totalOut += Number(e.amount || 0); });
-
-      document.getElementById('koshTotalIn').innerText = "₹" + totalIn.toLocaleString('en-IN');
-      document.getElementById('koshTotalOut').innerText = "₹" + totalOut.toLocaleString('en-IN');
-      document.getElementById('koshBalance').innerText = "₹" + (totalIn - totalOut).toLocaleString('en-IN');
-
-      var expDiv = document.getElementById('koshExpensesDiv');
-      if (expensesList.length === 0) {
-        expDiv.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center;'>कोई खर्च दर्ज नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      expensesList.forEach(function(item) {
-        h += '<div class="fund-item-card" style="border-left: 4px solid #dc2626;">' +
-             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
-             '<h4 style="font-size:13px; font-weight:700;">' + item.work + '</h4>' +
-             '<span style="font-weight:800; color:#dc2626;">- ₹' + Number(item.amount).toLocaleString('en-IN') + '</span>' +
-             '</div>' +
-             '<div style="font-size:11px; color:#64748b; margin-top:3px;">ठेकेदार: ' + item.vendor + ' | ' + item.date + '</div>' +
-             '</div>';
-      });
-      expDiv.innerHTML = h;
-    }
-
-    function saveBroadcastCloud() {
-      var t = document.getElementById('admBcTitle').value.trim();
-      var m = document.getElementById('admBcDesc').value.trim();
-      if (!t || !m) return alert("कृपया शीर्षक और संदेश भरें!");
-      db.ref('broadcast_alert').set({ active: true, title: t, message: m }).then(function() {
-        alert("ब्रॉडकास्ट अलर्ट जारी कर दिया गया!");
-        closeAdminPopupSection('secBroadcastForm');
-      });
-    }
-
-    function clearBroadcastCloud() {
-      db.ref('broadcast_alert').set({ active: false, title: "", message: "" }).then(function() {
-        alert("अलर्ट हटा दिया गया!");
-        closeAdminPopupSection('secBroadcastForm');
-      });
-    }
-
-    function drawGallery() {
-      var d = document.getElementById('galleryListDiv');
-      if (galleryList.length === 0) {
-        d.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>अभी कोई गैलरी फोटो नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      galleryList.forEach(function(item) {
-        h += '<div class="gallery-card">' +
-             '<h4 style="color:#1e293b; font-size:14px; margin-bottom:8px; font-weight:700;">' + item.title + '</h4>' +
-             '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">' +
-             '<div><span style="font-size:10px; font-weight:700; color:#dc2626;">[Before]</span>' +
-             '<img src="'+item.before+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; height:120px; object-fit:cover; border-radius:8px;"></div>' +
-             '<div><span style="font-size:10px; font-weight:700; color:#16a34a;">[After]</span>' +
-             '<img src="'+item.after+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; height:120px; object-fit:cover; border-radius:8px;"></div>' +
-             '</div>' +
-             '</div>';
-      });
-      d.innerHTML = h;
-    }
-
-    function openUserProfileDirect() {
-      openScreenModal('vProfile');
-    }
-
-    function switchAuthTab(type) {
-      document.getElementById('btnSubReg').className = (type === 'reg') ? 'btn btn-amber' : 'btn btn-slate';
-      document.getElementById('btnSubLogin').className = (type === 'login') ? 'btn btn-emerald' : 'btn btn-slate';
-      document.getElementById('boxReg').style.display = (type === 'reg') ? 'block' : 'none';
-      document.getElementById('boxLogin').style.display = (type === 'login') ? 'block' : 'none';
-    }
-
-    function submitCitizenRegistrationRequest() {
-      var n = document.getElementById('rName').value.trim();
-      var p = document.getElementById('rPhone').value.trim();
-      var w = document.getElementById('rWard').value.trim();
-      var pass = document.getElementById('rPass').value.trim();
-
-      if (!n || p.length < 10 || !w || !pass) return alert("कृपया सभी विवरण भरें!");
-      if (blockedPhones.includes(p)) return alert("यह मोबाइल नंबर व्यवस्थापक द्वारा स्थायी रूप से प्रतिबंधित (Blocked) है!");
-
-      var sessionId = "SESS_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-      var newUserObj = { name: n, phone: p, ward: w, pass: pass, avatar: "", date: new Date().toLocaleDateString('hi-IN'), currentSessionId: sessionId };
-
-      if (approvalMode === 'auto') {
-        db.ref('users/' + p).set(newUserObj);
-        curUser = newUserObj;
-        localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
-        localStorage.setItem('pkp_cur_session_id', sessionId);
-        alert("खाता सक्रिय हो गया है!");
-        syncUserState();
-        closeScreenModal('vProfile');
-        openScreenModal('vNew');
-      } else {
-        db.ref('pending_users/' + p).set(newUserObj);
-        document.getElementById('regReqNotice').style.display = 'block';
-        alert("अनुरोध भेज दिया गया है।");
-      }
-    }
-
-    /* CITIZEN LOGIN WITH STRICT SINGLE SESSION LOGIC */
-    function userLogin() {
-      var p = document.getElementById('lPhone').value.trim();
-      var pass = document.getElementById('lPass').value.trim();
-
-      if (blockedPhones.includes(p)) {
-        return alert("यह खाता व्यवस्थापक द्वारा प्रतिबंधित (Blocked) है। कृपया ग्राम प्रधान जी से संपर्क करें।");
-      }
-
-      var found = users.find(function(u){ return u.phone === p && u.pass === pass; });
-      if (found) {
-        var newSession = "SESS_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-        found.currentSessionId = newSession;
-
-        db.ref('users/' + p + '/currentSessionId').set(newSession).then(function() {
-          curUser = found;
-          localStorage.setItem('pkp_live_cur_u', JSON.stringify(found));
-          localStorage.setItem('pkp_cur_session_id', newSession);
-          alert("लॉगिन सफल!");
-          syncUserState();
-          closeScreenModal('vProfile');
-          openScreenModal('vNew');
-        });
-      } else {
-        alert("गलत नंबर या पासवर्ड!");
-      }
-    }
-
-    function userLogout() {
-      if (curUser && curUser.phone) {
-        db.ref('users/' + curUser.phone + '/currentSessionId').remove();
-      }
-      curUser = null;
-      localStorage.removeItem('pkp_live_cur_u');
-      localStorage.removeItem('pkp_cur_session_id');
-      document.querySelectorAll('.screen-modal').forEach(function(m){ m.classList.remove('active'); });
-      syncUserState();
-      openUserProfileDirect();
-    }
-
-    function uploadUserAvatarCloud(e) {
-      if (!curUser) return;
-      compressPhoto(e.target.files[0], function(b64){
-        db.ref('users/' + curUser.phone).update({ avatar: b64 }).then(function() {
-          curUser.avatar = b64;
-          localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
-          syncUserState();
-          alert("आपकी प्रोफाइल फोटो सफलतापूर्वक अपडेट हो गई!");
-        });
-      });
-    }
-
-    function syncUserState() {
-      var headerAvatar = document.getElementById('headerUserAvatar');
-      var headerIcon = document.getElementById('headerUserIcon');
-
-      if (curUser) {
-        document.getElementById('userAuthBox').style.display = 'none';
-        document.getElementById('userProfileBox').style.display = 'block';
-        document.getElementById('pName').innerText = curUser.name;
-        document.getElementById('pPhone').innerText = "+91 " + curUser.phone;
-        document.getElementById('pWard').innerText = curUser.ward;
-
-        var uImg = document.getElementById('uAvatarImg');
-        var uIco = document.getElementById('uAvatarIcon');
-
-        if (curUser.avatar) {
-          uImg.src = curUser.avatar;
-          uImg.style.display = 'block';
-          uIco.style.display = 'none';
-
-          headerAvatar.src = curUser.avatar;
-          headerAvatar.style.display = 'block';
-          headerIcon.style.display = 'none';
-        } else {
-          uImg.style.display = 'none';
-          uIco.style.display = 'flex';
-
-          headerAvatar.style.display = 'none';
-          headerIcon.style.display = 'inline-block';
-        }
-      } else {
-        document.getElementById('userAuthBox').style.display = 'block';
-        document.getElementById('userProfileBox').style.display = 'none';
-
-        headerAvatar.style.display = 'none';
-        headerIcon.style.display = 'inline-block';
-      }
-    }
-
-    function executeComplaintTrack() {
-      var q = document.getElementById('trackQueryInput').value.trim();
-      var res = document.getElementById('trackResultDiv');
-      if (!q) return alert("कृपया PKP नंबर दर्ज करें!");
-
-      var c = comps.find(function(item){ return item.id.toLowerCase() === q.toLowerCase(); });
-      if (!c) {
-        res.innerHTML = "<p style='color:#ef4444; font-size:13px;'>कोई शिकायत नहीं मिली।</p>";
-        return;
-      }
-
-      var bg = (c.status === "निस्तारित") ? "#16a34a" : (c.status === "प्रगति पर" ? "#0284c7" : (c.status.includes("निरस्त") ? "#dc2626" : "#f59e0b"));
-      var out = '<div class="complaint-card"><span class="badge" style="background:'+bg+'">'+c.status+'</span>' +
-                '<strong>'+c.id+' - '+c.cat+'</strong>' +
-                '<div style="font-size:12px; color:#475569; margin:4px 0;">स्थान: '+c.place+'</div>' +
-                '<div style="font-size:13px; margin:6px 0;">'+c.desc+'</div>';
-      
-      if (c.photo) {
-        out += '<div style="margin:8px 0;"><span style="font-size:11px; font-weight:700;">समस्या फोटो:</span><br><img src="'+c.photo+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:200px; object-fit:contain; border-radius:8px;"></div>';
-      }
-      if (c.resolutionPhoto) {
-        out += '<div style="margin:8px 0; background:#f0fdf4; border:1px solid #86efac; padding:6px; border-radius:8px;">' +
-               '<span style="font-size:11px; font-weight:700; color:#15803d;"><i class="fa-solid fa-circle-check"></i> काम पूरा होने की फोटो:</span><br>' +
-               '<img src="'+c.resolutionPhoto+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:220px; object-fit:contain; border-radius:8px;"></div>';
-      }
-      if (c.reply) {
-        out += '<div style="background:#f0fdf4; border-left:3px solid #16a34a; padding:8px; font-size:12px; color:#166534; border-radius:6px; margin-top:6px;"><b>प्रधान उत्तर:</b> '+c.reply+'</div>';
-      }
-      out += '</div>';
-      res.innerHTML = out;
-    }
-
-    function drawComps() {
-      var d = document.getElementById('compListDiv');
-      document.getElementById('cCount').innerText = comps.length;
-      if (comps.length === 0) {
-        d.innerHTML = "<div style='text-align:center; padding:20px; color:#94a3b8;'>अभी कोई शिकायत नहीं है।</div>";
-        return;
-      }
-      var h = "";
-      comps.forEach(function(c) {
-        var bg = (c.status === "निस्तारित") ? "#16a34a" : (c.status === "प्रगति पर" ? "#0284c7" : (c.status.includes("निरस्त") ? "#dc2626" : "#f59e0b"));
-
-        h += '<div class="complaint-card"><span class="badge" style="background:'+bg+'">'+c.status+'</span>' +
-             '<strong style="font-size:14px;"><i class="fa-solid fa-receipt"></i> '+c.id+' - '+c.cat+'</strong>' +
-             '<div style="font-size:12px; color:#64748b; margin:4px 0;"><i class="fa-solid fa-location-dot" style="color:#dc2626;"></i> ' + c.place + '</div>' +
-             '<div style="font-size:13px; color:#334155; margin-bottom:6px;">' + c.desc + '</div>';
-
-        if (c.resolutionPhoto) {
-          h += '<div style="margin:6px 0; background:#f0fdf4; border:1px solid #86efac; padding:6px; border-radius:6px;">' +
-               '<span style="font-size:10px; font-weight:700; color:#15803d;"><i class="fa-solid fa-circle-check"></i> निस्तारण साक्ष्य फोटो:</span><br>' +
-               '<img src="'+c.resolutionPhoto+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:160px; object-fit:cover; border-radius:6px; margin-top:3px;"></div>';
-        }
-
-        if (c.reply) {
-          h += '<div style="background:#f1f5f9; border-left:3px solid var(--primary); padding:6px 10px; border-radius:6px; font-size:12px; color:#15803d;">' +
-               '<strong>प्रधान उत्तर:</strong> ' + c.reply + '</div>';
-        }
-        h += '</div>';
-      });
-      d.innerHTML = h;
-    }
-
-    function openAdminGate() {
-      document.querySelectorAll('.screen-modal').forEach(function(el){ el.classList.remove('active'); });
-      document.getElementById('vAdmin').classList.add('active');
-
-      if (!isAdminUnlocked) {
-        document.getElementById('adminGateBox').style.display = 'block';
-        document.getElementById('adminMainDashBox').style.display = 'none';
-        document.getElementById('adminGatePin').value = "";
-      } else {
-        document.getElementById('adminGateBox').style.display = 'none';
-        document.getElementById('adminMainDashBox').style.display = 'block';
-        renderAdminDashboard();
-      }
-    }
-
-    /* VERIFY ADMIN WITH MAX 2 DEVICES CONCURRENT LOGIN */
-    function verifyAdminGate() {
-      var pin = document.getElementById('adminGatePin').value.trim();
-      var valid = false;
-
-      if (adminCustomPassword) {
-        if (pin === adminCustomPassword) valid = true;
-      } else {
-        if (!defaultCancelled && pin === "1234") valid = true;
-      }
-
-      if (!valid) return alert("अमान्य पासवर्ड!");
-
-      db.ref('admin_sessions').once('value', function(snapshot) {
-        var sessions = snapshot.val() || {};
-        var activeIds = Object.keys(sessions);
-
-        var existingSession = localStorage.getItem('pkp_admin_session_id');
-        if (existingSession && activeIds.includes(existingSession)) {
-          loginAdminSuccess(existingSession);
-          return;
-        }
-
-        if (activeIds.length >= 2) {
-          alert("एडमिन लॉगिन सीमा पूर्ण है! अधिकतम 2 मोबाइल/डिवाइस में ही एडमिन लॉगिन की अनुमति है। कृपया किसी एक डिवाइस से लॉगआउट करें।");
-          return;
-        }
-
-        var newSess = "ADM_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-        db.ref('admin_sessions/' + newSess).set({ time: Date.now() }).then(function() {
-          loginAdminSuccess(newSess);
-        });
-      });
-    }
-
-    function loginAdminSuccess(sessId) {
-      isAdminUnlocked = true;
-      adminSessionId = sessId;
-      localStorage.setItem('pkp_admin_logged_in', 'true');
-      localStorage.setItem('pkp_admin_session_id', sessId);
-      document.getElementById('adminGateBox').style.display = 'none';
-      document.getElementById('adminMainDashBox').style.display = 'block';
-      renderAdminDashboard();
-    }
-
-    function renderAdminDashboard() {
-      filterAdminComplaints();
-      renderRecycleBin();
-      renderAdminMarketModerator();
-    }
-
-    function toggleEditProfileBox() {
-      var box = document.getElementById('editProfileSection');
-      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function toggleChangePassBox() {
-      var box = document.getElementById('changePassSection');
-      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function toggleBinView() {
-      var box = document.getElementById('recycleBinDiv');
-      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function savePradhanProfileDataCloud() {
-      var n = document.getElementById('admPName').value.trim();
-      var p = document.getElementById('admPPhone').value.trim();
-      if (!n || p.length < 10) return alert("नाम व नंबर भरें!");
-      pradhanInfo.name = n;
-      pradhanInfo.phone = p;
-      db.ref('pradhan_profile').set(pradhanInfo).then(function() {
-        alert("प्रोफाइल सेव हो गई!");
-        document.getElementById('editProfileSection').style.display = 'none';
-      });
-    }
-
-    function uploadPradhanPhoto(e) {
-      compressPhoto(e.target.files[0], function(b64){
-        pradhanInfo.pic = b64;
-        db.ref('pradhan_profile').set(pradhanInfo).then(function() { alert("फोटो अपडेट हो गई!"); });
-      });
-    }
-
-    function uploadHeaderLogoPhoto(e) {
-      compressPhoto(e.target.files[0], function(b64){
-        pradhanInfo.headerLogo = b64;
-        db.ref('pradhan_profile').set(pradhanInfo).then(function() { alert("लोगो अपडेट हो गया!"); });
-      });
-    }
-
-    function executePasswordChangeWithConfirmation() {
-      var oldPass = document.getElementById('admOldPassInput').value.trim();
-      var newPass1 = document.getElementById('admNewPassInput1').value.trim();
-      var newPass2 = document.getElementById('admNewPassInput2').value.trim();
-
-      var currentActivePass = adminCustomPassword || (!defaultCancelled ? "1234" : null);
-      if (oldPass !== currentActivePass) return alert("पुराना पासवर्ड गलत है!");
-      if (!newPass1 || newPass1.length < 4) return alert("नया पासवर्ड कम से कम 4 अक्षरों का हो!");
-      if (newPass1 !== newPass2) return alert("दोनों पासवर्ड मेल नहीं खाते!");
-
-      db.ref('admin_settings').update({ customPassword: newPass1, defaultCancelled: true }).then(function() {
-        document.getElementById('changePassSection').style.display = 'none';
-        alert("नया पासवर्ड सुरक्षित हो गया!");
-      });
-    }
-
-    function filterAdminComplaints() {
-      var selCat = document.getElementById('admCatFilterSelect').value;
-      var d = document.getElementById('adminListDiv');
-      var filtered = comps;
-      if (selCat !== 'ALL') {
-        filtered = comps.filter(function(c){ return c.cat === selCat; });
-      }
-
-      if (filtered.length === 0) {
-        d.innerHTML = "<p style='color:#64748b; font-size:13px; padding:10px;'>कोई सक्रिय शिकायत नहीं है।</p>";
-        return;
-      }
-
-      var h = "";
-      filtered.forEach(function(c) {
-        h += '<div class="complaint-card" style="border-left: 4px solid var(--primary);">' +
-             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
-             '<strong><i class="fa-solid fa-receipt"></i> ' + c.id + ' - ' + c.cat + '</strong>' +
-             '<div style="display:flex; gap:6px;">' +
-             '<button onclick="openCompDetailModal(\''+c.id+'\')" style="background:#15803d; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">डिटेल</button>' +
-             '<button onclick="moveToRecycleBin(\''+c.id+'\')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">बिन में डालें</button>' +
-             '</div>' +
-             '</div>' +
-             '<div style="font-size:12px; margin:4px 0;">नागरिक: <b>' + c.name + '</b> (' + c.phone + ') <a href="tel:' + c.phone + '" style="color:#16a34a; font-weight:700;"><i class="fa-solid fa-phone"></i> कॉल करें</a></div>' +
-             '<div style="font-size:12px; color:#475569;">स्थान: ' + c.place + '</div>' +
-             '<div style="font-size:13px; margin:4px 0;">' + c.desc + '</div>' +
-
-             '<div style="background:#f8fafc; border-top:1px dashed #cbd5e1; padding-top:8px; margin-top:8px;">' +
-             '<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:6px;">' +
-             '<div><label style="font-size:11px;">स्थिति बदलें:</label>' +
-             '<select id="admStatus_'+c.id+'" style="padding:6px; font-size:12px;">' +
-             '<option value="लंबित" '+(c.status==='लंबित'?'selected':'')+'>लंबित (Pending)</option>' +
-             '<option value="प्रगति पर" '+(c.status==='प्रगति पर'?'selected':'')+'>प्रगति पर (In Progress)</option>' +
-             '<option value="निस्तारित" '+(c.status==='निस्तारित'?'selected':'')+'>निस्तारित (Resolved)</option>' +
-             '<option value="निरस्त (फ़र्ज़ी)" '+(c.status==='निरस्त (फ़र्ज़ी)'?'selected':'')+'>निरस्त (फ़र्ज़ी)</option>' +
-             '</select></div>' +
-             '<div><label style="font-size:11px;">नागरिक को उत्तर:</label>' +
-             '<input type="text" id="admReply_'+c.id+'" value="'+(c.reply||"")+'" placeholder="उदा. निस्तारण कर दिया गया..." style="padding:6px; font-size:12px;"></div>' +
-             '</div>' +
-
-             '<div style="margin:6px 0; background:#fff; padding:6px; border-radius:6px; border:1px solid #cbd5e1;">' +
-             '<label style="font-size:11px; color:#15803d; font-weight:700;"><i class="fa-solid fa-camera"></i> काम पूरा होने की फोटो लगाएं (ऐच्छिक):</label>' +
-             '<input type="file" accept="image/*" onchange="handleResolutionPhotoUpload(event, \''+c.id+'\')">' +
-             (c.resolutionPhoto ? '<div style="font-size:10px; color:#16a34a; margin-top:3px;"><i class="fa-solid fa-check"></i> पूर्व में फोटो अपलोड है (बदलने हेतु दोबारा चुनें)</div>' : '') +
-             '</div>' +
-
-             '<div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;">' +
-             '<button class="btn btn-emerald" onclick="saveAdminActionCloud(\''+c.id+'\')" style="padding:6px 10px; font-size:11px; width:auto;">' +
-             '<i class="fa-solid fa-floppy-disk"></i> स्थिति व फोटो सेव करें</button>' +
-             '<button class="btn btn-whatsapp" onclick="sendWhatsAppResolution(\''+c.id+'\')" style="padding:6px 10px; font-size:11px; width:auto;">' +
-             '<i class="fa-brands fa-whatsapp"></i> WhatsApp अपडेट</button>' +
-             '<button class="btn btn-slate" onclick="sendSMSResolution(\''+c.id+'\')" style="padding:6px 10px; font-size:11px; width:auto;">SMS</button>' +
-             '</div>' +
-             '</div></div>';
-      });
-      d.innerHTML = h;
-    }
-
-    function handleResolutionPhotoUpload(e, compId) {
-      compressPhoto(e.target.files[0], function(b64){
-        tempResolutionPhoto[compId] = b64;
-      });
-    }
-
-    function saveAdminActionCloud(id) {
-      var s = document.getElementById('admStatus_' + id).value;
-      var r = document.getElementById('admReply_' + id).value.trim();
-
-      var updates = { status: s, reply: r };
-      if (tempResolutionPhoto[id]) {
-        updates.resolutionPhoto = tempResolutionPhoto[id];
-      }
-
-      db.ref('complaints/' + id).update(updates).then(function() {
-        alert("शिकायत स्थिति, उत्तर एवं निस्तारण फोटो सफलतापूर्वक सुरक्षित हो गई!");
-      });
-    }
-
-    function sendWhatsAppResolution(id) {
-      var c = comps.find(function(item){ return item.id === id; });
-      if (!c) return;
-      var status = document.getElementById('admStatus_' + id).value;
-      var reply = document.getElementById('admReply_' + id).value.trim();
-
-      var msg = "नमस्ते " + c.name + " जी,\n\n" +
-                "ग्राम पंचायत पाकरपुर पोर्टल पर आपकी शिकायत (ID: " + c.id + ") का स्टेटस अपडेट कर दिया गया है:\n\n" +
-                "📌 समस्या: " + c.cat + "\n" +
-                "⚡ स्थिति: *" + status + "*\n" +
-                "📝 प्रधान उत्तर: " + (reply || "कार्य पूर्ण हो चुका है।") + "\n\n" +
-                "- ग्राम पंचायत पाकरपुर";
-      
-      window.open("https://wa.me/91" + c.phone + "?text=" + encodeURIComponent(msg), '_blank');
-    }
-
-    function sendSMSResolution(id) {
-      var c = comps.find(function(item){ return item.id === id; });
-      if (!c) return;
-      var status = document.getElementById('admStatus_' + id).value;
-      var reply = document.getElementById('admReply_' + id).value.trim();
-      var msg = "पाकरपुर पोर्टल: शिकायत ID " + c.id + " की स्थिति [" + status + "] है। उत्तर: " + (reply || "पोर्टल पर विवरण देखें।");
-      window.location.href = "sms:+91" + c.phone + "?body=" + encodeURIComponent(msg);
-    }
-
-    function moveToRecycleBin(id) {
-      if (confirm("कचरा पेटी में डालना चाहते हैं?")) {
-        var c = comps.find(function(item){ return item.id === id; });
-        if (!c) return;
-        c.status = "निरस्त (फ़र्ज़ी)";
-        db.ref('complaints_bin/' + id).set(c).then(function() {
-          db.ref('complaints/' + id).remove();
-        });
-      }
-    }
-
-    function renderRecycleBin() {
-      var d = document.getElementById('recycleBinDiv');
-      document.getElementById('binCount').innerText = binComps.length;
-      if (binComps.length === 0) {
-        d.innerHTML = "<p style='color:#64748b; padding:6px;'>कचरा पेटी खाली है।</p>";
-        return;
-      }
-      var h = "";
-      binComps.forEach(function(c) {
-        h += '<div style="background:#fff; border:1px solid #fca5a5; padding:8px; border-radius:8px; margin-bottom:6px;">' +
-             '<strong>' + c.id + ' - ' + c.cat + '</strong>' +
-             '<div style="font-size:11px;">नागरिक: ' + c.name + ' (' + c.phone + ')</div>' +
-             '<div style="display:flex; gap:6px; margin-top:6px;">' +
-             '<button onclick="restoreFromBin(\''+c.id+'\')" style="background:#16a34a; color:#fff; border:none; padding:3px 8px; border-radius:6px; font-size:11px; cursor:pointer;">रीस्टोर</button>' +
-             '<button onclick="permanentDeleteComp(\''+c.id+'\')" style="background:#dc2626; color:#fff; border:none; padding:3px 8px; border-radius:6px; font-size:11px; cursor:pointer;">मिटाएं</button>' +
-             '</div></div>';
-      });
-      d.innerHTML = h;
-    }
-
-    function restoreFromBin(id) {
-      var c = binComps.find(function(item){ return item.id === id; });
-      if (!c) return;
-      c.status = "लंबित";
-      db.ref('complaints/' + id).set(c).then(function() { db.ref('complaints_bin/' + id).remove(); });
-    }
-
-    function permanentDeleteComp(id) {
-      if (confirm("हमेशा के लिए मिटाना चाहते हैं?")) db.ref('complaints_bin/' + id).remove();
-    }
-
-    function openCompDetailModal(id) {
-      var c = comps.find(function(item){ return item.id === id; });
-      if (!c) return;
-      var body = document.getElementById('modalCompBody');
-      var out = '<p style="margin-bottom:6px;"><strong>रसीद:</strong> ' + c.id + '</p>' +
-                '<p style="margin-bottom:6px;"><strong>विभाग:</strong> ' + c.cat + '</p>' +
-                '<p style="margin-bottom:6px;"><strong>नागरिक:</strong> ' + c.name + ' (<a href="tel:'+c.phone+'" style="color:#16a34a; font-weight:700;">+91 '+c.phone+'</a>)</p>' +
-                '<p style="margin-bottom:6px;"><strong>स्थान:</strong> ' + c.place + '</p>' +
-                '<p style="margin-bottom:8px;"><strong>समस्या:</strong> ' + c.desc + '</p>';
-      if (c.coords) {
-        out += '<p style="margin-bottom:8px;"><strong>GPS:</strong> ' + c.coords + ' <a href="https://www.google.com/maps?q='+c.coords+'" target="_blank" style="color:#0284c7;">[Maps देखें]</a></p>';
-      }
-      if (c.photo) {
-        out += '<p style="font-size:11px; font-weight:700;">शिकायत की फोटो:</p><img src="'+c.photo+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:220px; object-fit:contain; border-radius:8px; margin-bottom:8px;">';
-      }
-      if (c.resolutionPhoto) {
-        out += '<div style="background:#f0fdf4; border:1px solid #86efac; padding:6px; border-radius:8px; margin-top:6px;">' +
-               '<p style="font-size:11px; font-weight:700; color:#15803d;"><i class="fa-solid fa-circle-check"></i> काम पूरा होने की फोटो:</p>' +
-               '<img src="'+c.resolutionPhoto+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:240px; object-fit:contain; border-radius:8px;"></div>';
-      }
-      body.innerHTML = out;
-      document.getElementById('compDetailModal').classList.add('active');
-    }
-    function closeCompDetailModal() { document.getElementById('compDetailModal').classList.remove('active'); }
-
-    function exitAdminView() {
-      document.getElementById('vAdmin').classList.remove('active');
-    }
-
-    function adminLogout() {
-      if (adminSessionId) {
-        db.ref('admin_sessions/' + adminSessionId).remove();
-      }
-      isAdminUnlocked = false;
-      adminSessionId = null;
-      localStorage.removeItem('pkp_admin_logged_in');
-      localStorage.removeItem('pkp_admin_session_id');
-      document.getElementById('adminGateBox').style.display = 'block';
-      document.getElementById('adminMainDashBox').style.display = 'none';
-      document.getElementById('vAdmin').classList.remove('active');
-    }
-
-    function toggleMap() {
-      var box = document.getElementById('mapBox');
-      if (box.style.display === 'block') {
-        box.style.display = 'none';
-      } else {
-        box.style.display = 'block';
-        if (!mapInst) {
-          mapInst = L.map('mapDiv').setView([PAKARPUR_LAT, PAKARPUR_LNG], 16);
-          L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { maxZoom: 20 }).addTo(mapInst);
-          selectedMarker = L.marker([PAKARPUR_LAT, PAKARPUR_LNG], { draggable: true }).addTo(mapInst);
-          selectedMarker.on('dragend', function(){
-            var pos = selectedMarker.getLatLng();
-            updateCoords(pos.lat, pos.lng);
-          });
-        }
-        setTimeout(function(){ mapInst.invalidateSize(); }, 200);
-      }
-    }
-
-    function updateCoords(lat, lng) {
-      var val = lat.toFixed(5) + ", " + lng.toFixed(5);
-      document.getElementById('cCoords').value = val;
-      var notice = document.getElementById('coordsNotice');
-      notice.style.display = 'block';
-      notice.innerHTML = '<i class="fa-solid fa-crosshairs"></i> GPS लोकेशन: ' + val;
-    }
-
-    function handleCompPhoto(e) { compressPhoto(e.target.files[0], function(b64){ tempCompPhoto = b64; }); }
-
-    function handleNewComp(e) {
-      e.preventDefault();
-      if (!curUser) return openUserProfileDirect();
-
-      var compId = "PKP-" + Math.floor(100 + Math.random() * 900);
-      var item = {
-        id: compId,
-        name: curUser.name,
-        phone: curUser.phone,
-        cat: document.getElementById('cCat').value,
-        place: document.getElementById('cPlace').value.trim(),
-        coords: document.getElementById('cCoords').value || "",
-        desc: document.getElementById('cDesc').value.trim(),
-        photo: tempCompPhoto || "",
-        status: "लंबित",
-        reply: "",
-        resolutionPhoto: ""
-      };
-
-      db.ref('complaints/' + compId).set(item).then(function() {
-        tempCompPhoto = "";
-        alert("शिकायत दर्ज हो गई!\nरसीद संख्या: " + item.id);
-        document.getElementById('compForm').reset();
-        closeScreenModal('vNew');
-        openScreenModal('vList');
-      });
-    }
-
-    function compressPhoto(file, callback) {
-      if (!file) return;
-      var r = new FileReader();
-      r.onload = function(evt) {
-        var im = new Image();
-        im.onload = function() {
-          var cv = document.createElement("canvas");
-          var w = im.width, h = im.height, max = 320;
-          if (w > max) { h *= max / w; w = max; }
-          cv.width = w; cv.height = h;
-          cv.getContext("2d").drawImage(im, 0, 0, w, h);
-          callback(cv.toDataURL("image/jpeg", 0.75));
-        };
-        im.src = evt.target.result;
-      };
-      r.readAsDataURL(file);
-    }
-  </script>
-</body>
-</html>
+      if (!fullWeatherData) return a
