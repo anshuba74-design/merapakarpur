@@ -109,9 +109,9 @@
     /* Red Notification Corner Badges */
     .notify-badge {
       position: absolute; top: -3px; right: -3px; background: #dc2626; color: #ffffff;
-      font-size: 10px; font-weight: 800; min-width: 17px; height: 17px; border-radius: 9px;
+      font-size: 10px; font-weight: 800; min-width: 18px; height: 18px; border-radius: 9px;
       display: none; align-items: center; justify-content: center; padding: 0 4px;
-      border: 1.5px solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+      border: 1.5px solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.25); z-index: 10;
     }
 
     .weather-strip {
@@ -360,7 +360,6 @@
 
     <button class="admin-secret-btn" onclick="openAdminGate()" title="व्यवस्थापक लॉगिन">
       <i class="fa-solid fa-shield-halved"></i>
-      <!-- Admin Bell Badge on Header -->
       <span class="notify-badge" id="hdrAdminBadge">0</span>
     </button>
   </header>
@@ -497,7 +496,7 @@
             <input type="file" accept="image/*" onchange="handleCompPhoto(event)">
           </div>
 
-          <!-- AUDIO RECORD & UPLOAD MODULE FOR CITIZENS -->
+          <!-- AUDIO RECORD & UPLOAD MODULE -->
           <div class="form-group">
             <label><i class="fa-solid fa-microphone-lines" style="color:#dc2626;"></i> यदि लिख नहीं पा रहे हैं, तो बोलकर बताएं (ऑडियो रिकॉर्डिंग):</label>
             <div class="audio-record-box">
@@ -834,7 +833,7 @@
               <span>विकास गैलरी</span>
             </div>
             
-            <!-- Users Tile with Red Badge -->
+            <!-- Users Tile with Red Unread Badge -->
             <div class="admin-square-tile" onclick="openAdminSection('secUsersForm')">
               <span class="notify-badge" id="badgePendingUsers">0</span>
               <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-user-check"></i></div>
@@ -1043,7 +1042,7 @@
     var mapInst = null;
     var selectedMarker = null;
     var tempCompPhoto = "";
-    var tempCompAudio = ""; // Base64 Audio string
+    var tempCompAudio = "";
     var tempBeforePhoto = "";
     var tempAfterPhoto = "";
     var tempResolutionPhoto = {};
@@ -1057,9 +1056,10 @@
     var recordInterval = null;
     var recordSeconds = 0;
 
-    // Track initial loads to avoid beep sound on page refresh
+    // Track initial loads & Seen user count for auto-clearing red badge
     var initialCompsLoaded = false;
     var initialPendingUsersLoaded = false;
+    var lastSeenPendingUsersCount = parseInt(localStorage.getItem('pkp_seen_pending_users') || '0', 10);
 
     window.onload = function() {
       initFirebaseListeners();
@@ -1075,7 +1075,7 @@
       }
     };
 
-    // Soft alert tone for admin notification
+    // Audible Beep for Admin Alert
     function playAdminNotifySound() {
       try {
         var ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1084,11 +1084,11 @@
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.type = "sine";
-        osc.frequency.setValueAtTime(800, ctx.currentTime);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+        osc.frequency.setValueAtTime(850, ctx.currentTime);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
         osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.35);
+        osc.stop(ctx.currentTime + 0.4);
       } catch (err) {}
     }
 
@@ -1104,6 +1104,7 @@
       document.getElementById('universalImageModal').classList.remove('active');
     }
 
+    // OPEN ADMIN SECTION AND AUTO-CLEAR BADGE ON CLICKING 'secUsersForm'
     function openAdminSection(sectionId) {
       var allSections = ['secBroadcastForm', 'secNoticeForm', 'secDirForm', 'secKoshForm', 'secGalleryForm', 'secUsersForm', 'secAddSchemeForm'];
       allSections.forEach(function(sec) {
@@ -1115,6 +1116,13 @@
         }
       });
       if (sectionId === 'secDirForm') renderAdminDirectoryInner();
+
+      // Clear red badge when admin opens 'नागरिक खाते'
+      if (sectionId === 'secUsersForm') {
+        lastSeenPendingUsersCount = pendingUsers.length;
+        localStorage.setItem('pkp_seen_pending_users', lastSeenPendingUsersCount.toString());
+        updateNotificationBadges();
+      }
     }
 
     function fetchPakarpurWeather() {
@@ -1242,7 +1250,6 @@
         }
       });
 
-      // COMPLAINTS LISTENER WITH RED NOTIFICATION LOGIC
       db.ref('complaints').on('value', function(snapshot) {
         var val = snapshot.val();
         var prevCount = comps.length;
@@ -1285,12 +1292,13 @@
         if (isAdminUnlocked) renderActiveUsers();
       });
 
-      // PENDING USER REGISTRATIONS LISTENER WITH NOTIFICATION
+      // PENDING CITIZEN REQUESTS REALTIME LISTENER WITH BEEP
       db.ref('pending_users').on('value', function(snapshot) {
         var val = snapshot.val();
         var prevPending = pendingUsers.length;
         pendingUsers = val ? Object.values(val) : [];
 
+        // Triggers Beep tone immediately when new user submits request
         if (initialPendingUsersLoaded && pendingUsers.length > prevPending) {
           playAdminNotifySound();
         }
@@ -1348,13 +1356,29 @@
       });
     }
 
-    // UPDATE CORNER NOTIFICATION RED BADGES
+    // UPDATE CORNER NOTIFICATION RED BADGES (AUTO-CLEARED WHEN SEEN)
     function updateNotificationBadges() {
-      var pendingRegCount = pendingUsers.length;
-      var pendingCompCount = comps.filter(function(c){ return c.status === "लंबित"; }).length;
-      var totalAdminNotifications = pendingRegCount + pendingCompCount;
+      // Calculate unread/new pending requests
+      var unreadUserCount = pendingUsers.length - lastSeenPendingUsersCount;
+      if (unreadUserCount < 0) {
+        unreadUserCount = 0;
+        lastSeenPendingUsersCount = pendingUsers.length;
+        localStorage.setItem('pkp_seen_pending_users', lastSeenPendingUsersCount.toString());
+      }
 
-      // Header admin button badge
+      var userTileBadge = document.getElementById('badgePendingUsers');
+      if (userTileBadge) {
+        if (unreadUserCount > 0) {
+          userTileBadge.innerText = unreadUserCount;
+          userTileBadge.style.display = "flex";
+        } else {
+          userTileBadge.style.display = "none";
+        }
+      }
+
+      var pendingCompCount = comps.filter(function(c){ return c.status === "लंबित"; }).length;
+      var totalAdminNotifications = unreadUserCount + pendingCompCount;
+
       var hdrBadge = document.getElementById('hdrAdminBadge');
       if (hdrBadge) {
         if (totalAdminNotifications > 0) {
@@ -1365,18 +1389,6 @@
         }
       }
 
-      // Pending users square tile badge
-      var userTileBadge = document.getElementById('badgePendingUsers');
-      if (userTileBadge) {
-        if (pendingRegCount > 0) {
-          userTileBadge.innerText = pendingRegCount;
-          userTileBadge.style.display = "flex";
-        } else {
-          userTileBadge.style.display = "none";
-        }
-      }
-
-      // Pending complaints heading badge
       var compBadge = document.getElementById('badgePendingComplaints');
       if (compBadge) {
         if (pendingCompCount > 0) {
