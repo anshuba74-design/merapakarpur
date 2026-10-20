@@ -4,7 +4,7 @@
   <meta name="google-site-verification" content="jQKv4rlBXQ0Z-Q0c-sPl0SgRGPl1UUu2W--Hnz3WEio" />
 
   <title>मेरा पाकरपुर - ग्राम जन समस्या निवारण एवं सेवा पोर्टल</title>
-  <meta name="description" content="मेरा पाकरपुर ग्राम पंचायत का आधिकारिक डिजिटल पोर्टल। जन शिकायतें, सूचना बोर्ड, 7-दिवसीय मौसम, विकास कोष व सरकारी योजनाएं।">
+  <meta name="description" content="मेरा पाकरपुर ग्राम पंचायत का आधिकारिक डिजिटल पोर्टल। जन शिकायतें, क्रय-विक्रय, सूचना बोर्ड, 7-दिवसीय मौसम, विकास कोष व सरकारी योजनाएं।">
   <meta name="keywords" content="Mera Pakarpur, मेरा पाकरपुर, Pakarpur portal, ग्राम पंचायत पाकरपुर">
 
   <meta charset="UTF-8">
@@ -150,18 +150,18 @@
     }
     .action-tile span { display: block; font-size: 11px; font-weight: 700; color: #334155; line-height: 1.2; }
 
-    .admin-square-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+    .admin-square-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0; }
     .admin-square-tile {
-      background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 4px;
+      background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 6px;
       text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
       position: relative;
     }
     .admin-square-tile:active { transform: scale(0.95); background: #f8fafc; }
     .adm-tile-icon {
-      width: 38px; height: 38px; border-radius: 10px; margin: 0 auto 6px; display: flex; align-items: center;
-      justify-content: center; font-size: 17px; color: #fff;
+      width: 42px; height: 42px; border-radius: 10px; margin: 0 auto 6px; display: flex; align-items: center;
+      justify-content: center; font-size: 18px; color: #fff;
     }
-    .admin-square-tile span { display: block; font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.2; }
+    .admin-square-tile span { display: block; font-size: 12px; font-weight: 700; color: #1e293b; line-height: 1.2; }
 
     .icon-badge {
       position: absolute; top: -5px; right: -3px; background: #dc2626; color: #fff;
@@ -217,9 +217,6 @@
     .btn-direct-gov { background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; padding: 8px 12px; font-size: 12px; border-radius: 8px; margin-top: 8px; display: inline-flex; }
 
     .adm-action-btn-group { display: flex; gap: 5px; align-items: center; }
-    .adm-btn-edit {
-      background: #eff6ff; color: #0284c7; border: 1px solid #93c5fd; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
-    }
     .adm-btn-del {
       background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
     }
@@ -227,7 +224,7 @@
       background: #450a0a; color: #fecaca; border: 1px solid #dc2626; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
     }
 
-    .complaint-card, .notice-card, .directory-card, .scheme-card, .fund-item-card, .gallery-card {
+    .complaint-card, .notice-card, .directory-card, .scheme-card, .fund-item-card, .gallery-card, .market-card {
       background: #ffffff; border-radius: 12px; padding: 12px; border: 1px solid var(--border); margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     }
     .badge { font-size: 11px; padding: 2px 7px; border-radius: 10px; color: #fff; font-weight: 700; float: right; }
@@ -312,17 +309,6 @@
     </div>
   </div>
 
-  <!-- UNIVERSAL ADMIN EDIT POPUP MODAL -->
-  <div class="image-modal" id="adminEditModal">
-    <div class="modal-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
-        <h4 style="color:var(--primary); font-size:15px;" id="adminEditModalTitle"><i class="fa-solid fa-pen-to-square"></i> विवरण संशोधित (Edit) करें</h4>
-        <button style="border:none; background:#dc2626; color:#fff; width:30px; height:30px; border-radius:50%; font-size:15px; cursor:pointer;" onclick="closeAdminEditModal()">✕</button>
-      </div>
-      <div id="adminEditModalBody"></div>
-    </div>
-  </div>
-
   <!-- GOOGLE STYLE WEATHER FORECAST MODAL -->
   <div class="image-modal" id="weatherFullModal">
     <div class="modal-box">
@@ -399,51 +385,58 @@
       </div>
     </div>
 
-    <!-- 10-GRID NAVIGATION ICONS FOR USERS -->
+    <!-- 11-GRID NAVIGATION ICONS FOR ALL USER SERVICES -->
     <div class="actions-grid" id="mainActionsGrid">
-      <div class="action-tile" id="tileNew" onclick="openScreenModal('vNew')">
+      <div class="action-tile" onclick="openScreenModal('vNew')">
         <div class="tile-icon" style="background: #15803d;"><i class="fa-solid fa-feather-pointed"></i></div>
         <span>नई शिकायत</span>
       </div>
-      <div class="action-tile" id="tileList" onclick="openScreenModal('vList')">
+      <div class="action-tile" onclick="openScreenModal('vList')">
         <div class="tile-icon" style="background: #0284c7;"><i class="fa-solid fa-list-check"></i></div>
         <span>शिकायतें देखें</span>
       </div>
-      <div class="action-tile" id="tileTrack" onclick="openScreenModal('vTrack')">
+      <div class="action-tile" onclick="openScreenModal('vTrack')">
         <div class="tile-icon" style="background: #d97706;"><i class="fa-solid fa-magnifying-glass-location"></i></div>
         <span>शिकायत स्थिति</span>
       </div>
-      <div class="action-tile" id="tileUserProf" onclick="openUserProfileDirect()">
+      
+      <!-- NEW KRAY VIKRAY & SKILLS MARKETPLACE TILE -->
+      <div class="action-tile" onclick="openScreenModal('vMarket')">
+        <div class="tile-icon" style="background: #ea580c;"><i class="fa-solid fa-store"></i></div>
+        <span>क्रय-विक्रय व सेवा</span>
+      </div>
+
+      <div class="action-tile" onclick="openUserProfileDirect()">
         <div class="tile-icon" style="background: #059669;"><i class="fa-solid fa-address-card"></i></div>
         <span>मेरा खाता / प्रोफाइल</span>
       </div>
-      <div class="action-tile" id="tileNotice" onclick="openScreenModal('vNotice')">
+      <div class="action-tile" onclick="openScreenModal('vNotice')">
         <div class="tile-icon" style="background: #dc2626;"><i class="fa-solid fa-bullhorn"></i></div>
         <span>सूचना बोर्ड</span>
       </div>
-      <div class="action-tile" id="tileDirectory" onclick="openScreenModal('vDirectory')">
+      <div class="action-tile" onclick="openScreenModal('vDirectory')">
         <div class="tile-icon" style="background: #4f46e5;"><i class="fa-solid fa-address-book"></i></div>
         <span>हेल्पलाइन नंबर</span>
       </div>
-      <div class="action-tile" id="tileBudget" onclick="openScreenModal('vBudget')">
+      <div class="action-tile" onclick="openScreenModal('vBudget')">
         <div class="tile-icon" style="background: #0d9488;"><i class="fa-solid fa-building-columns"></i></div>
         <span>विकास कोष</span>
       </div>
-      <div class="action-tile" id="tileGallery" onclick="openScreenModal('vGallery')">
+      <div class="action-tile" onclick="openScreenModal('vGallery')">
         <div class="tile-icon" style="background: #e11d48;"><i class="fa-solid fa-images"></i></div>
         <span>विकास गैलरी</span>
       </div>
-      <div class="action-tile" id="tileTeam" onclick="openScreenModal('vTeam')">
+      <div class="action-tile" onclick="openScreenModal('vTeam')">
         <div class="tile-icon" style="background: #7c3aed;"><i class="fa-solid fa-users-gear"></i></div>
         <span>पंचायत टीम</span>
       </div>
-      <div class="action-tile" id="tileSchemes" onclick="openScreenModal('vSchemes')">
+      <div class="action-tile" onclick="openScreenModal('vSchemes')">
         <div class="tile-icon" style="background: #2563eb;"><i class="fa-solid fa-hand-holding-hand"></i></div>
         <span>सरकारी योजना</span>
       </div>
     </div>
 
-    <!-- ADMIN VIEW CONTAINER -->
+    <!-- ADMIN VIEW CONTAINER (ONLY PURE ADMIN CONTROLS REMAIN) -->
     <div id="vAdmin" class="view-content">
       <div class="card" id="adminGateBox" style="border: 2px solid var(--accent);">
         <div class="card-title" style="color: #b45309;">
@@ -493,36 +486,16 @@
             </div>
           </div>
 
-          <!-- ADMIN SQUARE GRID TILES WITH ACTIVE USERS COUNT BADGE -->
+          <!-- PURE ADMIN GRID TILES (REMOVED USER SERVICE TILES) -->
           <div class="admin-square-grid">
             <div class="admin-square-tile" onclick="openAdminPopupSection('secBroadcastForm')">
               <div class="adm-tile-icon" style="background: #dc2626;"><i class="fa-solid fa-tower-broadcast"></i></div>
               <span>ब्रॉडकास्ट अलर्ट</span>
             </div>
-            <div class="admin-square-tile" onclick="openAdminPopupSection('secNoticeForm')">
-              <div class="adm-tile-icon" style="background: #ea580c;"><i class="fa-solid fa-bullhorn"></i></div>
-              <span>सूचना बोर्ड</span>
-            </div>
-            <div class="admin-square-tile" onclick="openAdminPopupSection('secDirForm')">
-              <div class="adm-tile-icon" style="background: #4f46e5;"><i class="fa-solid fa-address-book"></i></div>
-              <span>हेल्पलाइन</span>
-            </div>
-            <div class="admin-square-tile" onclick="openAdminPopupSection('secKoshForm')">
-              <div class="adm-tile-icon" style="background: #0d9488;"><i class="fa-solid fa-building-columns"></i></div>
-              <span>विकास कोष</span>
-            </div>
-            <div class="admin-square-tile" onclick="openAdminPopupSection('secGalleryForm')">
-              <div class="adm-tile-icon" style="background: #e11d48;"><i class="fa-solid fa-images"></i></div>
-              <span>विकास गैलरी</span>
-            </div>
             <div class="admin-square-tile" onclick="openAdminPopupSection('secUsersForm')">
               <span class="icon-badge" id="adminActiveBadge">0</span>
               <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-user-check"></i></div>
-              <span>नागरिक खाते</span>
-            </div>
-            <div class="admin-square-tile" onclick="openAdminPopupSection('secAddSchemeForm')">
-              <div class="adm-tile-icon" style="background: #059669;"><i class="fa-solid fa-plus-circle"></i></div>
-              <span>योजना जोड़ें</span>
+              <span>नागरिक खाते प्रबंधन</span>
             </div>
           </div>
 
@@ -579,9 +552,59 @@
     </div>
   </div>
 
-  <!-- ==================== USER SCREEN FULL POPUP MODALS ==================== -->
+  <!-- ==================== USER SCREEN POPUP MODALS ==================== -->
 
-  <!-- 1. POPUP: New Complaint -->
+  <!-- POPUP: KRAY VIKRAY & SKILLS MARKETPLACE -->
+  <div id="vMarket" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vMarket')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-store" style="color: #ea580c;"></i> ग्राम पाकरपुर क्रय-विक्रय व हुनर बाज़ार
+      </div>
+
+      <div style="background:#fff7ed; border:1px solid #fed7aa; padding:10px; border-radius:10px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h4 style="font-size:13px; color:#9a3412;"><i class="fa-solid fa-plus-circle"></i> नया सामान या अपनी सेवा जोड़ें</h4>
+          <button class="btn btn-amber" style="width:auto; padding:5px 10px; font-size:11px;" onclick="toggleNewPostForm()">
+            <i class="fa-solid fa-pen"></i> पोस्ट बनाएं
+          </button>
+        </div>
+
+        <div id="marketPostFormBox" style="display:none; margin-top:10px; border-top:1px dashed #fdba74; padding-top:10px;">
+          <div class="form-group">
+            <label>प्रकार चुनें *</label>
+            <select id="mType">
+              <option value="सामान बिक्री">सामान बेचना है (अनाज, मवेशी, यंत्र, पुराना सामान)</option>
+              <option value="सेवा / हुनर">मेरी सेवा / हुनर (मिस्त्री, चालक, इलेक्ट्रीशियन, आदि)</option>
+              <option value="खरीदना है">मुझे खरीदना है / आवश्यकता है</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>शीर्षक / नाम *</label>
+            <input type="text" id="mTitle" placeholder="उदा. 5 क्विंटल गेंहू, या ट्रैक्टर चालक सेवा">
+          </div>
+          <div class="form-group">
+            <label>मूल्य / पारिश्रमिक (₹) (ऐच्छिक)</label>
+            <input type="text" id="mPrice" placeholder="उदा. ₹2400 प्रति क्विंटल, या संपर्क करें">
+          </div>
+          <div class="form-group">
+            <label>फोटो जोड़ें (ऐच्छिक)</label>
+            <input type="file" accept="image/*" onchange="handleMarketPhoto(event)">
+          </div>
+          <div class="form-group">
+            <label>विस्तृत विवरण *</label>
+            <textarea id="mDesc" placeholder="सामान/सेवा की पूरी जानकारी दें..."></textarea>
+          </div>
+          <button class="btn btn-emerald" onclick="submitMarketPostCloud()"><i class="fa-solid fa-upload"></i> बाज़ार में पोस्ट करें</button>
+        </div>
+      </div>
+
+      <h4 style="font-size:13px; color:#1e293b; margin-bottom:8px;"><i class="fa-solid fa-tags"></i> हालिया उपलब्ध सामान व सेवाएं:</h4>
+      <div id="marketListDiv"></div>
+    </div>
+  </div>
+
+  <!-- POPUP: New Complaint -->
   <div id="vNew" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vNew')" title="बंद करें">✕</button>
@@ -637,7 +660,7 @@
     </div>
   </div>
 
-  <!-- 2. POPUP: Complaints List -->
+  <!-- POPUP: Complaints List -->
   <div id="vList" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vList')" title="बंद करें">✕</button>
@@ -651,7 +674,7 @@
     </div>
   </div>
 
-  <!-- 3. POPUP: Track Complaint Status -->
+  <!-- POPUP: Track Complaint Status -->
   <div id="vTrack" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vTrack')" title="बंद करें">✕</button>
@@ -667,7 +690,7 @@
     </div>
   </div>
 
-  <!-- 4. POPUP: NOTICE BOARD -->
+  <!-- POPUP: NOTICE BOARD -->
   <div id="vNotice" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vNotice')" title="बंद करें">✕</button>
@@ -678,7 +701,7 @@
     </div>
   </div>
 
-  <!-- 5. POPUP: EMERGENCY DIRECTORY -->
+  <!-- POPUP: EMERGENCY DIRECTORY -->
   <div id="vDirectory" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vDirectory')" title="बंद करें">✕</button>
@@ -692,7 +715,7 @@
     </div>
   </div>
 
-  <!-- 6. POPUP: GRAM VIKAS KOSH -->
+  <!-- POPUP: GRAM VIKAS KOSH -->
   <div id="vBudget" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vBudget')" title="बंद करें">✕</button>
@@ -717,7 +740,7 @@
     </div>
   </div>
 
-  <!-- 7. POPUP: VIKAS GALLERY -->
+  <!-- POPUP: VIKAS GALLERY -->
   <div id="vGallery" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vGallery')" title="बंद करें">✕</button>
@@ -728,7 +751,7 @@
     </div>
   </div>
 
-  <!-- 8. POPUP: PANCHAYAT TEAM -->
+  <!-- POPUP: PANCHAYAT TEAM -->
   <div id="vTeam" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vTeam')" title="बंद करें">✕</button>
@@ -743,7 +766,7 @@
     </div>
   </div>
 
-  <!-- 9. POPUP: SARKARI YOJNA -->
+  <!-- POPUP: SARKARI YOJNA -->
   <div id="vSchemes" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vSchemes')" title="बंद करें">✕</button>
@@ -753,68 +776,34 @@
       <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
         योजना का लाभ लेने या स्टेटस चेक करने हेतु सीधे आधिकारिक सरकारी वेबसाइट पर जाएं:
       </p>
-      
-      <div id="schemesDynamicListDiv"></div>
 
       <div class="scheme-card" style="border-left: 4px solid #0284c7;">
         <h4 style="font-size:14px; color:#0369a1;"><i class="fa-solid fa-id-card-clip"></i> आयुष्मान भारत कार्ड (Ayushman Card)</h4>
         <p style="font-size:12px; color:#475569; margin:4px 0;">हर पात्र परिवार को सरकारी व निजी अस्पतालों में ₹5 लाख तक का सालाना मुफ़्त इलाज।</p>
-        <a href="https://beneficiary.nha.gov.in" target="_blank" class="btn-direct-gov">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> आयुष्मान कार्ड बनाएं / डाउनलोड करें
-        </a>
+        <a href="https://beneficiary.nha.gov.in" target="_blank" class="btn-direct-gov"><i class="fa-solid fa-arrow-up-right-from-square"></i> आयुष्मान कार्ड बनाएं / डाउनलोड करें</a>
       </div>
 
       <div class="scheme-card" style="border-left: 4px solid #ea580c;">
         <h4 style="font-size:14px; color:#c2410c;"><i class="fa-solid fa-person-digging"></i> ई-श्रम कार्ड (e-Shram Card)</h4>
         <p style="font-size:12px; color:#475569; margin:4px 0;">असंगठित क्षेत्र के कामगारों, मजदूरों एवं कारीगरों हेतु ₹2 लाख दुर्घटना बीमा एवं सरकारी सहायता।</p>
-        <a href="https://eshram.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #ea580c, #c2410c);">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> ई-श्रम पोर्टल पर ऑनलाइन रजिस्ट्रेशन
-        </a>
+        <a href="https://eshram.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #ea580c, #c2410c);"><i class="fa-solid fa-arrow-up-right-from-square"></i> ई-श्रम रजिस्ट्रेशन</a>
       </div>
 
       <div class="scheme-card" style="border-left: 4px solid #16a34a;">
         <h4 style="font-size:14px; color:#166534;"><i class="fa-solid fa-tractor"></i> पीएम किसान सम्मान निधि (PM Kisan)</h4>
         <p style="font-size:12px; color:#475569; margin:4px 0;">किसान भाइयों को ₹6,000 सालाना (₹2,000 की 3 किस्तें)। e-KYC और किस्त स्टेटस चेक करें।</p>
-        <a href="https://pmkisan.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #16a34a, #15803d);">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> पीएम किसान e-KYC व किस्त देखें
-        </a>
+        <a href="https://pmkisan.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #16a34a, #15803d);"><i class="fa-solid fa-arrow-up-right-from-square"></i> पीएम किसान किस्त देखें</a>
       </div>
 
       <div class="scheme-card" style="border-left: 4px solid #d97706;">
         <h4 style="font-size:14px; color:#b45309;"><i class="fa-solid fa-house-chimney"></i> प्रधानमंत्री आवास योजना (PMAY-G)</h4>
-        <p style="font-size:12px; color:#475569; margin:4px 0;">ग्रामीण बेघर परिवारों को पक्का मकान निर्माण हेतु ₹1,20,000 की आर्थिक सहायता सूची।</p>
-        <a href="https://pmayg.nic.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #d97706, #b45309);">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> आवास योजना लाभार्थी सूची देखें
-        </a>
-      </div>
-
-      <div class="scheme-card" style="border-left: 4px solid #4f46e5;">
-        <h4 style="font-size:14px; color:#3730a3;"><i class="fa-solid fa-person-cane"></i> वृद्धावस्था / विधवा / दिव्यांग पेंशन (SSPY)</h4>
-        <p style="font-size:12px; color:#475569; margin:4px 0;">बुजुर्गों, विधवा माताओं व दिव्यांग भाई-बहनों को ₹1,000 प्रतिमाह सीधे बैंक खाते में।</p>
-        <a href="https://sspy-up.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #4f46e5, #3730a3);">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> पेंशन आवेदन एवं पात्रता सूची
-        </a>
-      </div>
-
-      <div class="scheme-card" style="border-left: 4px solid #0d9488;">
-        <h4 style="font-size:14px; color:#0f766e;"><i class="fa-solid fa-bowl-rice"></i> राशन कार्ड पात्रता सूची (NFSA Ration Card)</h4>
-        <p style="font-size:12px; color:#475569; margin:4px 0;">गाँव की राशन कार्ड यूनिट लिस्ट में अपना व परिवार का नाम ऑनलाइन चेक करें।</p>
-        <a href="https://fcs.up.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #0d9488, #0f766e);">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> पाकरपुर राशन कार्ड लिस्ट चेक करें
-        </a>
-      </div>
-
-      <div class="scheme-card" style="border-left: 4px solid #7c3aed;">
-        <h4 style="font-size:14px; color:#6d28d9;"><i class="fa-solid fa-map-location-dot"></i> यूपी भूलेख (खतौनी / खेत कागज़ात)</h4>
-        <p style="font-size:12px; color:#475569; margin:4px 0;">अपनी ज़मीन, खेत व गाटा संख्या की प्रमाणित खतौनी नकल मोबाइल पर ऑनलाइन निकालें।</p>
-        <a href="https://upbhulekh.gov.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #7c3aed, #6d28d9);">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> खेत की खतौनी नकल देखें
-        </a>
+        <p style="font-size:12px; color:#475569; margin:4px 0;">ग्रामीण बेघर परिवारों को पक्का मकान निर्माण सहायता सूची।</p>
+        <a href="https://pmayg.nic.in" target="_blank" class="btn-direct-gov" style="background:linear-gradient(135deg, #d97706, #b45309);"><i class="fa-solid fa-arrow-up-right-from-square"></i> आवास योजना लाभार्थी सूची</a>
       </div>
     </div>
   </div>
 
-  <!-- 10. POPUP: Citizen Account & Profile (Auto-Opens on First Visit for Guest) -->
+  <!-- POPUP: Citizen Account & Profile -->
   <div id="vProfile" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vProfile')" title="बंद करें">✕</button>
@@ -898,68 +887,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: 2. Notice Form Modal -->
-  <div id="secNoticeForm" class="screen-modal">
-    <div class="screen-modal-card" style="border: 2px solid #fed7aa; background: #fffaf5;">
-      <button class="red-close-btn" onclick="closeAdminPopupSection('secNoticeForm')">✕</button>
-      <div class="card-title" style="color: #c2410c;"><i class="fa-solid fa-bullhorn"></i> नया नोटिस जारी करें</div>
-      <div class="form-group"><label>सूचना शीर्षक</label><input type="text" id="admNoticeTitle" placeholder="सूचना शीर्षक"></div>
-      <div class="form-group"><label>विस्तृत विवरण</label><textarea id="admNoticeDesc" placeholder="विस्तृत सूचना..." style="min-height:70px;"></textarea></div>
-      <button class="btn btn-amber" style="padding:8px;" onclick="postAdminNoticeCloud()">सूचना प्रकाशित करें</button>
-    </div>
-  </div>
-
-  <!-- ADMIN: 3. Helpline Management Modal -->
-  <div id="secDirForm" class="screen-modal">
-    <div class="screen-modal-card" style="border: 2px solid #c7d2fe; background: #fbfbfe;">
-      <button class="red-close-btn" onclick="closeAdminPopupSection('secDirForm')">✕</button>
-      <div class="card-title" style="color: #3730a3;"><i class="fa-solid fa-address-book"></i> नई हेल्पलाइन जोड़ें</div>
-      <div class="form-group"><label>पद / सेवा</label><input type="text" id="admDirRole" placeholder="उदा. ग्राम सचिव, लेखपाल"></div>
-      <div class="form-group"><label>नाम</label><input type="text" id="admDirName" placeholder="नाम"></div>
-      <div class="form-group"><label>मोबाइल</label><input type="tel" id="admDirPhone" maxlength="10" placeholder="10-अंकीय मोबाइल"></div>
-      <button class="btn btn-emerald" style="padding:8px;" onclick="saveDirectoryContactCloud()">डायरेक्टरी में जोड़ें</button>
-
-      <div style="margin-top:14px; border-top:1px dashed #c7d2fe; padding-top:10px;">
-        <span style="font-weight:700; font-size:12px; color:#3730a3;">आपकी जोड़ी गई हेल्पलाइन सूची:</span>
-        <div id="admDirectoryListInner" style="max-height:220px; overflow-y:auto; margin-top:6px; font-size:12px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADMIN: 4. Bank Kosh Modal -->
-  <div id="secKoshForm" class="screen-modal">
-    <div class="screen-modal-card" style="border: 2px solid #99f6e4; background: #f9fefd;">
-      <button class="red-close-btn" onclick="closeAdminPopupSection('secKoshForm')">✕</button>
-      <div class="card-title" style="color: #0f766e;"><i class="fa-solid fa-building-columns"></i> बैंक खाता लेन-देन प्रबंधन</div>
-      <div style="background:#fff; border:1px solid #ccfbf1; padding:10px; border-radius:8px; margin-bottom:12px;">
-        <h5 style="color:#0f766e; font-size:13px; margin-bottom:6px;">+ फंड आया:</h5>
-        <div class="form-group"><input type="text" id="admFundSource" placeholder="योजना / मद"></div>
-        <div class="form-group"><input type="number" id="admFundAmount" placeholder="राशि (₹)"></div>
-        <button class="btn btn-emerald" style="padding:7px; font-size:12px;" onclick="addGramFundCloud()">फंड जोड़ें</button>
-      </div>
-      <div style="background:#fff; border:1px solid #fee2e2; padding:10px; border-radius:8px;">
-        <h5 style="color:#b91c1c; font-size:13px; margin-bottom:6px;">- खर्च हुआ:</h5>
-        <div class="form-group"><input type="text" id="admExpWork" placeholder="कार्य नाम"></div>
-        <div class="form-group"><input type="number" id="admExpAmount" placeholder="राशि (₹)"></div>
-        <div class="form-group"><input type="text" id="admExpVendor" placeholder="ठेकेदार / मद"></div>
-        <button class="btn btn-crimson" style="padding:7px; font-size:12px;" onclick="addGramExpenseCloud()">खर्च दर्ज करें</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADMIN: 5. Gallery Modal -->
-  <div id="secGalleryForm" class="screen-modal">
-    <div class="screen-modal-card" style="border: 2px solid #fecdd3; background: #fefcfc;">
-      <button class="red-close-btn" onclick="closeAdminPopupSection('secGalleryForm')">✕</button>
-      <div class="card-title" style="color: #be123c;"><i class="fa-solid fa-images"></i> विकास कार्य गैलरी जोड़ें</div>
-      <div class="form-group"><label>कार्य का नाम:</label><input type="text" id="admGalTitle" placeholder="कार्य नाम"></div>
-      <div class="form-group"><label style="font-size:11px;">कार्य पूर्व फोटो (Before):</label><input type="file" accept="image/*" onchange="handleBeforePhoto(event)"></div>
-      <div class="form-group"><label style="font-size:11px;">कार्य पूर्णता फोटो (After):</label><input type="file" accept="image/*" onchange="handleAfterPhoto(event)"></div>
-      <button class="btn btn-crimson" style="padding:8px;" onclick="saveGalleryItemCloud()">गैलरी में प्रकाशित करें</button>
-    </div>
-  </div>
-
-  <!-- ADMIN: 6. Users Management Modal -->
+  <!-- ADMIN: 2. Users Management Modal -->
   <div id="secUsersForm" class="screen-modal">
     <div class="screen-modal-card" style="border: 2px solid #cbd5e1;">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secUsersForm')">✕</button>
@@ -987,18 +915,6 @@
         <p style="font-size:10px; color:#64748b; margin-bottom:4px;">अनुरोध आने पर नागरिक को दोबारा अनब्लॉक करें:</p>
         <div id="blockedUserListDiv" style="max-height:140px; overflow-y:auto; font-size:11px;"></div>
       </div>
-    </div>
-  </div>
-
-  <!-- ADMIN: 7. Add Scheme Modal -->
-  <div id="secAddSchemeForm" class="screen-modal">
-    <div class="screen-modal-card" style="border: 2px solid #86efac; background: #f8fdf9;">
-      <button class="red-close-btn" onclick="closeAdminPopupSection('secAddSchemeForm')">✕</button>
-      <div class="card-title" style="color: #166534;"><i class="fa-solid fa-hand-holding-hand"></i> नई सरकारी योजना व डायरेक्ट लिंक जोड़ें</div>
-      <div class="form-group"><label>योजना का नाम</label><input type="text" id="admSchTitle" placeholder="उदा. सुकन्या समृद्धि योजना"></div>
-      <div class="form-group"><label>योजना का लाभ व पात्रता</label><textarea id="admSchDesc" placeholder="उदा. बेटियों हेतु बचत योजना..." style="min-height:60px;"></textarea></div>
-      <div class="form-group"><label>सरकारी वेबसाइट लिंक</label><input type="url" id="admSchLink" placeholder="https://..."></div>
-      <button class="btn btn-emerald" style="padding:8px;" onclick="saveCustomSchemeCloud()">योजना प्रकाशित करें</button>
     </div>
   </div>
 
@@ -1032,7 +948,7 @@
     var fundsList = [];
     var expensesList = [];
     var galleryList = [];
-    var customSchemesList = [];
+    var marketPosts = [];
 
     var curUser = JSON.parse(localStorage.getItem('pkp_live_cur_u')) || null;
     var isAdminUnlocked = (localStorage.getItem('pkp_admin_logged_in') === 'true');
@@ -1044,8 +960,7 @@
     var mapInst = null;
     var selectedMarker = null;
     var tempCompPhoto = "";
-    var tempBeforePhoto = "";
-    var tempAfterPhoto = "";
+    var tempMarketPhoto = "";
     var tempResolutionPhoto = {};
 
     var fullWeatherData = null;
@@ -1058,12 +973,108 @@
       if (isAdminUnlocked) {
         openAdminGate();
       } else {
-        // यदि यूजर लॉग इन नहीं है तो सीधे स्क्रीन पर रजिस्ट्रेशन/लॉगिन पॉपअप खोलें
         if (!curUser) {
           openUserProfileDirect();
         }
       }
     };
+
+    function toggleNewPostForm() {
+      var box = document.getElementById('marketPostFormBox');
+      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function handleMarketPhoto(e) {
+      compressPhoto(e.target.files[0], function(b64){ tempMarketPhoto = b64; });
+    }
+
+    /* KRAY VIKRAY & SKILLS MARKETPLACE SUBMIT & RENDER */
+    function submitMarketPostCloud() {
+      if (!curUser) {
+        alert("कृपया पहले लॉगिन करें!");
+        openUserProfileDirect();
+        return;
+      }
+      var t = document.getElementById('mTitle').value.trim();
+      var d = document.getElementById('mDesc').value.trim();
+      var type = document.getElementById('mType').value;
+      var pr = document.getElementById('mPrice').value.trim() || "परस्पर सहमति";
+
+      if (!t || !d) return alert("कृपया शीर्षक और विवरण अवश्य भरें!");
+
+      var id = "MKT-" + Date.now();
+      var item = {
+        id: id,
+        userName: curUser.name,
+        userPhone: curUser.phone,
+        type: type,
+        title: t,
+        price: pr,
+        desc: d,
+        photo: tempMarketPhoto || "",
+        date: new Date().toLocaleDateString('hi-IN')
+      };
+
+      db.ref('market_posts/' + id).set(item).then(function() {
+        alert("आपकी पोस्ट बाज़ार में सफलतापूर्वक प्रकाशित हो गई!");
+        tempMarketPhoto = "";
+        document.getElementById('mTitle').value = "";
+        document.getElementById('mDesc').value = "";
+        document.getElementById('mPrice').value = "";
+        document.getElementById('marketPostFormBox').style.display = 'none';
+      });
+    }
+
+    function drawMarket() {
+      var div = document.getElementById('marketListDiv');
+      if (marketPosts.length === 0) {
+        div.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>अभी कोई सामान या सेवा पोस्ट नहीं की गई है। पहली पोस्ट आप बनाएं!</p>";
+        return;
+      }
+
+      var h = "";
+      marketPosts.forEach(function(item) {
+        var isMine = curUser && (curUser.phone === item.userPhone);
+        var typeBadgeColor = (item.type === "सामान बिक्री") ? "#16a34a" : (item.type === "सेवा / हुनर" ? "#0284c7" : "#ea580c");
+
+        h += '<div class="market-card" style="border-left: 4px solid ' + typeBadgeColor + ';">' +
+             '<div style="display:flex; justify-content:space-between; align-items:flex-start;">' +
+             '<div>' +
+             '<span class="badge" style="background:'+typeBadgeColor+'; float:none; margin-bottom:4px; display:inline-block;">'+item.type+'</span>' +
+             '<h4 style="font-size:14px; font-weight:700; color:#1e293b; margin-top:2px;">'+item.title+'</h4>' +
+             '<span style="font-size:12px; font-weight:800; color:#b45309;">मूल्य: '+item.price+'</span>' +
+             '</div>';
+
+        if (isMine || isAdminUnlocked) {
+          h += '<button onclick="deleteMarketPostCloud(\''+item.id+'\')" class="adm-btn-del" title="हटाएं"><i class="fa-solid fa-trash"></i> हटाएं</button>';
+        }
+
+        h += '</div>' +
+             '<p style="font-size:12px; color:#475569; margin:6px 0;">'+item.desc+'</p>';
+
+        if (item.photo) {
+          h += '<img src="'+item.photo+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:160px; object-fit:cover; border-radius:8px; margin:6px 0;">';
+        }
+
+        h += '<div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed #e2e8f0; padding-top:6px; margin-top:6px;">' +
+             '<span style="font-size:11px; color:#64748b;"><i class="fa-solid fa-user"></i> '+item.userName+' ('+item.date+')</span>' +
+             '<div style="display:flex; gap:6px;">' +
+             '<a href="tel:'+item.userPhone+'" class="action-circle-btn btn-call" style="width:30px; height:30px; font-size:12px;"><i class="fa-solid fa-phone"></i></a>' +
+             '<a href="https://wa.me/91'+item.userPhone+'" target="_blank" class="action-circle-btn btn-wa" style="width:30px; height:30px; font-size:12px;"><i class="fa-brands fa-whatsapp"></i></a>' +
+             '</div>' +
+             '</div>' +
+             '</div>';
+      });
+      div.innerHTML = h;
+    }
+
+    function deleteMarketPostCloud(id) {
+      if (confirm("क्या आप इस पोस्ट को हटाना चाहते हैं?")) {
+        db.ref('market_posts/' + id).remove().then(function() {
+          alert("पोस्ट हटा दी गई!");
+        });
+      }
+    }
 
     /* POPUP MODAL HANDLERS FOR USER ICONS */
     function openScreenModal(modalId) {
@@ -1079,11 +1090,11 @@
           document.getElementById('cPhone').value = curUser.phone;
         }
         if (modalId === 'vList') drawComps();
+        if (modalId === 'vMarket') drawMarket();
         if (modalId === 'vNotice') drawNotices();
         if (modalId === 'vDirectory') drawDirectory();
         if (modalId === 'vBudget') calcAndDrawBudget();
         if (modalId === 'vGallery') drawGallery();
-        if (modalId === 'vSchemes') drawCustomSchemes();
       }
     }
 
@@ -1095,10 +1106,7 @@
     /* POPUP MODAL HANDLERS FOR ADMIN ICONS */
     function openAdminPopupSection(secId) {
       var target = document.getElementById(secId);
-      if (target) {
-        target.classList.add('active');
-        if (secId === 'secDirForm') renderAdminDirectoryInner();
-      }
+      if (target) target.classList.add('active');
     }
 
     function closeAdminPopupSection(secId) {
@@ -1245,7 +1253,13 @@
         if (isAdminUnlocked) renderRecycleBin();
       });
 
-      /* USERS LISTENER WITH SINGLE SESSION CHECK */
+      db.ref('market_posts').on('value', function(snapshot) {
+        var val = snapshot.val();
+        marketPosts = val ? Object.values(val) : [];
+        marketPosts.reverse();
+        drawMarket();
+      });
+
       db.ref('users').on('value', function(snapshot) {
         var val = snapshot.val();
         users = val ? Object.values(val) : [];
@@ -1298,7 +1312,6 @@
         var val = snapshot.val();
         directoryList = val ? Object.values(val) : [];
         drawDirectory();
-        if (isAdminUnlocked) renderAdminDirectoryInner();
       });
 
       db.ref('gram_funds').on('value', function(snapshot) {
@@ -1319,13 +1332,6 @@
         galleryList = val ? Object.values(val) : [];
         galleryList.reverse();
         drawGallery();
-      });
-
-      db.ref('custom_schemes').on('value', function(snapshot) {
-        var val = snapshot.val();
-        customSchemesList = val ? Object.values(val) : [];
-        customSchemesList.reverse();
-        drawCustomSchemes();
       });
     }
 
@@ -1376,87 +1382,13 @@
              '<p style="font-size:12px; color:#475569;">' + c.name + ' - <span style="color:#16a34a; font-weight:700;">+91 ' + c.phone + '</span></p>' +
              '</div>' +
              '<div style="display:flex; align-items:center; gap:6px;">' +
-             '<a href="tel:' + c.phone + '" class="action-circle-btn btn-call" style="width:34px; height:34px; font-size:14px;"><i class="fa-solid fa-phone"></i></a>';
-        
-        if (isAdminUnlocked) {
-          h += '<button onclick="openEditDirectoryModal(\''+c.id+'\')" class="adm-btn-edit" title="संशोधित करें"><i class="fa-solid fa-pen"></i></button>' +
-               '<button onclick="deleteDirContactCloud(\''+c.id+'\')" class="adm-btn-del" title="हटाएं"><i class="fa-solid fa-trash"></i></button>';
-        }
-        h += '</div></div>';
-      });
-      d.innerHTML = h;
-    }
-
-    function renderAdminDirectoryInner() {
-      var d = document.getElementById('admDirectoryListInner');
-      if (!d) return;
-
-      if (directoryList.length === 0) {
-        d.innerHTML = "<p style='color:#64748b; font-size:11px; padding:6px;'>कोई हेल्पलाइन नंबर नहीं है। ऊपर दिए फॉर्म से नया नंबर जोड़ें।</p>";
-        return;
-      }
-
-      var h = "";
-      directoryList.forEach(function(c) {
-        h += '<div style="display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid #c7d2fe; padding:6px 8px; border-radius:6px; margin-bottom:5px;">' +
-             '<div><b>' + c.role + '</b> (' + c.name + ')<br><span style="color:#16a34a; font-size:11px;">+91 ' + c.phone + '</span></div>' +
-             '<div class="adm-action-btn-group">' +
-             '<button onclick="openEditDirectoryModal(\''+c.id+'\')" class="adm-btn-edit"><i class="fa-solid fa-pen"></i></button>' +
-             '<button onclick="deleteDirContactCloud(\''+c.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i></button>' +
+             '<a href="tel:' + c.phone + '" class="action-circle-btn btn-call" style="width:34px; height:34px; font-size:14px;"><i class="fa-solid fa-phone"></i></a>' +
              '</div></div>';
       });
       d.innerHTML = h;
     }
 
-    function saveDirectoryContactCloud() {
-      var r = document.getElementById('admDirRole').value.trim();
-      var n = document.getElementById('admDirName').value.trim();
-      var p = document.getElementById('admDirPhone').value.trim();
-      if (!r || !n || !p) return alert("कृपया पद, नाम और मोबाइल नंबर भरें!");
-
-      var id = "DIR-" + Date.now();
-      db.ref('directory/' + id).set({ id: id, role: r, name: n, phone: p }).then(function() {
-        alert("हेल्पलाइन नंबर सफलतापूर्वक जुड़ गया!");
-        document.getElementById('admDirRole').value = "";
-        document.getElementById('admDirName').value = "";
-        document.getElementById('admDirPhone').value = "";
-      });
-    }
-
-    function openEditDirectoryModal(id) {
-      var item = directoryList.find(function(c){ return c.id === id; });
-      if (!item) return;
-
-      document.getElementById('adminEditModalTitle').innerHTML = '<i class="fa-solid fa-address-book"></i> हेल्पलाइन संपर्क सुधारें';
-      var body = '<div class="form-group"><label>पद / सेवा:</label><input type="text" id="editDirRole" value="'+item.role+'"></div>' +
-                 '<div class="form-group"><label>नाम:</label><input type="text" id="editDirName" value="'+item.name+'"></div>' +
-                 '<div class="form-group"><label>मोबाइल नंबर:</label><input type="tel" id="editDirPhone" maxlength="10" value="'+item.phone+'"></div>' +
-                 '<button class="btn btn-emerald" onclick="saveEditedDirectory(\''+item.id+'\')"><i class="fa-solid fa-check"></i> अपडेट सुरक्षित करें</button>';
-      document.getElementById('adminEditModalBody').innerHTML = body;
-      document.getElementById('adminEditModal').classList.add('active');
-    }
-
-    function saveEditedDirectory(id) {
-      var r = document.getElementById('editDirRole').value.trim();
-      var n = document.getElementById('editDirName').value.trim();
-      var p = document.getElementById('editDirPhone').value.trim();
-      if (!r || !n || !p) return alert("कृपया सभी फ़ील्ड भरें!");
-
-      db.ref('directory/' + id).update({ role: r, name: n, phone: p }).then(function() {
-        alert("हेल्पलाइन विवरण अपडेट हो गया!");
-        closeAdminEditModal();
-      });
-    }
-
-    function deleteDirContactCloud(id) {
-      if (confirm("क्या आप इस हेल्पलाइन नंबर को हटाना चाहते हैं?")) {
-        db.ref('directory/' + id).remove().then(function() {
-          alert("नंबर हटा दिया गया!");
-        });
-      }
-    }
-
-    /* NOTICE BOARD FULL CRUD */
+    /* NOTICE BOARD */
     function drawNotices() {
       var d = document.getElementById('noticeListDiv');
       if (notices.length === 0) {
@@ -1470,141 +1402,13 @@
              '<h4 style="color:#991b1b; font-size:14px;"><i class="fa-solid fa-thumbtack"></i> ' + n.title + '</h4>' +
              '<span style="font-size:10px; color:#64748b;">' + n.date + '</span>' +
              '</div>' +
-             '<p style="font-size:13px; color:#334155; margin-top:6px;">' + n.desc + '</p>';
-        
-        if (isAdminUnlocked) {
-          h += '<div class="adm-action-btn-group" style="margin-top:8px;">' +
-               '<button onclick="openEditNoticeModal(\''+n.id+'\')" class="adm-btn-edit"><i class="fa-solid fa-pen"></i> एडिट</button>' +
-               '<button onclick="deleteNoticeCloud(\''+n.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i> हटाएं</button>' +
-               '</div>';
-        }
-        h += '</div>';
-      });
-      d.innerHTML = h;
-    }
-
-    function postAdminNoticeCloud() {
-      var t = document.getElementById('admNoticeTitle').value.trim();
-      var d = document.getElementById('admNoticeDesc').value.trim();
-      if (!t || !d) return alert("कृपया शीर्षक और विवरण भरें!");
-      var id = "NOT-" + Date.now();
-      db.ref('notices/' + id).set({ id: id, title: t, desc: d, date: new Date().toLocaleDateString('hi-IN') }).then(function() {
-        alert("सूचना प्रकाशित हो गई!");
-        document.getElementById('admNoticeTitle').value = "";
-        document.getElementById('admNoticeDesc').value = "";
-        closeAdminPopupSection('secNoticeForm');
-      });
-    }
-
-    function openEditNoticeModal(id) {
-      var n = notices.find(function(item){ return item.id === id; });
-      if (!n) return;
-
-      document.getElementById('adminEditModalTitle').innerHTML = '<i class="fa-solid fa-bullhorn"></i> नोटिस संपादित (Edit) करें';
-      var body = '<div class="form-group"><label>सूचना शीर्षक:</label><input type="text" id="editNoticeTitle" value="'+n.title+'"></div>' +
-                 '<div class="form-group"><label>विस्तृत विवरण:</label><textarea id="editNoticeDesc">'+n.desc+'</textarea></div>' +
-                 '<button class="btn btn-emerald" onclick="saveEditedNotice(\''+n.id+'\')"><i class="fa-solid fa-check"></i> नोटिस अपडेट करें</button>';
-      document.getElementById('adminEditModalBody').innerHTML = body;
-      document.getElementById('adminEditModal').classList.add('active');
-    }
-
-    function saveEditedNotice(id) {
-      var t = document.getElementById('editNoticeTitle').value.trim();
-      var d = document.getElementById('editNoticeDesc').value.trim();
-      if (!t || !d) return alert("कृपया शीर्षक और विवरण भरें!");
-
-      db.ref('notices/' + id).update({ title: t, desc: d }).then(function() {
-        alert("नोटिस सफलता पूर्वक अपडेट हो गया!");
-        closeAdminEditModal();
-      });
-    }
-
-    function deleteNoticeCloud(id) {
-      if (confirm("क्या आप इस नोटिस को हटाना चाहते हैं?")) {
-        db.ref('notices/' + id).remove();
-      }
-    }
-
-    /* CUSTOM SCHEMES CRUD */
-    function saveCustomSchemeCloud() {
-      var t = document.getElementById('admSchTitle').value.trim();
-      var d = document.getElementById('admSchDesc').value.trim();
-      var l = document.getElementById('admSchLink').value.trim();
-
-      if (!t || !d || !l) return alert("कृपया योजना का नाम, विवरण और वेबसाइट लिंक भरें!");
-
-      var id = "SCH-" + Date.now();
-      db.ref('custom_schemes/' + id).set({
-        id: id, title: t, desc: d, link: l, date: new Date().toLocaleDateString('hi-IN')
-      }).then(function() {
-        alert("नई सरकारी योजना सफलतापूर्वक जुड़ गई!");
-        document.getElementById('admSchTitle').value = "";
-        document.getElementById('admSchDesc').value = "";
-        document.getElementById('admSchLink').value = "";
-        closeAdminPopupSection('secAddSchemeForm');
-      });
-    }
-
-    function drawCustomSchemes() {
-      var d = document.getElementById('schemesDynamicListDiv');
-      if (customSchemesList.length === 0) {
-        d.innerHTML = "";
-        return;
-      }
-      var h = "";
-      customSchemesList.forEach(function(s) {
-        h += '<div class="scheme-card" style="border-left: 4px solid var(--success);">' +
-             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
-             '<h4 style="font-size:14px; color:#166534;"><i class="fa-solid fa-star" style="color:#eab308;"></i> ' + s.title + '</h4>';
-        
-        if (isAdminUnlocked) {
-          h += '<div class="adm-action-btn-group">' +
-               '<button onclick="openEditSchemeModal(\''+s.id+'\')" class="adm-btn-edit"><i class="fa-solid fa-pen"></i></button>' +
-               '<button onclick="deleteCustomSchemeCloud(\''+s.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i></button>' +
-               '</div>';
-        }
-
-        h += '</div>' +
-             '<p style="font-size:12px; color:#475569; margin:4px 0;">' + s.desc + '</p>' +
-             '<a href="' + s.link + '" target="_blank" class="btn-direct-gov">' +
-             '<i class="fa-solid fa-arrow-up-right-from-square"></i> ऑनलाइन पोर्टल पर जाएं (Apply Online)</a>' +
+             '<p style="font-size:13px; color:#334155; margin-top:6px;">' + n.desc + '</p>' +
              '</div>';
       });
       d.innerHTML = h;
     }
 
-    function openEditSchemeModal(id) {
-      var s = customSchemesList.find(function(item){ return item.id === id; });
-      if (!s) return;
-
-      document.getElementById('adminEditModalTitle').innerHTML = '<i class="fa-solid fa-hand-holding-hand"></i> सरकारी योजना संशोधित करें';
-      var body = '<div class="form-group"><label>योजना का नाम:</label><input type="text" id="editSchTitle" value="'+s.title+'"></div>' +
-                 '<div class="form-group"><label>पात्रता व लाभ विवरण:</label><textarea id="editSchDesc">'+s.desc+'</textarea></div>' +
-                 '<div class="form-group"><label>आधिकारिक वेबसाइट लिंक:</label><input type="url" id="editSchLink" value="'+s.link+'"></div>' +
-                 '<button class="btn btn-emerald" onclick="saveEditedScheme(\''+s.id+'\')"><i class="fa-solid fa-check"></i> योजना अपडेट करें</button>';
-      document.getElementById('adminEditModalBody').innerHTML = body;
-      document.getElementById('adminEditModal').classList.add('active');
-    }
-
-    function saveEditedScheme(id) {
-      var t = document.getElementById('editSchTitle').value.trim();
-      var d = document.getElementById('editSchDesc').value.trim();
-      var l = document.getElementById('editSchLink').value.trim();
-      if (!t || !d || !l) return alert("कृपया सभी विवरण भरें!");
-
-      db.ref('custom_schemes/' + id).update({ title: t, desc: d, link: l }).then(function() {
-        alert("योजना सफलता पूर्वक अपडेट हो गई!");
-        closeAdminEditModal();
-      });
-    }
-
-    function deleteCustomSchemeCloud(id) {
-      if (confirm("क्या आप इस योजना को हटाना चाहते हैं?")) {
-        db.ref('custom_schemes/' + id).remove();
-      }
-    }
-
-    /* KOSH & BUDGET CRUD */
+    /* KOSH & BUDGET */
     function calcAndDrawBudget() {
       var totalIn = 0, totalOut = 0;
       fundsList.forEach(function(f){ totalIn += Number(f.amount || 0); });
@@ -1626,76 +1430,10 @@
              '<h4 style="font-size:13px; font-weight:700;">' + item.work + '</h4>' +
              '<span style="font-weight:800; color:#dc2626;">- ₹' + Number(item.amount).toLocaleString('en-IN') + '</span>' +
              '</div>' +
-             '<div style="font-size:11px; color:#64748b; margin-top:3px;">ठेकेदार: ' + item.vendor + ' | ' + item.date + '</div>';
-        
-        if (isAdminUnlocked) {
-          h += '<div class="adm-action-btn-group" style="margin-top:6px;">' +
-               '<button onclick="openEditExpenseModal(\''+item.id+'\')" class="adm-btn-edit"><i class="fa-solid fa-pen"></i> एडिट</button>' +
-               '<button onclick="deleteExpenseCloud(\''+item.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i> हटाएं</button>' +
-               '</div>';
-        }
-        h += '</div>';
+             '<div style="font-size:11px; color:#64748b; margin-top:3px;">ठेकेदार: ' + item.vendor + ' | ' + item.date + '</div>' +
+             '</div>';
       });
       expDiv.innerHTML = h;
-    }
-
-    function openEditExpenseModal(id) {
-      var item = expensesList.find(function(e){ return e.id === id; });
-      if (!item) return;
-
-      document.getElementById('adminEditModalTitle').innerHTML = '<i class="fa-solid fa-building-columns"></i> खर्च विवरण संशोधित करें';
-      var body = '<div class="form-group"><label>कार्य का नाम:</label><input type="text" id="editExpWork" value="'+item.work+'"></div>' +
-                 '<div class="form-group"><label>खर्च राशि (₹):</label><input type="number" id="editExpAmount" value="'+item.amount+'"></div>' +
-                 '<div class="form-group"><label>ठेकेदार / मद:</label><input type="text" id="editExpVendor" value="'+item.vendor+'"></div>' +
-                 '<button class="btn btn-emerald" onclick="saveEditedExpense(\''+item.id+'\')"><i class="fa-solid fa-check"></i> खर्च अपडेट करें</button>';
-      document.getElementById('adminEditModalBody').innerHTML = body;
-      document.getElementById('adminEditModal').classList.add('active');
-    }
-
-    function saveEditedExpense(id) {
-      var w = document.getElementById('editExpWork').value.trim();
-      var a = document.getElementById('editExpAmount').value.trim();
-      var v = document.getElementById('editExpVendor').value.trim();
-      if (!w || !a || !v) return alert("कृपया सभी विवरण भरें!");
-
-      db.ref('gram_expenses/' + id).update({ work: w, amount: Number(a), vendor: v }).then(function() {
-        alert("खर्च विवरण सफलतापूर्वक अपडेट हो गया!");
-        closeAdminEditModal();
-      });
-    }
-
-    function addGramFundCloud() {
-      var s = document.getElementById('admFundSource').value.trim();
-      var a = document.getElementById('admFundAmount').value.trim();
-      if (!s || !a) return alert("कृपया मद और राशि भरें!");
-      var id = "FND-" + Date.now();
-      db.ref('gram_funds/' + id).set({ id: id, source: s, amount: Number(a), date: new Date().toLocaleDateString('hi-IN') }).then(function() {
-        alert("फंड जुड़ गया!");
-        document.getElementById('admFundSource').value = "";
-        document.getElementById('admFundAmount').value = "";
-      });
-    }
-
-    function addGramExpenseCloud() {
-      var w = document.getElementById('admExpWork').value.trim();
-      var a = document.getElementById('admExpAmount').value.trim();
-      var v = document.getElementById('admExpVendor').value.trim();
-      if (!w || !a || !v) return alert("कृपया सभी विवरण भरें!");
-      var id = "EXP-" + Date.now();
-      db.ref('gram_expenses/' + id).set({ id: id, work: w, amount: Number(a), vendor: v, date: new Date().toLocaleDateString('hi-IN') }).then(function() {
-        alert("खर्च दर्ज हो गया!");
-        document.getElementById('admExpWork').value = "";
-        document.getElementById('admExpAmount').value = "";
-        document.getElementById('admExpVendor').value = "";
-      });
-    }
-
-    function deleteExpenseCloud(id) {
-      if (confirm("हटाना चाहते हैं?")) db.ref('gram_expenses/' + id).remove();
-    }
-
-    function closeAdminEditModal() {
-      document.getElementById('adminEditModal').classList.remove('active');
     }
 
     function saveBroadcastCloud() {
@@ -1730,31 +1468,10 @@
              '<img src="'+item.before+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; height:120px; object-fit:cover; border-radius:8px;"></div>' +
              '<div><span style="font-size:10px; font-weight:700; color:#16a34a;">[After]</span>' +
              '<img src="'+item.after+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; height:120px; object-fit:cover; border-radius:8px;"></div>' +
+             '</div>' +
              '</div>';
-        if (isAdminUnlocked) {
-          h += '<button onclick="deleteGalleryCloud(\''+item.id+'\')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:3px 8px; border-radius:6px; font-size:10px; margin-top:8px;">हटाएं</button>';
-        }
-        h += '</div>';
       });
       d.innerHTML = h;
-    }
-
-    function handleBeforePhoto(e) { compressPhoto(e.target.files[0], function(b64){ tempBeforePhoto = b64; }); }
-    function handleAfterPhoto(e) { compressPhoto(e.target.files[0], function(b64){ tempAfterPhoto = b64; }); }
-
-    function saveGalleryItemCloud() {
-      var t = document.getElementById('admGalTitle').value.trim();
-      if (!t || !tempBeforePhoto || !tempAfterPhoto) return alert("कृपया शीर्षक और दोनों फोटो चुनें!");
-      var id = "GAL-" + Date.now();
-      db.ref('gallery/' + id).set({ id: id, title: t, before: tempBeforePhoto, after: tempAfterPhoto, date: new Date().toLocaleDateString('hi-IN') }).then(function() {
-        alert("गैलरी में जुड़ गया!");
-        document.getElementById('admGalTitle').value = "";
-        closeAdminPopupSection('secGalleryForm');
-      });
-    }
-
-    function deleteGalleryCloud(id) {
-      if (confirm("हटाना चाहते हैं?")) db.ref('gallery/' + id).remove();
     }
 
     function openUserProfileDirect() {
@@ -2007,11 +1724,6 @@
       document.getElementById('adminGateBox').style.display = 'none';
       document.getElementById('adminMainDashBox').style.display = 'block';
       renderAdminDashboard();
-      drawDirectory();
-      renderAdminDirectoryInner();
-      drawNotices();
-      drawCustomSchemes();
-      calcAndDrawBudget();
     }
 
     function renderAdminDashboard() {
@@ -2020,7 +1732,6 @@
       renderBlockedUsers();
       filterAdminComplaints();
       renderRecycleBin();
-      renderAdminDirectoryInner();
     }
 
     function toggleEditProfileBox() {
@@ -2432,7 +2143,6 @@
       document.getElementById('vAdmin').classList.remove('active');
       drawDirectory();
       drawNotices();
-      drawCustomSchemes();
       calcAndDrawBudget();
     }
 
