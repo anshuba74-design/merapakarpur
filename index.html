@@ -706,7 +706,7 @@
 
         <p style="margin-bottom:6px; font-size:13px;"><strong>निवास / टोला:</strong> <span id="pWard"></span></p>
 
-        <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:10px; margin:12px 0;">
+        <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:10px; margin-margin:12px 0;">
           <label style="font-size:12px; color:#15803d; font-weight:700;"><i class="fa-solid fa-camera"></i> अपनी प्रोफाइल फोटो लगाएं / बदलें:</label>
           <input type="file" accept="image/*" onchange="uploadUserAvatarCloud(event)" style="font-size:12px; padding:6px; margin-top:4px;">
         </div>
@@ -837,7 +837,7 @@
             <button class="btn btn-emerald" style="padding:7px; font-size:12px;" onclick="saveDirectoryContactCloud()">डायरेक्टरी में जोड़ें</button>
 
             <div style="margin-top:12px; border-top:1px dashed #c7d2fe; padding-top:8px;">
-              <span style="font-weight:700; font-size:12px; color:#3730a3;">मौजूदा हेल्पलाइन सूची (Edit / Delete करें):</span>
+              <span style="font-weight:700; font-size:12px; color:#3730a3;">आपकी जोड़ी गई हेल्पलाइन सूची:</span>
               <div id="admDirectoryListInner" style="max-height:180px; overflow-y:auto; margin-top:6px; font-size:12px;"></div>
             </div>
           </div>
@@ -1188,7 +1188,6 @@
             curUser = updatedSelf;
             localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
           } else {
-            // User was removed or blocked
             if (!isAdminUnlocked) {
               alert("आपका खाता उपलब्ध नहीं है या व्यवस्थापक द्वारा प्रतिबंधित कर दिया गया है।");
               userLogout();
@@ -1218,6 +1217,7 @@
         drawNotices();
       });
 
+      /* DIRECTORY REALTIME LISTENER - PURE DATABASE DRIVEN */
       db.ref('directory').on('value', function(snapshot) {
         var val = snapshot.val();
         directoryList = val ? Object.values(val) : [];
@@ -1314,19 +1314,16 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* DIRECTORY / HELPLINE FULL CRUD & ADMIN LIVE VIEW */
+    /* DIRECTORY / HELPLINE FULL CRUD - NO DUMMY DATA */
     function drawDirectory() {
       var d = document.getElementById('directoryListDiv');
-      var list = (directoryList.length > 0) ? directoryList : [
-        { id: "DEF-1", role: "ग्राम सचिव (VDO)", name: "श्रीमान पंचायत सचिव", phone: "9876543210" },
-        { id: "DEF-2", role: "हल्का लेखपाल / पटवारी", name: "श्रीमान लेखपाल जी", phone: "9876543211" },
-        { id: "DEF-3", role: "गाँव आशा बहु (स्वास्थ्य)", name: "आशा कार्यकत्री", phone: "9876543212" },
-        { id: "DEF-4", role: "बिजली लाइनमैन (पाकरपुर)", name: "लाइनमैन", phone: "9876543213" },
-        { id: "DEF-5", role: "सरकारी एम्बुलेंस सेवा", name: "108 एम्बुलेंस", phone: "108" }
-      ];
+      if (directoryList.length === 0) {
+        d.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>अभी कोई हेल्पलाइन नंबर दर्ज नहीं है।</p>";
+        return;
+      }
 
       var h = "";
-      list.forEach(function(c) {
+      directoryList.forEach(function(c) {
         h += '<div class="directory-card" style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid #4f46e5;">' +
              '<div>' +
              '<h4 style="font-size:13px; font-weight:700; color:#1e293b;">' + c.role + '</h4>' +
@@ -1347,16 +1344,14 @@
     function renderAdminDirectoryInner() {
       var d = document.getElementById('admDirectoryListInner');
       if (!d) return;
-      var list = (directoryList.length > 0) ? directoryList : [
-        { id: "DEF-1", role: "ग्राम सचिव (VDO)", name: "श्रीमान पंचायत सचिव", phone: "9876543210" },
-        { id: "DEF-2", role: "हल्का लेखपाल / पटवारी", name: "श्रीमान लेखपाल जी", phone: "9876543211" },
-        { id: "DEF-3", role: "गाँव आशा बहु (स्वास्थ्य)", name: "आशा कार्यकत्री", phone: "9876543212" },
-        { id: "DEF-4", role: "बिजली लाइनमैन (पाकरपुर)", name: "लाइनमैन", phone: "9876543213" },
-        { id: "DEF-5", role: "सरकारी एम्बुलेंस सेवा", name: "108 एम्बुलेंस", phone: "108" }
-      ];
+
+      if (directoryList.length === 0) {
+        d.innerHTML = "<p style='color:#64748b; font-size:11px; padding:6px;'>कोई हेल्पलाइन नंबर नहीं है। ऊपर दिए फॉर्म से नया नंबर जोड़ें।</p>";
+        return;
+      }
 
       var h = "";
-      list.forEach(function(c) {
+      directoryList.forEach(function(c) {
         h += '<div style="display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid #c7d2fe; padding:6px 8px; border-radius:6px; margin-bottom:5px;">' +
              '<div><b>' + c.role + '</b> (' + c.name + ')<br><span style="color:#16a34a; font-size:11px;">+91 ' + c.phone + '</span></div>' +
              '<div class="adm-action-btn-group">' +
@@ -1384,13 +1379,6 @@
 
     function openEditDirectoryModal(id) {
       var item = directoryList.find(function(c){ return c.id === id; });
-      if (!item) {
-        if (id === "DEF-1") item = { id: id, role: "ग्राम सचिव (VDO)", name: "श्रीमान पंचायत सचिव", phone: "9876543210" };
-        else if (id === "DEF-2") item = { id: id, role: "हल्का लेखपाल / पटवारी", name: "श्रीमान लेखपाल जी", phone: "9876543211" };
-        else if (id === "DEF-3") item = { id: id, role: "गाँव आशा बहु (स्वास्थ्य)", name: "आशा कार्यकत्री", phone: "9876543212" };
-        else if (id === "DEF-4") item = { id: id, role: "बिजली लाइनमैन (पाकरपुर)", name: "लाइनमैन", phone: "9876543213" };
-        else if (id === "DEF-5") item = { id: id, role: "सरकारी एम्बुलेंस सेवा", name: "108 एम्बुलेंस", phone: "108" };
-      }
       if (!item) return;
 
       document.getElementById('adminEditModalTitle').innerHTML = '<i class="fa-solid fa-address-book"></i> हेल्पलाइन संपर्क सुधारें';
@@ -1408,8 +1396,7 @@
       var p = document.getElementById('editDirPhone').value.trim();
       if (!r || !n || !p) return alert("कृपया सभी फ़ील्ड भरें!");
 
-      var targetId = id.startsWith("DEF-") ? ("DIR-" + Date.now()) : id;
-      db.ref('directory/' + targetId).set({ id: targetId, role: r, name: n, phone: p }).then(function() {
+      db.ref('directory/' + id).update({ role: r, name: n, phone: p }).then(function() {
         alert("हेल्पलाइन विवरण अपडेट हो गया!");
         closeAdminEditModal();
       });
