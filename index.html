@@ -67,7 +67,6 @@
       z-index: -1;
     }
 
-    /* In-Built Top Language Strip */
     .lang-bar {
       background: #0f172a; color: #fff; padding: 6px 12px; font-size: 11px;
       display: flex; justify-content: space-between; align-items: center;
@@ -186,6 +185,17 @@
     .btn-whatsapp { background: #25d366; color: #fff; }
     .btn-direct-gov { background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; padding: 8px 12px; font-size: 12px; border-radius: 8px; margin-top: 8px; display: inline-flex; }
 
+    /* Admin Action Mini Buttons */
+    .adm-action-btn-group {
+      display: flex; gap: 5px; align-items: center;
+    }
+    .adm-btn-edit {
+      background: #eff6ff; color: #0284c7; border: 1px solid #93c5fd; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+    .adm-btn-del {
+      background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+
     .complaint-card, .notice-card, .directory-card, .scheme-card, .fund-item-card, .gallery-card {
       background: #ffffff; border-radius: 12px; padding: 12px; border: 1px solid var(--border); margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     }
@@ -224,12 +234,8 @@
     .zoomable-pic { cursor: pointer; transition: transform 0.2s; }
     .zoomable-pic:active { transform: scale(0.96); }
 
-    .stat-square-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 10px 0;
-    }
-    .stat-square {
-      padding: 8px 4px; border-radius: 10px; text-align: center; color: #fff; font-weight: 700;
-    }
+    .stat-square-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 10px 0; }
+    .stat-square { padding: 8px 4px; border-radius: 10px; text-align: center; color: #fff; font-weight: 700; }
     .stat-square span { display: block; font-size: 10px; opacity: 0.9; margin-bottom: 2px; }
     .stat-square h4 { font-size: 18px; line-height: 1; }
 
@@ -276,6 +282,17 @@
         <button style="border:none; background:#f1f5f9; width:30px; height:30px; border-radius:50%; font-size:15px; cursor:pointer;" onclick="closeCitizenDetailModal()">✕</button>
       </div>
       <div id="citizenModalContent"></div>
+    </div>
+  </div>
+
+  <!-- UNIVERSAL ADMIN EDIT POPUP MODAL -->
+  <div class="image-modal" id="adminEditModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
+        <h4 style="color:var(--primary); font-size:15px;" id="adminEditModalTitle"><i class="fa-solid fa-pen-to-square"></i> विवरण संशोधित (Edit) करें</h4>
+        <button style="border:none; background:#f1f5f9; width:30px; height:30px; border-radius:50%; font-size:15px; cursor:pointer;" onclick="closeAdminEditModal()">✕</button>
+      </div>
+      <div id="adminEditModalBody"></div>
     </div>
   </div>
 
@@ -505,12 +522,15 @@
       </div>
     </div>
 
-    <!-- 5. VIEW: EMERGENCY DIRECTORY -->
+    <!-- 5. VIEW: EMERGENCY DIRECTORY (UPDATED WITH ADMIN EDIT/DELETE) -->
     <div id="vDirectory" class="view-content">
       <div class="card">
         <div class="card-title">
           <i class="fa-solid fa-address-book" style="color: #4f46e5;"></i> आवश्यक एवं आपातकालीन संपर्क
         </div>
+        <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
+          आपात स्थिति अथवा विभागीय कार्य हेतु एक क्लिक में संपर्क करें:
+        </p>
         <div id="directoryListDiv"></div>
       </div>
     </div>
@@ -811,10 +831,10 @@
           <!-- 3. HELPLINE FORM BODY -->
           <div class="admin-accordion-body" id="secDirForm" style="background:#eef2ff; border-color:#c7d2fe;">
             <h4 style="font-size:13px; color:#3730a3; margin-bottom:6px;"><i class="fa-solid fa-address-book"></i> हेल्पलाइन जोड़ें</h4>
-            <div class="form-group"><input type="text" id="admDirRole" placeholder="पद / सेवा"></div>
+            <div class="form-group"><input type="text" id="admDirRole" placeholder="पद / सेवा (उदा. ग्राम सचिव, लेखपाल)"></div>
             <div class="form-group"><input type="text" id="admDirName" placeholder="नाम"></div>
             <div class="form-group"><input type="tel" id="admDirPhone" maxlength="10" placeholder="10-अंकीय मोबाइल"></div>
-            <button class="btn btn-emerald" style="padding:7px; font-size:12px;" onclick="saveDirectoryContactCloud()">सेव करें</button>
+            <button class="btn btn-emerald" style="padding:7px; font-size:12px;" onclick="saveDirectoryContactCloud()">डायरेक्टरी में जोड़ें</button>
           </div>
 
           <!-- 4. BANK KOSH BODY -->
@@ -1274,7 +1294,163 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* CUSTOM SCHEMES FROM ADMIN */
+    /* DIRECTORY / HELPLINE FULL CRUD (ADD, EDIT, DELETE) */
+    function drawDirectory() {
+      var d = document.getElementById('directoryListDiv');
+      var list = (directoryList.length > 0) ? directoryList : [
+        { id: "DEF-1", role: "ग्राम सचिव (VDO)", name: "श्रीमान पंचायत सचिव", phone: "9876543210" },
+        { id: "DEF-2", role: "हल्का लेखपाल / पटवारी", name: "श्रीमान लेखपाल जी", phone: "9876543211" },
+        { id: "DEF-3", role: "गाँव आशा बहु (स्वास्थ्य)", name: "आशा कार्यकत्री", phone: "9876543212" },
+        { id: "DEF-4", role: "बिजली लाइनमैन (पाकरपुर)", name: "लाइनमैन", phone: "9876543213" },
+        { id: "DEF-5", role: "सरकारी एम्बुलेंस सेवा", name: "108 एम्बुलेंस", phone: "108" }
+      ];
+
+      var h = "";
+      list.forEach(function(c) {
+        h += '<div class="directory-card" style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid #4f46e5;">' +
+             '<div>' +
+             '<h4 style="font-size:13px; font-weight:700; color:#1e293b;">' + c.role + '</h4>' +
+             '<p style="font-size:12px; color:#475569;">' + c.name + ' - <span style="color:#16a34a; font-weight:700;">+91 ' + c.phone + '</span></p>' +
+             '</div>' +
+             '<div style="display:flex; align-items:center; gap:6px;">' +
+             '<a href="tel:' + c.phone + '" class="action-circle-btn btn-call" style="width:34px; height:34px; font-size:14px;"><i class="fa-solid fa-phone"></i></a>';
+        
+        // ADMIN EDIT & DELETE BUTTONS
+        if (isAdminUnlocked) {
+          h += '<button onclick="openEditDirectoryModal(\''+c.id+'\')" class="adm-btn-edit" title="संशोधित करें"><i class="fa-solid fa-pen"></i></button>' +
+               '<button onclick="deleteDirContactCloud(\''+c.id+'\')" class="adm-btn-del" title="हटाएं"><i class="fa-solid fa-trash"></i></button>';
+        }
+        h += '</div></div>';
+      });
+      d.innerHTML = h;
+    }
+
+    function saveDirectoryContactCloud() {
+      var r = document.getElementById('admDirRole').value.trim();
+      var n = document.getElementById('admDirName').value.trim();
+      var p = document.getElementById('admDirPhone').value.trim();
+      if (!r || !n || !p) return alert("कृपया पद, नाम और मोबाइल नंबर भरें!");
+
+      var id = "DIR-" + Date.now();
+      db.ref('directory/' + id).set({ id: id, role: r, name: n, phone: p }).then(function() {
+        alert("हेल्पलाइन नंबर सफलतापूर्वक जुड़ गया!");
+        document.getElementById('admDirRole').value = "";
+        document.getElementById('admDirName').value = "";
+        document.getElementById('admDirPhone').value = "";
+      });
+    }
+
+    function openEditDirectoryModal(id) {
+      var item = directoryList.find(function(c){ return c.id === id; });
+      if (!item) {
+        // If it's one of default
+        if (id === "DEF-1") item = { id: id, role: "ग्राम सचिव (VDO)", name: "श्रीमान पंचायत सचिव", phone: "9876543210" };
+        else if (id === "DEF-2") item = { id: id, role: "हल्का लेखपाल / पटवारी", name: "श्रीमान लेखपाल जी", phone: "9876543211" };
+        else if (id === "DEF-3") item = { id: id, role: "गाँव आशा बहु (स्वास्थ्य)", name: "आशा कार्यकत्री", phone: "9876543212" };
+        else if (id === "DEF-4") item = { id: id, role: "बिजली लाइनमैन (पाकरपुर)", name: "लाइनमैन", phone: "9876543213" };
+        else if (id === "DEF-5") item = { id: id, role: "सरकारी एम्बुलेंस सेवा", name: "108 एम्बुलेंस", phone: "108" };
+      }
+      if (!item) return;
+
+      document.getElementById('adminEditModalTitle').innerHTML = '<i class="fa-solid fa-address-book"></i> हेल्पलाइन संपर्क सुधारें';
+      var body = '<div class="form-group"><label>पद / सेवा:</label><input type="text" id="editDirRole" value="'+item.role+'"></div>' +
+                 '<div class="form-group"><label>नाम:</label><input type="text" id="editDirName" value="'+item.name+'"></div>' +
+                 '<div class="form-group"><label>मोबाइल नंबर:</label><input type="tel" id="editDirPhone" maxlength="10" value="'+item.phone+'"></div>' +
+                 '<button class="btn btn-emerald" onclick="saveEditedDirectory(\''+item.id+'\')"><i class="fa-solid fa-check"></i> अपडेट सुरक्षित करें</button>';
+      document.getElementById('adminEditModalBody').innerHTML = body;
+      document.getElementById('adminEditModal').classList.add('active');
+    }
+
+    function saveEditedDirectory(id) {
+      var r = document.getElementById('editDirRole').value.trim();
+      var n = document.getElementById('editDirName').value.trim();
+      var p = document.getElementById('editDirPhone').value.trim();
+      if (!r || !n || !p) return alert("कृपया सभी फ़ील्ड भरें!");
+
+      var targetId = id.startsWith("DEF-") ? ("DIR-" + Date.now()) : id;
+      db.ref('directory/' + targetId).set({ id: targetId, role: r, name: n, phone: p }).then(function() {
+        alert("हेल्पलाइन विवरण अपडेट हो गया!");
+        closeAdminEditModal();
+      });
+    }
+
+    function deleteDirContactCloud(id) {
+      if (confirm("क्या आप इस हेल्पलाइन नंबर को हटाना चाहते हैं?")) {
+        db.ref('directory/' + id).remove().then(function() {
+          alert("नंबर हटा दिया गया!");
+        });
+      }
+    }
+
+    /* NOTICE BOARD FULL CRUD (ADD, EDIT, DELETE) */
+    function drawNotices() {
+      var d = document.getElementById('noticeListDiv');
+      if (notices.length === 0) {
+        d.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:15px;'>कोई नोटिस नहीं है।</p>";
+        return;
+      }
+      var h = "";
+      notices.forEach(function(n) {
+        h += '<div class="notice-card" style="border-left: 4px solid var(--danger);">' +
+             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+             '<h4 style="color:#991b1b; font-size:14px;"><i class="fa-solid fa-thumbtack"></i> ' + n.title + '</h4>' +
+             '<span style="font-size:10px; color:#64748b;">' + n.date + '</span>' +
+             '</div>' +
+             '<p style="font-size:13px; color:#334155; margin-top:6px;">' + n.desc + '</p>';
+        
+        if (isAdminUnlocked) {
+          h += '<div class="adm-action-btn-group" style="margin-top:8px;">' +
+               '<button onclick="openEditNoticeModal(\''+n.id+'\')" class="adm-btn-edit"><i class="fa-solid fa-pen"></i> एडिट</button>' +
+               '<button onclick="deleteNoticeCloud(\''+n.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i> हटाएं</button>' +
+               '</div>';
+        }
+        h += '</div>';
+      });
+      d.innerHTML = h;
+    }
+
+    function postAdminNoticeCloud() {
+      var t = document.getElementById('admNoticeTitle').value.trim();
+      var d = document.getElementById('admNoticeDesc').value.trim();
+      if (!t || !d) return alert("कृपया शीर्षक और विवरण भरें!");
+      var id = "NOT-" + Date.now();
+      db.ref('notices/' + id).set({ id: id, title: t, desc: d, date: new Date().toLocaleDateString('hi-IN') }).then(function() {
+        alert("सूचना प्रकाशित हो गई!");
+        document.getElementById('admNoticeTitle').value = "";
+        document.getElementById('admNoticeDesc').value = "";
+      });
+    }
+
+    function openEditNoticeModal(id) {
+      var n = notices.find(function(item){ return item.id === id; });
+      if (!n) return;
+
+      document.getElementById('adminEditModalTitle').innerHTML = '<i class="fa-solid fa-bullhorn"></i> नोटिस संपादित (Edit) करें';
+      var body = '<div class="form-group"><label>सूचना शीर्षक:</label><input type="text" id="editNoticeTitle" value="'+n.title+'"></div>' +
+                 '<div class="form-group"><label>विस्तृत विवरण:</label><textarea id="editNoticeDesc">'+n.desc+'</textarea></div>' +
+                 '<button class="btn btn-emerald" onclick="saveEditedNotice(\''+n.id+'\')"><i class="fa-solid fa-check"></i> नोटिस अपडेट करें</button>';
+      document.getElementById('adminEditModalBody').innerHTML = body;
+      document.getElementById('adminEditModal').classList.add('active');
+    }
+
+    function saveEditedNotice(id) {
+      var t = document.getElementById('editNoticeTitle').value.trim();
+      var d = document.getElementById('editNoticeDesc').value.trim();
+      if (!t || !d) return alert("कृपया शीर्षक और विवरण भरें!");
+
+      db.ref('notices/' + id).update({ title: t, desc: d }).then(function() {
+        alert("नोटिस सफलता पूर्वक अपडेट हो गया!");
+        closeAdminEditModal();
+      });
+    }
+
+    function deleteNoticeCloud(id) {
+      if (confirm("क्या आप इस नोटिस को हटाना चाहते हैं?")) {
+        db.ref('notices/' + id).remove();
+      }
+    }
+
+    /* CUSTOM SCHEMES CRUD (ADD, EDIT, DELETE) */
     function saveCustomSchemeCloud() {
       var t = document.getElementById('admSchTitle').value.trim();
       var d = document.getElementById('admSchDesc').value.trim();
@@ -1293,12 +1469,6 @@
       });
     }
 
-    function deleteCustomSchemeCloud(id) {
-      if (confirm("क्या आप इस योजना को हटाना चाहते हैं?")) {
-        db.ref('custom_schemes/' + id).remove();
-      }
-    }
-
     function drawCustomSchemes() {
       var d = document.getElementById('schemesDynamicListDiv');
       if (customSchemesList.length === 0) {
@@ -1310,9 +1480,14 @@
         h += '<div class="scheme-card" style="border-left: 4px solid var(--success);">' +
              '<div style="display:flex; justify-content:space-between; align-items:center;">' +
              '<h4 style="font-size:14px; color:#166534;"><i class="fa-solid fa-star" style="color:#eab308;"></i> ' + s.title + '</h4>';
+        
         if (isAdminUnlocked) {
-          h += '<button onclick="deleteCustomSchemeCloud(\''+s.id+'\')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;">हटाएं</button>';
+          h += '<div class="adm-action-btn-group">' +
+               '<button onclick="openEditSchemeModal(\''+s.id+'\')" class="adm-btn-edit"><i class="fa-solid fa-pen"></i></button>' +
+               '<button onclick="deleteCustomSchemeCloud(\''+s.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i></button>' +
+               '</div>';
         }
+
         h += '</div>' +
              '<p style="font-size:12px; color:#475569; margin:4px 0;">' + s.desc + '</p>' +
              '<a href="' + s.link + '" target="_blank" class="btn-direct-gov">' +
@@ -1320,6 +1495,131 @@
              '</div>';
       });
       d.innerHTML = h;
+    }
+
+    function openEditSchemeModal(id) {
+      var s = customSchemesList.find(function(item){ return item.id === id; });
+      if (!s) return;
+
+      document.getElementById('adminEditModalTitle').innerHTML = '<i class="fa-solid fa-hand-holding-hand"></i> सरकारी योजना संशोधित करें';
+      var body = '<div class="form-group"><label>योजना का नाम:</label><input type="text" id="editSchTitle" value="'+s.title+'"></div>' +
+                 '<div class="form-group"><label>पात्रता व लाभ विवरण:</label><textarea id="editSchDesc">'+s.desc+'</textarea></div>' +
+                 '<div class="form-group"><label>आधिकारिक वेबसाइट लिंक:</label><input type="url" id="editSchLink" value="'+s.link+'"></div>' +
+                 '<button class="btn btn-emerald" onclick="saveEditedScheme(\''+s.id+'\')"><i class="fa-solid fa-check"></i> योजना अपडेट करें</button>';
+      document.getElementById('adminEditModalBody').innerHTML = body;
+      document.getElementById('adminEditModal').classList.add('active');
+    }
+
+    function saveEditedScheme(id) {
+      var t = document.getElementById('editSchTitle').value.trim();
+      var d = document.getElementById('editSchDesc').value.trim();
+      var l = document.getElementById('editSchLink').value.trim();
+      if (!t || !d || !l) return alert("कृपया सभी विवरण भरें!");
+
+      db.ref('custom_schemes/' + id).update({ title: t, desc: d, link: l }).then(function() {
+        alert("योजना सफलता पूर्वक अपडेट हो गई!");
+        closeAdminEditModal();
+      });
+    }
+
+    function deleteCustomSchemeCloud(id) {
+      if (confirm("क्या आप इस योजना को हटाना चाहते हैं?")) {
+        db.ref('custom_schemes/' + id).remove();
+      }
+    }
+
+    /* KOSH & BUDGET EDIT & DELETE */
+    function calcAndDrawBudget() {
+      var totalIn = 0, totalOut = 0;
+      fundsList.forEach(function(f){ totalIn += Number(f.amount || 0); });
+      expensesList.forEach(function(e){ totalOut += Number(e.amount || 0); });
+
+      document.getElementById('koshTotalIn').innerText = "₹" + totalIn.toLocaleString('en-IN');
+      document.getElementById('koshTotalOut').innerText = "₹" + totalOut.toLocaleString('en-IN');
+      document.getElementById('koshBalance').innerText = "₹" + (totalIn - totalOut).toLocaleString('en-IN');
+
+      var expDiv = document.getElementById('koshExpensesDiv');
+      if (expensesList.length === 0) {
+        expDiv.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center;'>कोई खर्च दर्ज नहीं है।</p>";
+        return;
+      }
+      var h = "";
+      expensesList.forEach(function(item) {
+        h += '<div class="fund-item-card" style="border-left: 4px solid #dc2626;">' +
+             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+             '<h4 style="font-size:13px; font-weight:700;">' + item.work + '</h4>' +
+             '<span style="font-weight:800; color:#dc2626;">- ₹' + Number(item.amount).toLocaleString('en-IN') + '</span>' +
+             '</div>' +
+             '<div style="font-size:11px; color:#64748b; margin-top:3px;">ठेकेदार: ' + item.vendor + ' | ' + item.date + '</div>';
+        
+        if (isAdminUnlocked) {
+          h += '<div class="adm-action-btn-group" style="margin-top:6px;">' +
+               '<button onclick="openEditExpenseModal(\''+item.id+'\')" class="adm-btn-edit"><i class="fa-solid fa-pen"></i> एडिट</button>' +
+               '<button onclick="deleteExpenseCloud(\''+item.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i> हटाएं</button>' +
+               '</div>';
+        }
+        h += '</div>';
+      });
+      expDiv.innerHTML = h;
+    }
+
+    function openEditExpenseModal(id) {
+      var item = expensesList.find(function(e){ return e.id === id; });
+      if (!item) return;
+
+      document.getElementById('adminEditModalTitle').innerHTML = '<i class="fa-solid fa-building-columns"></i> खर्च विवरण संशोधित करें';
+      var body = '<div class="form-group"><label>कार्य का नाम:</label><input type="text" id="editExpWork" value="'+item.work+'"></div>' +
+                 '<div class="form-group"><label>खर्च राशि (₹):</label><input type="number" id="editExpAmount" value="'+item.amount+'"></div>' +
+                 '<div class="form-group"><label>ठेकेदार / मद:</label><input type="text" id="editExpVendor" value="'+item.vendor+'"></div>' +
+                 '<button class="btn btn-emerald" onclick="saveEditedExpense(\''+item.id+'\')"><i class="fa-solid fa-check"></i> खर्च अपडेट करें</button>';
+      document.getElementById('adminEditModalBody').innerHTML = body;
+      document.getElementById('adminEditModal').classList.add('active');
+    }
+
+    function saveEditedExpense(id) {
+      var w = document.getElementById('editExpWork').value.trim();
+      var a = document.getElementById('editExpAmount').value.trim();
+      var v = document.getElementById('editExpVendor').value.trim();
+      if (!w || !a || !v) return alert("कृपया सभी विवरण भरें!");
+
+      db.ref('gram_expenses/' + id).update({ work: w, amount: Number(a), vendor: v }).then(function() {
+        alert("खर्च विवरण सफलतापूर्वक अपडेट हो गया!");
+        closeAdminEditModal();
+      });
+    }
+
+    function addGramFundCloud() {
+      var s = document.getElementById('admFundSource').value.trim();
+      var a = document.getElementById('admFundAmount').value.trim();
+      if (!s || !a) return alert("कृपया मद और राशि भरें!");
+      var id = "FND-" + Date.now();
+      db.ref('gram_funds/' + id).set({ id: id, source: s, amount: Number(a), date: new Date().toLocaleDateString('hi-IN') }).then(function() {
+        alert("फंड जुड़ गया!");
+        document.getElementById('admFundSource').value = "";
+        document.getElementById('admFundAmount').value = "";
+      });
+    }
+
+    function addGramExpenseCloud() {
+      var w = document.getElementById('admExpWork').value.trim();
+      var a = document.getElementById('admExpAmount').value.trim();
+      var v = document.getElementById('admExpVendor').value.trim();
+      if (!w || !a || !v) return alert("कृपया सभी विवरण भरें!");
+      var id = "EXP-" + Date.now();
+      db.ref('gram_expenses/' + id).set({ id: id, work: w, amount: Number(a), vendor: v, date: new Date().toLocaleDateString('hi-IN') }).then(function() {
+        alert("खर्च दर्ज हो गया!");
+        document.getElementById('admExpWork').value = "";
+        document.getElementById('admExpAmount').value = "";
+        document.getElementById('admExpVendor').value = "";
+      });
+    }
+
+    function deleteExpenseCloud(id) {
+      if (confirm("हटाना चाहते हैं?")) db.ref('gram_expenses/' + id).remove();
+    }
+
+    function closeAdminEditModal() {
+      document.getElementById('adminEditModal').classList.remove('active');
     }
 
     function saveBroadcastCloud() {
@@ -1376,131 +1676,6 @@
 
     function deleteGalleryCloud(id) {
       if (confirm("हटाना चाहते हैं?")) db.ref('gallery/' + id).remove();
-    }
-
-    function calcAndDrawBudget() {
-      var totalIn = 0, totalOut = 0;
-      fundsList.forEach(function(f){ totalIn += Number(f.amount || 0); });
-      expensesList.forEach(function(e){ totalOut += Number(e.amount || 0); });
-
-      document.getElementById('koshTotalIn').innerText = "₹" + totalIn.toLocaleString('en-IN');
-      document.getElementById('koshTotalOut').innerText = "₹" + totalOut.toLocaleString('en-IN');
-      document.getElementById('koshBalance').innerText = "₹" + (totalIn - totalOut).toLocaleString('en-IN');
-
-      var expDiv = document.getElementById('koshExpensesDiv');
-      if (expensesList.length === 0) {
-        expDiv.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center;'>कोई खर्च दर्ज नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      expensesList.forEach(function(item) {
-        h += '<div class="fund-item-card" style="border-left: 4px solid #dc2626;">' +
-             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
-             '<h4 style="font-size:13px; font-weight:700;">' + item.work + '</h4>' +
-             '<span style="font-weight:800; color:#dc2626;">- ₹' + Number(item.amount).toLocaleString('en-IN') + '</span>' +
-             '</div>' +
-             '<div style="font-size:11px; color:#64748b; margin-top:3px;">ठेकेदार: ' + item.vendor + ' | ' + item.date + '</div>';
-        if (isAdminUnlocked) {
-          h += '<button onclick="deleteExpenseCloud(\''+item.id+'\')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:2px 6px; border-radius:4px; font-size:10px; margin-top:4px;">हटाएं</button>';
-        }
-        h += '</div>';
-      });
-      expDiv.innerHTML = h;
-    }
-
-    function addGramFundCloud() {
-      var s = document.getElementById('admFundSource').value.trim();
-      var a = document.getElementById('admFundAmount').value.trim();
-      if (!s || !a) return alert("कृपया मद और राशि भरें!");
-      var id = "FND-" + Date.now();
-      db.ref('gram_funds/' + id).set({ id: id, source: s, amount: Number(a), date: new Date().toLocaleDateString('hi-IN') }).then(function() {
-        alert("फंड जुड़ गया!");
-        document.getElementById('admFundSource').value = "";
-        document.getElementById('admFundAmount').value = "";
-      });
-    }
-
-    function addGramExpenseCloud() {
-      var w = document.getElementById('admExpWork').value.trim();
-      var a = document.getElementById('admExpAmount').value.trim();
-      var v = document.getElementById('admExpVendor').value.trim();
-      if (!w || !a || !v) return alert("कृपया सभी विवरण भरें!");
-      var id = "EXP-" + Date.now();
-      db.ref('gram_expenses/' + id).set({ id: id, work: w, amount: Number(a), vendor: v, date: new Date().toLocaleDateString('hi-IN') }).then(function() {
-        alert("खर्च दर्ज हो गया!");
-        document.getElementById('admExpWork').value = "";
-        document.getElementById('admExpAmount').value = "";
-        document.getElementById('admExpVendor').value = "";
-      });
-    }
-
-    function deleteExpenseCloud(id) {
-      if (confirm("हटाना चाहते हैं?")) db.ref('gram_expenses/' + id).remove();
-    }
-
-    function drawNotices() {
-      var d = document.getElementById('noticeListDiv');
-      if (notices.length === 0) {
-        d.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:15px;'>कोई नोटिस नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      notices.forEach(function(n) {
-        h += '<div class="notice-card" style="border-left: 4px solid var(--danger);">' +
-             '<div style="display:flex; justify-content:space-between; align-items:center;">' +
-             '<h4 style="color:#991b1b; font-size:14px;"><i class="fa-solid fa-thumbtack"></i> ' + n.title + '</h4>' +
-             '<span style="font-size:10px; color:#64748b;">' + n.date + '</span>' +
-             '</div>' +
-             '<p style="font-size:13px; color:#334155; margin-top:6px;">' + n.desc + '</p>';
-        if (isAdminUnlocked) {
-          h += '<button onclick="deleteNoticeCloud(\''+n.id+'\')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:3px 8px; border-radius:6px; font-size:11px; margin-top:8px;">हटाएं</button>';
-        }
-        h += '</div>';
-      });
-      d.innerHTML = h;
-    }
-
-    function postAdminNoticeCloud() {
-      var t = document.getElementById('admNoticeTitle').value.trim();
-      var d = document.getElementById('admNoticeDesc').value.trim();
-      if (!t || !d) return alert("कृपया शीर्षक और विवरण भरें!");
-      var id = "NOT-" + Date.now();
-      db.ref('notices/' + id).set({ id: id, title: t, desc: d, date: new Date().toLocaleDateString('hi-IN') }).then(function() {
-        alert("सूचना जारी हो गई!");
-        document.getElementById('admNoticeTitle').value = "";
-        document.getElementById('admNoticeDesc').value = "";
-      });
-    }
-
-    function deleteNoticeCloud(id) {
-      if (confirm("हटाना चाहते हैं?")) db.ref('notices/' + id).remove();
-    }
-
-    function drawDirectory() {
-      var d = document.getElementById('directoryListDiv');
-      var list = (directoryList.length > 0) ? directoryList : [
-        { id: "1", role: "ग्राम सचिव", name: "सचिव जी", phone: "9876543210" },
-        { id: "2", role: "लेखपाल", name: "लेखपाल जी", phone: "9876543211" }
-      ];
-      var h = "";
-      list.forEach(function(c) {
-        h += '<div class="directory-card" style="display:flex; justify-content:space-between; align-items:center;">' +
-             '<div><h4 style="font-size:13px; font-weight:700;">' + c.role + '</h4>' +
-             '<p style="font-size:12px; color:#475569;">' + c.name + ' - +91 ' + c.phone + '</p></div>' +
-             '<a href="tel:' + c.phone + '" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a></div>';
-      });
-      d.innerHTML = h;
-    }
-
-    function saveDirectoryContactCloud() {
-      var r = document.getElementById('admDirRole').value.trim();
-      var n = document.getElementById('admDirName').value.trim();
-      var p = document.getElementById('admDirPhone').value.trim();
-      if (!r || !n || !p) return alert("सभी फ़ील्ड भरें!");
-      var id = "DIR-" + Date.now();
-      db.ref('directory/' + id).set({ id: id, role: r, name: n, phone: p }).then(function() {
-        alert("नंबर सुरक्षित हो गया!");
-      });
     }
 
     function openUserProfileDirect() {
@@ -1715,6 +1890,10 @@
         document.getElementById('adminGateBox').style.display = 'none';
         document.getElementById('adminMainDashBox').style.display = 'block';
         renderAdminDashboard();
+        drawDirectory();
+        drawNotices();
+        drawCustomSchemes();
+        calcAndDrawBudget();
       } else {
         alert("अमान्य पासवर्ड!");
       }
@@ -2099,6 +2278,10 @@
       document.getElementById('adminGateBox').style.display = 'block';
       document.getElementById('adminMainDashBox').style.display = 'none';
       applyUserGate();
+      drawDirectory();
+      drawNotices();
+      drawCustomSchemes();
+      calcAndDrawBudget();
       if (curUser) switchAction('vNew');
     }
 
