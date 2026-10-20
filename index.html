@@ -97,12 +97,21 @@
     .header-btn {
       background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.35);
       color: #fff; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer;
-      overflow: hidden; padding: 0;
+      overflow: hidden; padding: 0; position: relative;
     }
     .header-user-avatar { width: 100%; height: 100%; object-fit: cover; display: none; }
     .admin-secret-btn {
       background: rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.5);
       color: #fef08a; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer;
+      position: relative;
+    }
+
+    /* Red Notification Corner Badges */
+    .notify-badge {
+      position: absolute; top: -3px; right: -3px; background: #dc2626; color: #ffffff;
+      font-size: 10px; font-weight: 800; min-width: 17px; height: 17px; border-radius: 9px;
+      display: none; align-items: center; justify-content: center; padding: 0 4px;
+      border: 1.5px solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.25);
     }
 
     .weather-strip {
@@ -138,6 +147,7 @@
     .action-tile {
       background: var(--card-bg); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 10px 4px;
       text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.03); backdrop-filter: blur(8px);
+      position: relative;
     }
     .action-tile:active, .action-tile.active {
       border-color: var(--primary); background: #f0fdf4; transform: translateY(-2px);
@@ -152,6 +162,7 @@
     .admin-square-tile {
       background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 4px;
       text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      position: relative;
     }
     .admin-square-tile:active { transform: scale(0.95); background: #f8fafc; }
     .adm-tile-icon {
@@ -245,6 +256,15 @@
       width: 58px; height: 58px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);
       background: #dcfce7; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--primary);
     }
+
+    /* Audio Recording UI Box */
+    .audio-record-box {
+      background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 10px; padding: 10px; margin-top: 6px;
+    }
+    .pulse-record-btn {
+      background: #dc2626; color: #fff; animation: pulse 1s infinite alternate;
+    }
+    @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
   </style>
 </head>
 <body>
@@ -340,6 +360,8 @@
 
     <button class="admin-secret-btn" onclick="openAdminGate()" title="व्यवस्थापक लॉगिन">
       <i class="fa-solid fa-shield-halved"></i>
+      <!-- Admin Bell Badge on Header -->
+      <span class="notify-badge" id="hdrAdminBadge">0</span>
     </button>
   </header>
 
@@ -474,9 +496,30 @@
             <label><i class="fa-solid fa-camera"></i> समस्या की फोटो जोड़ें (ऐच्छिक)</label>
             <input type="file" accept="image/*" onchange="handleCompPhoto(event)">
           </div>
+
+          <!-- AUDIO RECORD & UPLOAD MODULE FOR CITIZENS -->
           <div class="form-group">
-            <label><i class="fa-solid fa-comment-dots"></i> समस्या का विस्तृत विवरण *</label>
-            <textarea id="cDesc" required placeholder="समस्या क्या है, कब से है और किस जगह है..."></textarea>
+            <label><i class="fa-solid fa-microphone-lines" style="color:#dc2626;"></i> यदि लिख नहीं पा रहे हैं, तो बोलकर बताएं (ऑडियो रिकॉर्डिंग):</label>
+            <div class="audio-record-box">
+              <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                <button type="button" id="btnRecordToggle" class="btn btn-crimson" style="width:auto; padding:6px 12px; font-size:12px;" onclick="toggleAudioRecording()">
+                  <i class="fa-solid fa-microphone"></i> रिकॉर्डिंग शुरू करें
+                </button>
+                <span id="recordTimer" style="font-size:12px; font-weight:700; color:#dc2626; display:none;">00:00</span>
+                <span id="recordStatusText" style="font-size:11px; color:#64748b;">(माइक परमिशन मांगी जाएगी)</span>
+              </div>
+              <audio id="audioPreviewPlayer" controls style="display:none; width:100%; margin-top:8px; height:36px;"></audio>
+              
+              <div style="margin-top:8px; border-top:1px dashed #cbd5e1; padding-top:6px;">
+                <label style="font-size:11px; color:#475569;"><i class="fa-solid fa-file-audio"></i> या फ़ोन में रिकॉर्ड किया हुआ ऑडियो अपलोड करें:</label>
+                <input type="file" id="audioFileInput" accept="audio/*" onchange="handleAudioFileUpload(event)" style="font-size:11px; padding:5px;">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-comment-dots"></i> समस्या का विस्तृत विवरण (या ऊपर ऑडियो रिकॉर्ड करें) *</label>
+            <textarea id="cDesc" placeholder="समस्या क्या है, कब से है और किस जगह है... (या ऊपर आवाज़ रिकॉर्ड करें)"></textarea>
           </div>
           <button type="submit" class="btn btn-emerald">
             <i class="fa-solid fa-paper-plane"></i> शिकायत सबमिट करें
@@ -768,7 +811,7 @@
             </div>
           </div>
 
-          <!-- ADMIN SQUARE GRID TILES -->
+          <!-- ADMIN SQUARE GRID TILES WITH CORNER NOTIFICATION BADGES -->
           <div class="admin-square-grid">
             <div class="admin-square-tile" onclick="openAdminSection('secBroadcastForm')">
               <div class="adm-tile-icon" style="background: #dc2626;"><i class="fa-solid fa-tower-broadcast"></i></div>
@@ -790,10 +833,14 @@
               <div class="adm-tile-icon" style="background: #e11d48;"><i class="fa-solid fa-images"></i></div>
               <span>विकास गैलरी</span>
             </div>
+            
+            <!-- Users Tile with Red Badge -->
             <div class="admin-square-tile" onclick="openAdminSection('secUsersForm')">
+              <span class="notify-badge" id="badgePendingUsers">0</span>
               <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-user-check"></i></div>
               <span>नागरिक खाते</span>
             </div>
+
             <div class="admin-square-tile" onclick="openAdminSection('secAddSchemeForm')">
               <div class="adm-tile-icon" style="background: #059669;"><i class="fa-solid fa-plus-circle"></i></div>
               <span>योजना जोड़ें</span>
@@ -898,10 +945,13 @@
             </div>
           </div>
 
-          <!-- Grievance Management Section -->
-          <div style="margin-top:14px; border-top:1px solid #e2e8f0; padding-top:12px;">
+          <!-- Grievance Management Section with Red Badge -->
+          <div style="margin-top:14px; border-top:1px solid #e2e8f0; padding-top:12px; position:relative;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-              <h4 style="font-size:14px; color:var(--primary-dark);"><i class="fa-solid fa-list-check"></i> शिकायतों की समीक्षा व निस्तारण:</h4>
+              <h4 style="font-size:14px; color:var(--primary-dark);">
+                <i class="fa-solid fa-list-check"></i> शिकायतों की समीक्षा व निस्तारण
+                <span id="badgePendingComplaints" style="background:#dc2626; color:#fff; font-size:10px; padding:2px 7px; border-radius:10px; margin-left:6px; display:none;">0</span>
+              </h4>
             </div>
             
             <div class="form-group">
@@ -993,12 +1043,23 @@
     var mapInst = null;
     var selectedMarker = null;
     var tempCompPhoto = "";
+    var tempCompAudio = ""; // Base64 Audio string
     var tempBeforePhoto = "";
     var tempAfterPhoto = "";
     var tempResolutionPhoto = {};
 
     var fullWeatherData = null;
     var selectedDayIndex = 0;
+
+    // AUDIO RECORDING VARIABLES
+    var mediaRecorder = null;
+    var audioChunks = [];
+    var recordInterval = null;
+    var recordSeconds = 0;
+
+    // Track initial loads to avoid beep sound on page refresh
+    var initialCompsLoaded = false;
+    var initialPendingUsersLoaded = false;
 
     window.onload = function() {
       initFirebaseListeners();
@@ -1013,6 +1074,23 @@
         }
       }
     };
+
+    // Soft alert tone for admin notification
+    function playAdminNotifySound() {
+      try {
+        var ctx = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(800, ctx.currentTime);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.35);
+      } catch (err) {}
+    }
 
     function zoomSpecificImage(srcUrl) {
       if (!srcUrl || srcUrl.includes('placeholder')) return;
@@ -1164,10 +1242,19 @@
         }
       });
 
+      // COMPLAINTS LISTENER WITH RED NOTIFICATION LOGIC
       db.ref('complaints').on('value', function(snapshot) {
         var val = snapshot.val();
+        var prevCount = comps.length;
         comps = val ? Object.values(val) : [];
         comps.reverse();
+
+        if (initialCompsLoaded && comps.length > prevCount) {
+          playAdminNotifySound();
+        }
+        initialCompsLoaded = true;
+
+        updateNotificationBadges();
         drawComps();
         if (isAdminUnlocked) filterAdminComplaints();
       });
@@ -1198,9 +1285,18 @@
         if (isAdminUnlocked) renderActiveUsers();
       });
 
+      // PENDING USER REGISTRATIONS LISTENER WITH NOTIFICATION
       db.ref('pending_users').on('value', function(snapshot) {
         var val = snapshot.val();
+        var prevPending = pendingUsers.length;
         pendingUsers = val ? Object.values(val) : [];
+
+        if (initialPendingUsersLoaded && pendingUsers.length > prevPending) {
+          playAdminNotifySound();
+        }
+        initialPendingUsersLoaded = true;
+
+        updateNotificationBadges();
         if (isAdminUnlocked) renderPendingRequests();
       });
 
@@ -1217,7 +1313,6 @@
         drawNotices();
       });
 
-      /* DIRECTORY REALTIME LISTENER - PURE DATABASE DRIVEN */
       db.ref('directory').on('value', function(snapshot) {
         var val = snapshot.val();
         directoryList = val ? Object.values(val) : [];
@@ -1251,6 +1346,131 @@
         customSchemesList.reverse();
         drawCustomSchemes();
       });
+    }
+
+    // UPDATE CORNER NOTIFICATION RED BADGES
+    function updateNotificationBadges() {
+      var pendingRegCount = pendingUsers.length;
+      var pendingCompCount = comps.filter(function(c){ return c.status === "लंबित"; }).length;
+      var totalAdminNotifications = pendingRegCount + pendingCompCount;
+
+      // Header admin button badge
+      var hdrBadge = document.getElementById('hdrAdminBadge');
+      if (hdrBadge) {
+        if (totalAdminNotifications > 0) {
+          hdrBadge.innerText = totalAdminNotifications;
+          hdrBadge.style.display = "flex";
+        } else {
+          hdrBadge.style.display = "none";
+        }
+      }
+
+      // Pending users square tile badge
+      var userTileBadge = document.getElementById('badgePendingUsers');
+      if (userTileBadge) {
+        if (pendingRegCount > 0) {
+          userTileBadge.innerText = pendingRegCount;
+          userTileBadge.style.display = "flex";
+        } else {
+          userTileBadge.style.display = "none";
+        }
+      }
+
+      // Pending complaints heading badge
+      var compBadge = document.getElementById('badgePendingComplaints');
+      if (compBadge) {
+        if (pendingCompCount > 0) {
+          compBadge.innerText = pendingCompCount + " नई";
+          compBadge.style.display = "inline-block";
+        } else {
+          compBadge.style.display = "none";
+        }
+      }
+    }
+
+    /* AUDIO RECORDING ENGINE */
+    function toggleAudioRecording() {
+      if (mediaRecorder && mediaRecorder.state === "recording") {
+        stopAudioRecording();
+      } else {
+        startAudioRecording();
+      }
+    }
+
+    function startAudioRecording() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        return alert("आपका ब्राउज़र या फ़ोन ऑडियो रिकॉर्डिंग सपोर्ट नहीं करता। कृपया नीचे दिए विकल्प से ऑडियो फ़ाइल अपलोड करें।");
+      }
+
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function(stream) {
+          audioChunks = [];
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.ondataavailable = function(e) {
+            if (e.data.size > 0) audioChunks.push(e.data);
+          };
+          mediaRecorder.onstop = function() {
+            var audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            var reader = new FileReader();
+            reader.onloadend = function() {
+              tempCompAudio = reader.result;
+              var player = document.getElementById('audioPreviewPlayer');
+              player.src = tempCompAudio;
+              player.style.display = "block";
+              document.getElementById('recordStatusText').innerText = "✓ रिकॉर्डिंग तैयार है (प्ले करके सुनें)";
+            };
+            reader.readAsDataURL(audioBlob);
+            stream.getTracks().forEach(function(track){ track.stop(); });
+          };
+
+          mediaRecorder.start();
+          var btn = document.getElementById('btnRecordToggle');
+          btn.innerHTML = '<i class="fa-solid fa-stop"></i> रिकॉर्डिंग बंद करें';
+          btn.classList.add('pulse-record-btn');
+
+          var timer = document.getElementById('recordTimer');
+          timer.style.display = "inline-block";
+          recordSeconds = 0;
+          timer.innerText = "00:00";
+          recordInterval = setInterval(function() {
+            recordSeconds++;
+            var m = Math.floor(recordSeconds / 60);
+            var s = recordSeconds % 60;
+            timer.innerText = (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+          }, 1000);
+          document.getElementById('recordStatusText').innerText = "रिकॉर्डिंग जारी है...";
+        })
+        .catch(function(err) {
+          alert("माइक्रोफ़ोन की अनुमति (Permission) नहीं मिली! कृपया ब्राउज़र सेटिंग में जाकर माइक्रोफ़ोन परमिशन Allow करें।");
+        });
+    }
+
+    function stopAudioRecording() {
+      if (mediaRecorder && mediaRecorder.state === "recording") {
+        mediaRecorder.stop();
+        clearInterval(recordInterval);
+        var btn = document.getElementById('btnRecordToggle');
+        btn.innerHTML = '<i class="fa-solid fa-microphone"></i> दोबारा रिकॉर्ड करें';
+        btn.classList.remove('pulse-record-btn');
+        document.getElementById('recordTimer').style.display = "none";
+      }
+    }
+
+    function handleAudioFileUpload(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 4 * 1024 * 1024) {
+        return alert("ऑडियो फ़ाइल 4MB से कम होनी चाहिए!");
+      }
+      var r = new FileReader();
+      r.onload = function(evt) {
+        tempCompAudio = evt.target.result;
+        var player = document.getElementById('audioPreviewPlayer');
+        player.src = tempCompAudio;
+        player.style.display = "block";
+        document.getElementById('recordStatusText').innerText = "✓ ऑडियो फ़ाइल अपलोड हो गई";
+      };
+      r.readAsDataURL(file);
     }
 
     function drawPradhanHeader() {
@@ -1314,7 +1534,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* DIRECTORY / HELPLINE FULL CRUD - NO DUMMY DATA */
+    /* DIRECTORY / HELPLINE FULL CRUD */
     function drawDirectory() {
       var d = document.getElementById('directoryListDiv');
       if (directoryList.length === 0) {
@@ -1742,7 +1962,7 @@
       } else {
         db.ref('pending_users/' + p).set(newUserObj);
         document.getElementById('regReqNotice').style.display = 'block';
-        alert("अनुरोध भेज दिया गया है।");
+        alert("अनुरोध भेज दिया गया है। व्यवस्थापक द्वारा स्वीकृत होते ही आपका खाता चालू हो जाएगा।");
       }
     }
 
@@ -1843,6 +2063,12 @@
                 '<div style="font-size:12px; color:#475569; margin:4px 0;">स्थान: '+c.place+'</div>' +
                 '<div style="font-size:13px; margin:6px 0;">'+c.desc+'</div>';
       
+      if (c.audio) {
+        out += '<div style="margin:8px 0; background:#f8fafc; border:1px solid #cbd5e1; padding:6px; border-radius:8px;">' +
+               '<span style="font-size:11px; font-weight:700; color:#dc2626;"><i class="fa-solid fa-microphone-lines"></i> दर्ज ऑडियो विवरण:</span><br>' +
+               '<audio controls src="'+c.audio+'" style="width:100%; height:32px; margin-top:4px;"></audio></div>';
+      }
+
       if (c.photo) {
         out += '<div style="margin:8px 0;"><span style="font-size:11px; font-weight:700;">समस्या फोटो:</span><br><img src="'+c.photo+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:200px; object-fit:contain; border-radius:8px;"></div>';
       }
@@ -1874,6 +2100,12 @@
              '<div style="font-size:11px; color:#64748b; margin:2px 0;"><i class="fa-regular fa-calendar-days"></i> दिनांक: ' + (c.date || "N/A") + '</div>' +
              '<div style="font-size:12px; color:#64748b; margin:4px 0;"><i class="fa-solid fa-location-dot" style="color:#dc2626;"></i> ' + c.place + '</div>' +
              '<div style="font-size:13px; color:#334155; margin-bottom:6px;">' + c.desc + '</div>';
+
+        if (c.audio) {
+          h += '<div style="margin:6px 0; background:#f8fafc; border:1px solid #cbd5e1; padding:6px; border-radius:6px;">' +
+               '<span style="font-size:10px; font-weight:700; color:#dc2626;"><i class="fa-solid fa-microphone-lines"></i> आवाज़ रिकॉर्डिंग सुनें:</span><br>' +
+               '<audio controls src="'+c.audio+'" style="width:100%; height:30px; margin-top:3px;"></audio></div>';
+        }
 
         if (c.resolutionPhoto) {
           h += '<div style="margin:6px 0; background:#f0fdf4; border:1px solid #86efac; padding:6px; border-radius:6px;">' +
@@ -1941,6 +2173,7 @@
       filterAdminComplaints();
       renderRecycleBin();
       renderAdminDirectoryInner();
+      updateNotificationBadges();
     }
 
     function toggleEditProfileBox() {
@@ -2144,6 +2377,10 @@
                  '<div style="font-size:10px; color:#64748b; margin:1px 0;">दिनांक: '+(c.date || "N/A")+'</div>' +
                  '<div style="font-size:11px; color:#64748b; margin:2px 0;">स्थान: '+c.place+'</div>' +
                  '<div style="font-size:12px; color:#334155;">'+c.desc+'</div>';
+          
+          if (c.audio) {
+            out += '<div style="margin-top:4px;"><audio controls src="'+c.audio+'" style="width:100%; height:28px;"></audio></div>';
+          }
           if (c.resolutionPhoto) {
             out += '<div style="font-size:10px; color:#16a34a; font-weight:700; margin-top:4px;"><i class="fa-solid fa-image"></i> काम पूरा होने की फोटो जुड़ी है</div>';
           }
@@ -2192,9 +2429,15 @@
              '<div style="font-size:11px; color:#64748b; margin:2px 0;"><i class="fa-regular fa-calendar-days"></i> दर्ज दिनांक: ' + (c.date || "N/A") + '</div>' +
              '<div style="font-size:12px; margin:4px 0;">नागरिक: <b>' + c.name + '</b> (' + c.phone + ') <a href="tel:' + c.phone + '" style="color:#16a34a; font-weight:700;"><i class="fa-solid fa-phone"></i> कॉल करें</a></div>' +
              '<div style="font-size:12px; color:#475569;">स्थान: ' + c.place + '</div>' +
-             '<div style="font-size:13px; margin:4px 0;">' + c.desc + '</div>' +
+             '<div style="font-size:13px; margin:4px 0;">' + c.desc + '</div>';
 
-             '<div style="background:#f8fafc; border-top:1px dashed #cbd5e1; padding-top:8px; margin-top:8px;">' +
+        if (c.audio) {
+          h += '<div style="margin:6px 0; background:#fef2f2; border:1px solid #fca5a5; padding:6px; border-radius:6px;">' +
+               '<span style="font-size:11px; font-weight:700; color:#dc2626;"><i class="fa-solid fa-microphone"></i> नागरिक की ऑडियो रिकॉर्डिंग सुनें:</span><br>' +
+               '<audio controls src="'+c.audio+'" style="width:100%; height:32px; margin-top:3px;"></audio></div>';
+        }
+
+        h += '<div style="background:#f8fafc; border-top:1px dashed #cbd5e1; padding-top:8px; margin-top:8px;">' +
              '<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:6px;">' +
              '<div><label style="font-size:11px;">स्थिति बदलें:</label>' +
              '<select id="admStatus_'+c.id+'" style="padding:6px; font-size:12px;">' +
@@ -2322,6 +2565,13 @@
                 '<p style="margin-bottom:6px;"><strong>नागरिक:</strong> ' + c.name + ' (<a href="tel:'+c.phone+'" style="color:#16a34a; font-weight:700;">+91 '+c.phone+'</a>)</p>' +
                 '<p style="margin-bottom:6px;"><strong>स्थान:</strong> ' + c.place + '</p>' +
                 '<p style="margin-bottom:8px;"><strong>समस्या:</strong> ' + c.desc + '</p>';
+      
+      if (c.audio) {
+        out += '<div style="background:#fef2f2; border:1px solid #fca5a5; padding:8px; border-radius:8px; margin-bottom:8px;">' +
+               '<p style="font-size:11px; font-weight:700; color:#dc2626;"><i class="fa-solid fa-microphone-lines"></i> दर्ज ऑडियो विवरण:</p>' +
+               '<audio controls src="'+c.audio+'" style="width:100%; height:32px; margin-top:4px;"></audio></div>';
+      }
+
       if (c.coords) {
         out += '<p style="margin-bottom:8px;"><strong>GPS:</strong> ' + c.coords + ' <a href="https://www.google.com/maps?q='+c.coords+'" target="_blank" style="color:#0284c7;">[Maps देखें]</a></p>';
       }
@@ -2391,6 +2641,11 @@
       e.preventDefault();
       if (!curUser) return alert("कृपया पहले लॉगिन करें!");
 
+      var descText = document.getElementById('cDesc').value.trim();
+      if (!descText && !tempCompAudio) {
+        return alert("कृपया समस्या का विवरण लिखें या बोलकर आवाज़ (Audio) रिकॉर्ड करें!");
+      }
+
       // 100% Unique ID (Current Timestamp के 6 अंक + 2 रैंडम अंक)
       var compId = "PKP-" + Date.now().toString().slice(-6) + Math.floor(10 + Math.random() * 90);
       var item = {
@@ -2400,8 +2655,9 @@
         cat: document.getElementById('cCat').value,
         place: document.getElementById('cPlace').value.trim(),
         coords: document.getElementById('cCoords').value || "",
-        desc: document.getElementById('cDesc').value.trim(),
+        desc: descText || "(नागरिक द्वारा ऑडियो शिकायत दर्ज की गई)",
         photo: tempCompPhoto || "",
+        audio: tempCompAudio || "",
         status: "लंबित",
         reply: "",
         resolutionPhoto: "",
@@ -2410,6 +2666,10 @@
 
       db.ref('complaints/' + compId).set(item).then(function() {
         tempCompPhoto = "";
+        tempCompAudio = "";
+        document.getElementById('audioPreviewPlayer').style.display = "none";
+        document.getElementById('audioPreviewPlayer').src = "";
+        document.getElementById('recordStatusText').innerText = "(माइक परमिशन मांगी जाएगी)";
         alert("शिकायत सफलतापूर्वक दर्ज हो गई!\nआपकी रसीद संख्या: " + item.id + "\nकृपया इस संख्या को नोट कर लें।");
         document.getElementById('compForm').reset();
         switchAction('vList');
