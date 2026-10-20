@@ -108,10 +108,10 @@
 
     /* Red Notification Corner Badges */
     .notify-badge {
-      position: absolute; top: -3px; right: -3px; background: #dc2626; color: #ffffff;
+      position: absolute; top: -4px; right: -4px; background: #dc2626; color: #ffffff;
       font-size: 10px; font-weight: 800; min-width: 18px; height: 18px; border-radius: 9px;
       display: none; align-items: center; justify-content: center; padding: 0 4px;
-      border: 1.5px solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.25); z-index: 10;
+      border: 1.5px solid #ffffff; box-shadow: 0 2px 5px rgba(220, 38, 38, 0.4); z-index: 10;
     }
 
     .weather-strip {
@@ -810,7 +810,7 @@
             </div>
           </div>
 
-          <!-- ADMIN SQUARE GRID TILES WITH CORNER NOTIFICATION BADGES -->
+          <!-- ADMIN SQUARE GRID TILES WITH AUTO-CLEARING RED CORNER BADGES -->
           <div class="admin-square-grid">
             <div class="admin-square-tile" onclick="openAdminSection('secBroadcastForm')">
               <div class="adm-tile-icon" style="background: #dc2626;"><i class="fa-solid fa-tower-broadcast"></i></div>
@@ -833,7 +833,7 @@
               <span>विकास गैलरी</span>
             </div>
             
-            <!-- Users Tile with Red Unread Badge -->
+            <!-- Users Tile with Auto-Clearing Red Badge -->
             <div class="admin-square-tile" onclick="openAdminSection('secUsersForm')">
               <span class="notify-badge" id="badgePendingUsers">0</span>
               <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-user-check"></i></div>
@@ -944,7 +944,7 @@
             </div>
           </div>
 
-          <!-- Grievance Management Section with Red Badge -->
+          <!-- Grievance Management Section with Badge -->
           <div style="margin-top:14px; border-top:1px solid #e2e8f0; padding-top:12px; position:relative;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
               <h4 style="font-size:14px; color:var(--primary-dark);">
@@ -1056,10 +1056,8 @@
     var recordInterval = null;
     var recordSeconds = 0;
 
-    // Track initial loads & Seen user count for auto-clearing red badge
-    var initialCompsLoaded = false;
-    var initialPendingUsersLoaded = false;
-    var lastSeenPendingUsersCount = parseInt(localStorage.getItem('pkp_seen_pending_users') || '0', 10);
+    // UNREAD TRACKING LOGIC (Saved locally per device)
+    var seenPendingPhoneList = JSON.parse(localStorage.getItem('pkp_seen_pending_phones') || '[]');
 
     window.onload = function() {
       initFirebaseListeners();
@@ -1074,23 +1072,6 @@
         }
       }
     };
-
-    // Audible Beep for Admin Alert
-    function playAdminNotifySound() {
-      try {
-        var ctx = new (window.AudioContext || window.webkitAudioContext)();
-        var osc = ctx.createOscillator();
-        var gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(850, ctx.currentTime);
-        gain.gain.setValueAtTime(0.25, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.4);
-      } catch (err) {}
-    }
 
     function zoomSpecificImage(srcUrl) {
       if (!srcUrl || srcUrl.includes('placeholder')) return;
@@ -1119,8 +1100,8 @@
 
       // Clear red badge when admin opens 'नागरिक खाते'
       if (sectionId === 'secUsersForm') {
-        lastSeenPendingUsersCount = pendingUsers.length;
-        localStorage.setItem('pkp_seen_pending_users', lastSeenPendingUsersCount.toString());
+        seenPendingPhoneList = pendingUsers.map(function(u){ return u.phone; });
+        localStorage.setItem('pkp_seen_pending_phones', JSON.stringify(seenPendingPhoneList));
         updateNotificationBadges();
       }
     }
@@ -1252,15 +1233,8 @@
 
       db.ref('complaints').on('value', function(snapshot) {
         var val = snapshot.val();
-        var prevCount = comps.length;
         comps = val ? Object.values(val) : [];
         comps.reverse();
-
-        if (initialCompsLoaded && comps.length > prevCount) {
-          playAdminNotifySound();
-        }
-        initialCompsLoaded = true;
-
         updateNotificationBadges();
         drawComps();
         if (isAdminUnlocked) filterAdminComplaints();
@@ -1292,18 +1266,10 @@
         if (isAdminUnlocked) renderActiveUsers();
       });
 
-      // PENDING CITIZEN REQUESTS REALTIME LISTENER WITH BEEP
+      // PENDING CITIZEN REQUESTS REALTIME LISTENER
       db.ref('pending_users').on('value', function(snapshot) {
         var val = snapshot.val();
-        var prevPending = pendingUsers.length;
         pendingUsers = val ? Object.values(val) : [];
-
-        // Triggers Beep tone immediately when new user submits request
-        if (initialPendingUsersLoaded && pendingUsers.length > prevPending) {
-          playAdminNotifySound();
-        }
-        initialPendingUsersLoaded = true;
-
         updateNotificationBadges();
         if (isAdminUnlocked) renderPendingRequests();
       });
@@ -1358,13 +1324,11 @@
 
     // UPDATE CORNER NOTIFICATION RED BADGES (AUTO-CLEARED WHEN SEEN)
     function updateNotificationBadges() {
-      // Calculate unread/new pending requests
-      var unreadUserCount = pendingUsers.length - lastSeenPendingUsersCount;
-      if (unreadUserCount < 0) {
-        unreadUserCount = 0;
-        lastSeenPendingUsersCount = pendingUsers.length;
-        localStorage.setItem('pkp_seen_pending_users', lastSeenPendingUsersCount.toString());
-      }
+      // अनरीड नए यूज़र्स की सटीक गणना
+      var unreadUsers = pendingUsers.filter(function(u) {
+        return !seenPendingPhoneList.includes(u.phone);
+      });
+      var unreadUserCount = unreadUsers.length;
 
       var userTileBadge = document.getElementById('badgePendingUsers');
       if (userTileBadge) {
@@ -1411,7 +1375,7 @@
 
     function startAudioRecording() {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        return alert("आपका ब्राउज़र या फ़ोन ऑडियो रिकॉर्डिंग सपोर्ट नहीं करता। कृपया नीचे दिए विकल्प से ऑडियो फ़ाइल अपलोड करें।");
+        return alert("आपका डिवाइस ऑडियो रिकॉर्डिंग सपोर्ट नहीं करता। कृपया नीचे दिए विकल्प से ऑडियो फ़ाइल अपलोड करें।");
       }
 
       navigator.mediaDevices.getUserMedia({ audio: true })
@@ -1453,7 +1417,7 @@
           document.getElementById('recordStatusText').innerText = "रिकॉर्डिंग जारी है...";
         })
         .catch(function(err) {
-          alert("माइक्रोफ़ोन की अनुमति (Permission) नहीं मिली! कृपया ब्राउज़र सेटिंग में जाकर माइक्रोफ़ोन परमिशन Allow करें।");
+          alert("माइक्रोफ़ोन की अनुमति नहीं मिली! कृपया ब्राउज़र सेटिंग में जाकर माइक्रोफ़ोन Allow करें।");
         });
     }
 
