@@ -166,19 +166,19 @@
     }
     .profile-tile-small span { font-size: 12px; font-weight: 700; color: #166534; line-height: 1; }
 
-    /* ADMIN EXCLUSIVE SQUARE GRID TILES */
-    .admin-square-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0; }
+    /* ADMIN EXCLUSIVE SQUARE GRID TILES (3 PURE ADMIN CONTROLS) */
+    .admin-square-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
     .admin-square-tile {
-      background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 6px;
+      background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 4px;
       text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
       position: relative;
     }
     .admin-square-tile:active { transform: scale(0.95); background: #f8fafc; }
     .adm-tile-icon {
-      width: 44px; height: 44px; border-radius: 12px; margin: 0 auto 6px; display: flex; align-items: center;
-      justify-content: center; font-size: 20px; color: #fff;
+      width: 40px; height: 40px; border-radius: 10px; margin: 0 auto 6px; display: flex; align-items: center;
+      justify-content: center; font-size: 18px; color: #fff;
     }
-    .admin-square-tile span { display: block; font-size: 12px; font-weight: 700; color: #1e293b; line-height: 1.2; }
+    .admin-square-tile span { display: block; font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.2; }
 
     .icon-badge {
       position: absolute; top: -5px; right: -3px; background: #dc2626; color: #fff;
@@ -401,7 +401,7 @@
       </div>
     </div>
 
-    <!-- CITIZEN PORTAL GRID TILES -->
+    <!-- 9 MAIN SERVICE TILES (PROFILE IS MOVED BELOW SEPARATELY) -->
     <div class="actions-grid" id="mainActionsGrid">
       <div class="action-tile" onclick="openScreenModal('vNew')">
         <div class="tile-icon" style="background: #15803d;"><i class="fa-solid fa-feather-pointed"></i></div>
@@ -447,7 +447,7 @@
       </div>
     </div>
 
-    <!-- COMPACT PROFILE BUTTON AT BOTTOM -->
+    <!-- SEPARATE COMPACT PROFILE BUTTON AT BOTTOM -->
     <div class="profile-tile-bottom-wrap">
       <div class="profile-tile-small" onclick="openUserProfileDirect()" title="मेरी प्रोफ़ाइल / नागरिक खाता">
         <div class="tile-icon-small"><i class="fa-solid fa-id-card"></i></div>
@@ -455,7 +455,7 @@
       </div>
     </div>
 
-    <!-- DEDICATED ADMIN MANAGEMENT WORKSPACE -->
+    <!-- DEDICATED ADMIN MANAGEMENT WORKSPACE (NO USERS ICON INSIDE) -->
     <div id="vAdmin" class="view-content">
       <div class="card" id="adminGateBox" style="border: 2px solid var(--accent);">
         <div class="card-title" style="color: #b45309;">
@@ -505,18 +505,12 @@
             </div>
           </div>
 
-          <!-- PURE ADMIN CONTROL ICONS (EXCLUSIVELY FOR SUPERVISION) -->
+          <!-- PURE ADMIN CONTROL ICONS (3 ESSENTIAL OPERATIONS - USERS ICON COMPLETELY REMOVED) -->
           <div class="admin-square-grid">
             <div class="admin-square-tile" onclick="openAdminPopupSection('secAdminGrievanceModal')">
               <span class="icon-badge" id="adminPendingCompBadge">0</span>
               <div class="adm-tile-icon" style="background: #15803d;"><i class="fa-solid fa-list-check"></i></div>
               <span>शिकायत समीक्षा व एक्शन</span>
-            </div>
-
-            <div class="admin-square-tile" onclick="openAdminPopupSection('secUsersForm')">
-              <span class="icon-badge" id="adminActiveBadge">0</span>
-              <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-users-gear"></i></div>
-              <span>नागरिक व सुरक्षा नियंत्रण</span>
             </div>
 
             <div class="admin-square-tile" onclick="openAdminPopupSection('secAdminMarketModal')">
@@ -908,38 +902,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: 2. Users Management Modal -->
-  <div id="secUsersForm" class="screen-modal">
-    <div class="screen-modal-card" style="border: 2px solid #cbd5e1;">
-      <button class="red-close-btn" onclick="closeAdminPopupSection('secUsersForm')">✕</button>
-      <div class="card-title" style="color: #1e293b;"><i class="fa-solid fa-users"></i> नागरिक पंजीकरण व सक्रिय नागरिक</div>
-      <div style="margin-bottom:10px;">
-        <label style="font-size:11px;">अनुमोदन नीति:</label>
-        <select id="admApprovalModeSelect" onchange="changeApprovalModeCloud()">
-          <option value="manual">मैनुअल (प्रधान जी अनुमति दें)</option>
-          <option value="auto">ऑटो-एक्सेप्ट</option>
-        </select>
-      </div>
-
-      <div style="background:#fff7ed; border:1px solid #fed7aa; padding:8px; border-radius:8px; margin-bottom:8px;">
-        <span style="font-weight:700; font-size:11px; color:#9a3412;">लंबित अनुरोध (<span id="pendingReqCount">0</span>):</span>
-        <div id="pendingReqListDiv" style="font-size:11px; margin-top:4px;"></div>
-      </div>
-
-      <div style="background:#ffffff; border:1px solid #cbd5e1; padding:8px; border-radius:8px; margin-bottom:8px;">
-        <span style="font-weight:700; font-size:11px; color:#334155;">सक्रिय नागरिक (<span id="activeUserCount">0</span>):</span>
-        <div id="activeUserListDiv" style="max-height:180px; overflow-y:auto; font-size:11px; margin-top:4px;"></div>
-      </div>
-
-      <div style="background:#fef2f2; border:1px solid #fecaca; padding:8px; border-radius:8px;">
-        <span style="font-weight:700; font-size:11px; color:#991b1b;"><i class="fa-solid fa-user-slash"></i> प्रतिबंधित नागरिक सूची (<span id="blockedUserCount">0</span>):</span>
-        <p style="font-size:10px; color:#64748b; margin-bottom:4px;">अनुरोध आने पर नागरिक को दोबारा अनब्लॉक करें:</p>
-        <div id="blockedUserListDiv" style="max-height:140px; overflow-y:auto; font-size:11px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADMIN: 3. Marketplace Moderator Control Modal -->
+  <!-- ADMIN: 2. Marketplace Moderator Control Modal -->
   <div id="secAdminMarketModal" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secAdminMarketModal')">✕</button>
@@ -953,7 +916,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: 4. Broadcast Modal -->
+  <!-- ADMIN: 3. Broadcast Modal -->
   <div id="secBroadcastForm" class="screen-modal">
     <div class="screen-modal-card" style="border: 2px solid #fecaca; background: #fff5f5;">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secBroadcastForm')">✕</button>
@@ -1309,7 +1272,6 @@
           adminCustomPassword = val.customPassword || null;
           defaultCancelled = val.defaultCancelled || false;
           approvalMode = val.approvalMode || 'manual';
-          document.getElementById('admApprovalModeSelect').value = approvalMode;
         }
       });
 
@@ -1347,9 +1309,6 @@
       db.ref('users').on('value', function(snapshot) {
         var val = snapshot.val();
         users = val ? Object.values(val) : [];
-        
-        var badge = document.getElementById('adminActiveBadge');
-        if (badge) badge.innerText = users.length;
 
         if (curUser) {
           var updatedSelf = users.find(function(u){ return u.phone === curUser.phone; });
@@ -1370,19 +1329,16 @@
           }
         }
         syncUserState();
-        if (isAdminUnlocked) renderActiveUsers();
       });
 
       db.ref('pending_users').on('value', function(snapshot) {
         var val = snapshot.val();
         pendingUsers = val ? Object.values(val) : [];
-        if (isAdminUnlocked) renderPendingRequests();
       });
 
       db.ref('blocked_phones').on('value', function(snapshot) {
         var val = snapshot.val();
         blockedPhones = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
-        if (isAdminUnlocked) renderBlockedUsers();
       });
 
       db.ref('notices').on('value', function(snapshot) {
@@ -1811,9 +1767,6 @@
     }
 
     function renderAdminDashboard() {
-      renderPendingRequests();
-      renderActiveUsers();
-      renderBlockedUsers();
       filterAdminComplaints();
       renderRecycleBin();
       renderAdminMarketModerator();
@@ -1874,171 +1827,6 @@
         document.getElementById('changePassSection').style.display = 'none';
         alert("नया पासवर्ड सुरक्षित हो गया!");
       });
-    }
-
-    function changeApprovalModeCloud() {
-      var mode = document.getElementById('admApprovalModeSelect').value;
-      db.ref('admin_settings').update({ approvalMode: mode }).then(function() {
-        alert("पंजीकरण नीति अपडेट हो गई!");
-      });
-    }
-
-    function renderPendingRequests() {
-      var div = document.getElementById('pendingReqListDiv');
-      document.getElementById('pendingReqCount').innerText = pendingUsers.length;
-      if (pendingUsers.length === 0) {
-        div.innerHTML = "<p style='color:#64748b;'>कोई नया अनुरोध नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      pendingUsers.forEach(function(u) {
-        h += '<div style="background:#fff; border:1px solid #e2e8f0; padding:8px; border-radius:8px; margin-bottom:6px;">' +
-             '<strong>' + u.name + ' (' + u.phone + ')</strong> - ' + u.ward +
-             '<div style="display:flex; gap:6px; margin-top:6px;">' +
-             '<button onclick="approveCitizenCloud(\''+u.phone+'\')" style="background:#16a34a; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:700; cursor:pointer;">स्वीकारें</button>' +
-             '<button onclick="rejectCitizenCloud(\''+u.phone+'\')" style="background:#d97706; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:700; cursor:pointer;">हटाएं</button>' +
-             '<button onclick="blockCitizenPermanentlyCloud(\''+u.phone+'\')" style="background:#dc2626; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:700; cursor:pointer;">ब्लॉक</button>' +
-             '</div></div>';
-      });
-      div.innerHTML = h;
-    }
-
-    function approveCitizenCloud(phone) {
-      var u = pendingUsers.find(function(item){ return item.phone === phone; });
-      if (!u) return;
-      db.ref('users/' + phone).set(u).then(function() {
-        db.ref('pending_users/' + phone).remove();
-        alert(u.name + " का खाता सक्रिय हो गया!");
-      });
-    }
-    function rejectCitizenCloud(phone) { db.ref('pending_users/' + phone).remove(); }
-
-    function blockCitizenPermanentlyCloud(phone) {
-      if (confirm("क्या आप सचमुच नागरिक (" + phone + ") को हमेशा के लिए ब्लॉक करना चाहते हैं?")) {
-        db.ref('blocked_phones/' + phone).set(phone).then(function() {
-          db.ref('pending_users/' + phone).remove();
-          db.ref('users/' + phone).remove();
-          alert("मोबाइल नंबर (" + phone + ") को सफलतापूर्वक ब्लॉक कर दिया गया!");
-        });
-      }
-    }
-
-    function unblockCitizenCloud(phone) {
-      if (confirm("क्या आप नागरिक (" + phone + ") को अनब्लॉक करना चाहते हैं?")) {
-        db.ref('blocked_phones/' + phone).remove().then(function() {
-          alert("मोबाइल नंबर (" + phone + ") अनब्लॉक हो चुका है। अब वे पुनः पोर्टल पर लॉगिन या पंजीकरण कर सकते हैं!");
-        });
-      }
-    }
-
-    function renderActiveUsers() {
-      var div = document.getElementById('activeUserListDiv');
-      document.getElementById('activeUserCount').innerText = users.length;
-      if (users.length === 0) {
-        div.innerHTML = "<p style='color:#64748b;'>कोई सक्रिय नागरिक नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      users.forEach(function(u) {
-        var avatarThumbnail = u.avatar ? '<img src="'+u.avatar+'" style="width:28px; height:28px; border-radius:50%; object-fit:cover; margin-right:6px; border:1px solid #16a34a;">' : '<i class="fa-solid fa-circle-user" style="font-size:22px; color:#64748b; margin-right:6px;"></i>';
-
-        h += '<div style="display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid #e2e8f0; padding:6px 10px; border-radius:6px; margin-bottom:5px;">' +
-             '<div style="display:flex; align-items:center;">' + avatarThumbnail + '<div><b>' + u.name + '</b> (' + u.phone + ')<br><span style="color:#64748b; font-size:10px;">टोला: ' + u.ward + '</span></div></div>' +
-             '<div style="display:flex; gap:6px;">' +
-             '<button onclick="openCitizenDetailModal(\''+u.phone+'\')" style="background:#0284c7; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-eye"></i> विवरण</button>' +
-             '<button onclick="blockCitizenPermanentlyCloud(\''+u.phone+'\')" class="adm-btn-block" title="ब्लॉक करें"><i class="fa-solid fa-ban"></i> ब्लॉक</button>' +
-             '<button onclick="deleteCitizenUserCloud(\''+u.phone+'\')" class="adm-btn-del" title="हटाएं"><i class="fa-solid fa-trash"></i></button>' +
-             '</div></div>';
-      });
-      div.innerHTML = h;
-    }
-
-    function renderBlockedUsers() {
-      var div = document.getElementById('blockedUserListDiv');
-      document.getElementById('blockedUserCount').innerText = blockedPhones.length;
-      if (blockedPhones.length === 0) {
-        div.innerHTML = "<p style='color:#64748b;'>कोई नागरिक ब्लॉक नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      blockedPhones.forEach(function(phone) {
-        h += '<div style="display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid #fecaca; padding:6px 10px; border-radius:6px; margin-bottom:4px;">' +
-             '<div><b style="color:#991b1b;"><i class="fa-solid fa-ban"></i> +91 ' + phone + '</b></div>' +
-             '<button onclick="unblockCitizenCloud(\''+phone+'\')" style="background:#16a34a; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-lock-open"></i> Unblock करें</button>' +
-             '</div>';
-      });
-      div.innerHTML = h;
-    }
-
-    function openCitizenDetailModal(phone) {
-      var u = users.find(function(item){ return item.phone === phone; });
-      if (!u) return alert("उपयोगकर्ता नहीं मिला!");
-
-      var userComps = comps.filter(function(c){ return c.phone === phone; });
-      var binUserComps = binComps.filter(function(c){ return c.phone === phone; });
-
-      var countResolved = userComps.filter(function(c){ return c.status === "निस्तारित"; }).length;
-      var countOngoing = userComps.filter(function(c){ return c.status === "लंबित" || c.status === "प्रगति पर"; }).length;
-      var countRejected = binUserComps.length + userComps.filter(function(c){ return c.status.includes("निरस्त"); }).length;
-
-      var userImgHtml = u.avatar ? '<img src="'+u.avatar+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid #0284c7;">' : '<div style="width:52px; height:52px; border-radius:50%; background:#e0f2fe; color:#0284c7; display:flex; align-items:center; justify-content:center; font-size:24px;"><i class="fa-solid fa-user"></i></div>';
-
-      var out = '<div style="background:#f8fafc; border:1px solid #e2e8f0; padding:10px; border-radius:10px; margin-bottom:10px; display:flex; align-items:center; gap:12px;">' +
-                userImgHtml +
-                '<div>' +
-                '<h4 style="font-size:14px; color:#1e293b;"><i class="fa-solid fa-user"></i> ' + u.name + '</h4>' +
-                '<p style="font-size:12px; color:#475569;">मोबाइल: <a href="tel:'+u.phone+'" style="color:#16a34a; font-weight:700;">+91 '+u.phone+'</a></p>' +
-                '<p style="font-size:12px; color:#475569;">निवास / टोला: <b>' + u.ward + '</b></p>' +
-                '<p style="font-size:11px; color:#64748b;">पंजीकरण तिथि: ' + (u.date || "N/A") + '</p>' +
-                '</div></div>' +
-
-                '<div class="stat-square-grid">' +
-                '<div class="stat-square" style="background:#16a34a;">' +
-                '<span><i class="fa-solid fa-circle-check"></i> निस्तारित</span>' +
-                '<h4>' + countResolved + '</h4></div>' +
-                '<div class="stat-square" style="background:#0284c7;">' +
-                '<span><i class="fa-solid fa-hourglass-half"></i> जारी / लंबित</span>' +
-                '<h4>' + countOngoing + '</h4></div>' +
-                '<div class="stat-square" style="background:#dc2626;">' +
-                '<span><i class="fa-solid fa-ban"></i> निरस्त / फ़र्ज़ी</span>' +
-                '<h4>' + countRejected + '</h4></div>' +
-                '</div>' +
-
-                '<div style="margin:10px 0;"><button onclick="blockCitizenPermanentlyCloud(\''+u.phone+'\')" class="btn btn-crimson" style="padding:6px; font-size:12px;"><i class="fa-solid fa-ban"></i> इस नागरिक को स्थायी रूप से ब्लॉक करें</button></div>' +
-
-                '<h5 style="font-size:12px; margin:10px 0 6px; color:#334155;"><i class="fa-solid fa-list-check"></i> नागरिक की सभी शिकायतें (' + userComps.length + '):</h5>' +
-                '<div style="max-height:220px; overflow-y:auto;">';
-
-      if (userComps.length === 0) {
-        out += "<p style='color:#94a3b8; font-size:11px; text-align:center; padding:10px;'>इस नागरिक ने अभी कोई शिकायत दर्ज नहीं की है।</p>";
-      } else {
-        userComps.forEach(function(c) {
-          var bg = (c.status === "निस्तारित") ? "#16a34a" : (c.status === "प्रगति पर" ? "#0284c7" : (c.status.includes("निरस्त") ? "#dc2626" : "#f59e0b"));
-          out += '<div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:8px; margin-bottom:6px;">' +
-                 '<span class="badge" style="background:'+bg+'; font-size:10px;">'+c.status+'</span>' +
-                 '<strong>'+c.id+' - '+c.cat+'</strong>' +
-                 '<div style="font-size:11px; color:#64748b; margin:2px 0;">स्थान: '+c.place+'</div>' +
-                 '<div style="font-size:12px; color:#334155;">'+c.desc+'</div>';
-          if (c.resolutionPhoto) {
-            out += '<div style="font-size:10px; color:#16a34a; font-weight:700; margin-top:4px;"><i class="fa-solid fa-image"></i> काम पूरा होने की फोटो जुड़ी है</div>';
-          }
-          out += '</div>';
-        });
-      }
-      out += '</div>';
-
-      document.getElementById('citizenModalContent').innerHTML = out;
-      document.getElementById('citizenDetailModal').classList.add('active');
-    }
-
-    function closeCitizenDetailModal() {
-      document.getElementById('citizenDetailModal').classList.remove('active');
-    }
-
-    function deleteCitizenUserCloud(phone) {
-      if (confirm("क्या आप सचमुच नागरिक (" + phone + ") का खाता हटाना चाहते हैं?")) {
-        db.ref('users/' + phone).remove();
-      }
     }
 
     function filterAdminComplaints() {
