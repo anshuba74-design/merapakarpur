@@ -114,6 +114,14 @@
       border: 1.5px solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.25); z-index: 10;
     }
 
+    /* Active Users Live Count Badge for Admin Tile */
+    .active-users-badge {
+      position: absolute; top: -4px; right: -4px; background: #16a34a; color: #ffffff;
+      font-size: 10px; font-weight: 800; min-width: 20px; height: 20px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; padding: 0 5px;
+      border: 2px solid #ffffff; box-shadow: 0 2px 5px rgba(22, 163, 74, 0.4); z-index: 10;
+    }
+
     .weather-strip {
       background: linear-gradient(90deg, #0284c7, #0d9488); color: #fff; padding: 7px 14px;
       font-size: 12px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;
@@ -511,7 +519,8 @@
           <!-- ADMIN SQUARE GRID TILES (EACH OPENS POPUP ON SCREEN) -->
           <div class="admin-square-grid">
             <div class="admin-square-tile" onclick="openAdminModal('admSecUsers')">
-              <span class="notify-badge" id="badgePendingUsers">0</span>
+              <!-- Active Citizens Live Count Badge -->
+              <span class="active-users-badge" id="admActiveUsersBadge" title="सक्रिय नागरिक">0</span>
               <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-user-check"></i></div>
               <span>नागरिक खाते</span>
             </div>
@@ -931,14 +940,14 @@
         <h5 style="color:#0f766e; font-size:12px; margin-bottom:4px;">फंड आया:</h5>
         <div class="form-group"><input type="text" id="admFundSource" placeholder="योजना / मद"></div>
         <div class="form-group"><input type="number" id="admFundAmount" placeholder="राशि (₹)"></div>
-        <button class="btn btn-emerald" onclick="addGramFundCloud()">जोड़ें</button>
+        <button class="btn btn-emerald" onclick="addGramFundCloud()">फंड जोड़ें</button>
       </div>
       <div style="background:#fff; border:1px solid #fee2e2; padding:8px; border-radius:8px;">
         <h5 style="color:#b91c1c; font-size:12px; margin-bottom:4px;">खर्च हुआ:</h5>
         <div class="form-group"><input type="text" id="admExpWork" placeholder="कार्य नाम"></div>
-        <div class="form-group"><input type="number" id="admExpAmount" placeholder="राशि (₹)"></div>
-        <div class="form-group"><input type="text" id="admExpVendor" placeholder="ठेकेदार / मद"></div>
-        <button class="btn btn-crimson" onclick="addGramExpenseCloud()">दर्ज करें</button>
+        <div class="form-group"><input type="number" id="admExpAmount" placeholder="खर्च राशि (₹)" style="margin-top:4px;"></div>
+        <div class="form-group"><input type="text" id="admExpVendor" placeholder="ठेकेदार" style="margin-top:4px;"></div>
+        <button class="btn btn-crimson" style="margin-top:4px;" onclick="addGramExpenseCloud()">खर्च दर्ज करें</button>
       </div>
     </div>
   </div>
@@ -1314,7 +1323,6 @@
           adminCustomPassword = val.customPassword || null;
           defaultCancelled = val.defaultCancelled || false;
           approvalMode = val.approvalMode || 'manual';
-          document.getElementById('admApprovalModeSelect').value = approvalMode;
         }
       });
 
@@ -1331,7 +1339,6 @@
         var val = snapshot.val();
         binComps = val ? Object.values(val) : [];
         binComps.reverse();
-        if (isAdminUnlocked) renderRecycleBin();
       });
 
       db.ref('users').on('value', function(snapshot) {
@@ -1351,6 +1358,7 @@
         }
         syncUserState();
         if (isAdminUnlocked) renderActiveUsers();
+        updateNotificationBadges();
       });
 
       db.ref('pending_users').on('value', function(snapshot) {
@@ -1418,6 +1426,13 @@
     }
 
     function updateNotificationBadges() {
+      // 1. Live Active Citizens Count on Tile Corner
+      var activeCountBadge = document.getElementById('admActiveUsersBadge');
+      if (activeCountBadge) {
+        activeCountBadge.innerText = users.length;
+      }
+
+      // 2. Pending Requests Notification Count
       var unreadUsers = pendingUsers.filter(function(u) {
         return !seenPendingPhoneList.includes(u.phone);
       });
@@ -1504,7 +1519,7 @@
              '<div style="display:flex; justify-content:space-between; align-items:flex-start;">' +
              '<div>' +
              '<span class="badge" style="background:#0891b2; font-size:10px;">' + item.cat + '</span>' +
-             '<h4 style="font-size:14px; font-weight:700;">' + item.title + '</h4>' +
+             '<h4 style="font-size:14px; font-weight:700; color:#1e293b;">' + item.title + '</h4>' +
              '<h3 style="font-size:16px; color:#15803d; margin:4px 0;">₹ ' + Number(item.price).toLocaleString('en-IN') + '</h3>' +
              '<p style="font-size:12px; color:#475569;">विक्रेता: <strong>' + item.seller + '</strong></p>' +
              (item.desc ? '<p style="font-size:12px; color:#64748b; margin-top:3px;">' + item.desc + '</p>' : '') +
@@ -1784,8 +1799,8 @@
       var d = document.getElementById('schemesDynamicListDiv');
       var baseSchemes = [
         { title: "आयुष्मान भारत कार्ड", desc: "हर पात्र परिवार को ₹5 लाख तक का सालाना मुफ़्त इलाज।", link: "https://beneficiary.nha.gov.in" },
-        { title: "पीएम किसान सम्मान निधि", desc: "किसानों को ₹6,000 सालाना। e-KYC व किस्त देखें।", link: "https://pmkisan.gov.in" },
-        { title: "यूपी भूलेख (खतौनी)", desc: "अपने खेत व ज़मीन की ऑनलाइन प्रमाणित खतौनी नकल निकालें।", link: "https://upbhulekh.gov.in" }
+        { title: "पीएम किसान सम्मान निधि", desc: "किसानों को ₹6,000 सालाना (₹2,000 की 3 किस्तें)। e-KYC और किस्त स्टेटस चेक करें।", link: "https://pmkisan.gov.in" },
+        { title: "यूपी भूलेख (खतौनी)", desc: "अपनी ज़मीन, खेत व गाटा संख्या की प्रमाणित खतौनी नकल ऑनलाइन निकालें।", link: "https://upbhulekh.gov.in" }
       ];
 
       var h = "";
@@ -1794,7 +1809,7 @@
              '<div style="display:flex; justify-content:space-between; align-items:center;">' +
              '<h4 style="font-size:14px; color:#166534;"><i class="fa-solid fa-star" style="color:#eab308;"></i> ' + s.title + '</h4>';
         if (isAdminUnlocked) {
-          h += '<button onclick="deleteCustomSchemeCloud(\''+s.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i></button>';
+          h += '<div class="adm-action-btn-group"><button onclick="deleteCustomSchemeCloud(\''+s.id+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i></button></div>';
         }
         h += '</div><p style="font-size:12px; color:#475569; margin:4px 0;">' + s.desc + '</p>' +
              '<a href="' + s.link + '" target="_blank" class="btn-direct-gov"><i class="fa-solid fa-arrow-up-right-from-square"></i> ऑनलाइन पोर्टल पर जाएं</a></div>';
@@ -2286,7 +2301,9 @@
                 '<div class="stat-square" style="background:#16a34a;"><span>निस्तारित</span><h4>' + countResolved + '</h4></div>' +
                 '<div class="stat-square" style="background:#0284c7;"><span>लंबित</span><h4>' + countOngoing + '</h4></div>' +
                 '<div class="stat-square" style="background:#dc2626;"><span>निरस्त</span><h4>' + countRejected + '</h4></div>' +
-                '</div>';
+                '</div>' +
+
+                '<div style="margin:10px 0;"><button onclick="blockCitizenPermanentlyCloud(\''+u.phone+'\')" class="btn btn-crimson" style="padding:6px; font-size:12px;"><i class="fa-solid fa-ban"></i> इस नागरिक को स्थायी रूप से ब्लॉक करें</button></div>';
 
       document.getElementById('citizenModalContent').innerHTML = out;
       document.getElementById('citizenDetailModal').classList.add('active');
@@ -2394,7 +2411,7 @@
       if (!c) return;
       var status = document.getElementById('admStatus_' + id).value;
       var reply = document.getElementById('admReply_' + id).value.trim();
-      var msg = "पाकरपुर पोर्टल: शिकायत ID " + c.id + " की स्थिति [" + status + "] है। उत्तर: " + (reply || "पोर्टल पर विवरण देखें।");
+      var msg = "पाकरपुर पोर्टल: शिकायत ID " + c.id + " स्थिति [" + status + "] है। उत्तर: " + (reply || "पोर्टल देखें।");
       window.location.href = "sms:+91" + c.phone + "?body=" + encodeURIComponent(msg);
     }
 
@@ -2461,7 +2478,7 @@
         out += '<p style="margin-bottom:8px;"><strong>GPS:</strong> ' + c.coords + ' <a href="https://www.google.com/maps?q='+c.coords+'" target="_blank" style="color:#0284c7;">[Maps देखें]</a></p>';
       }
       if (c.photo) {
-        out += '<div style="margin:8px 0;"><span style="font-size:11px; font-weight:700;">समस्या फोटो:</span><br><img src="'+c.photo+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:220px; object-fit:contain; border-radius:8px;"></div>';
+        out += '<p style="font-size:11px; font-weight:700;">शिकायत की फोटो:</p><img src="'+c.photo+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; max-height:220px; object-fit:contain; border-radius:8px; margin-bottom:8px;">';
       }
       if (c.resolutionPhoto) {
         out += '<div style="background:#f0fdf4; border:1px solid #86efac; padding:6px; border-radius:8px; margin-top:6px;">' +
@@ -2525,8 +2542,6 @@
       db.ref('complaints/' + compId).set(item).then(function() {
         tempCompPhoto = "";
         tempCompAudio = "";
-        document.getElementById('audioPreviewPlayer').style.display = "none";
-        document.getElementById('audioPreviewPlayer').src = "";
         alert("शिकायत सफलतापूर्वक दर्ज हो गई!\nआपकी रसीद संख्या: " + item.id);
         document.getElementById('compForm').reset();
         closePopupModal('vNew');
