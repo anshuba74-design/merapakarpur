@@ -17,18 +17,18 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-  <!-- Google Translate Integration -->
+  <!-- Google Translate In-built Integration -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'hi',
-        includedLanguages: 'hi,en,ur,bn,mr,te,ta,gu,pa',
-        layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+        includedLanguages: 'hi,en,ur,bn,mr,te,ta,gu,pa,bho',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
         autoDisplay: false
       }, 'google_translate_element');
     }
   </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <style>
     :root {
@@ -54,6 +54,7 @@
       color: var(--text);
       padding-bottom: 40px;
       position: relative;
+      top: 0px !important;
     }
     body::before {
       content: "";
@@ -67,19 +68,20 @@
       z-index: -1;
     }
 
+    /* Clean Language Selector Bar */
     .lang-bar {
-      background: #0f172a; color: #fff; padding: 6px 12px; font-size: 11px;
-      display: flex; justify-content: space-between; align-items: center;
+      background: #0f172a; color: #fff; padding: 6px 12px; font-size: 12px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;
     }
-    .lang-bar-title { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+    .lang-bar-title { display: flex; align-items: center; gap: 6px; font-weight: 700; }
+    
     #google_translate_element select {
-      padding: 3px 6px; font-size: 11px; border-radius: 6px; border: 1px solid #475569;
+      padding: 4px 8px; font-size: 12px; border-radius: 6px; border: 1px solid #38bdf8;
       background: #1e293b; color: #ffffff; font-weight: 700; outline: none; cursor: pointer;
     }
-    .goog-te-gadget { font-size: 0px !important; }
-    .goog-te-gadget span { display: none !important; }
+    .goog-te-gadget { font-size: 11px !important; color: #cbd5e1 !important; }
+    .goog-te-gadget .goog-te-combo { margin: 0 !important; }
     .goog-te-banner-frame { display: none !important; }
-    body { top: 0px !important; }
 
     header {
       background: linear-gradient(135deg, var(--primary-dark), var(--primary));
@@ -170,7 +172,7 @@
     }
     .admin-square-tile span { display: block; font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.2; }
 
-    /* POP-UP MODAL OVERLAY WRAPPER */
+    /* POP-UP MODAL OVERLAY */
     .popup-modal-overlay {
       position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75);
       z-index: 1500; display: none; align-items: center; justify-content: center; padding: 12px;
@@ -277,11 +279,11 @@
 </head>
 <body>
 
-  <!-- Language Selector Bar -->
+  <!-- Language Selector Bar with Clean Setup -->
   <div class="lang-bar">
     <div class="lang-bar-title">
-      <i class="fa-solid fa-language" style="color:#38bdf8; font-size:14px;"></i>
-      <span>भाषा बदलें (Select Language):</span>
+      <i class="fa-solid fa-language" style="color:#38bdf8; font-size:15px;"></i>
+      <span>भाषा चुनें (Language):</span>
     </div>
     <div id="google_translate_element"></div>
   </div>
@@ -366,6 +368,7 @@
       </div>
     </div>
 
+    <!-- Admin Button always opens password gate freely -->
     <button class="admin-secret-btn" onclick="openAdminGate()" title="व्यवस्थापक लॉगिन">
       <i class="fa-solid fa-shield-halved"></i>
       <span class="notify-badge" id="hdrAdminBadge">0</span>
@@ -1113,9 +1116,9 @@
       applyUserGate();
     };
 
-    /* POP-UP MODAL ENGINE: OPENS ON THE SPOT WITH "X" BUTTON */
+    /* POP-UP MODAL ENGINE: UNRESTRICTED FOR ADMIN AND PROFILE */
     function openPopupModal(modalId) {
-      if (!curUser && modalId !== 'vProfile') {
+      if (modalId !== 'vAdmin' && modalId !== 'vProfile' && !curUser) {
         applyUserGate();
         return;
       }
@@ -1123,8 +1126,8 @@
       if (target) {
         target.classList.add('active');
         if (modalId === 'vNew') {
-          document.getElementById('cName').value = curUser.name;
-          document.getElementById('cPhone').value = curUser.phone;
+          document.getElementById('cName').value = curUser ? curUser.name : "";
+          document.getElementById('cPhone').value = curUser ? curUser.phone : "";
         }
         if (modalId === 'vList') drawComps();
         if (modalId === 'vMandi') renderMandiRates();
@@ -1143,16 +1146,48 @@
       if (target) target.classList.remove('active');
     }
 
-    function zoomSpecificImage(srcUrl) {
-      if (!srcUrl || srcUrl.includes('placeholder')) return;
-      var modal = document.getElementById('universalImageModal');
-      var img = document.getElementById('fullscreenUniversalImg');
-      img.src = srcUrl;
-      modal.classList.add('active');
+    /* DIRECT ADMIN GATE CALL (ALWAYS ACCESSIBLE) */
+    function openAdminGate() {
+      var adminModal = document.getElementById('vAdmin');
+      if (adminModal) {
+        adminModal.classList.add('active');
+        if (!isAdminUnlocked) {
+          document.getElementById('adminGateBox').style.display = 'block';
+          document.getElementById('adminMainDashBox').style.display = 'none';
+          document.getElementById('adminGatePin').value = "";
+        } else {
+          document.getElementById('adminGateBox').style.display = 'none';
+          document.getElementById('adminMainDashBox').style.display = 'block';
+          renderAdminDashboard();
+        }
+      }
     }
 
-    function closeUniversalImgModal() {
-      document.getElementById('universalImageModal').classList.remove('active');
+    function verifyAdminGate() {
+      var pin = document.getElementById('adminGatePin').value.trim();
+      var valid = false;
+      if (adminCustomPassword) {
+        if (pin === adminCustomPassword) valid = true;
+      } else {
+        if (!defaultCancelled && pin === "1234") valid = true;
+      }
+
+      if (valid) {
+        isAdminUnlocked = true;
+        localStorage.setItem('pkp_admin_logged_in', 'true');
+        document.getElementById('adminGateBox').style.display = 'none';
+        document.getElementById('adminMainDashBox').style.display = 'block';
+        renderAdminDashboard();
+      } else {
+        alert("अमान्य पासवर्ड!");
+      }
+    }
+
+    function renderAdminDashboard() {
+      renderPendingRequests();
+      renderActiveUsers();
+      filterAdminComplaints();
+      updateNotificationBadges();
     }
 
     function openAdminSection(sectionId) {
@@ -1169,6 +1204,18 @@
         localStorage.setItem('pkp_seen_pending_phones', JSON.stringify(seenPendingPhoneList));
         updateNotificationBadges();
       }
+    }
+
+    function zoomSpecificImage(srcUrl) {
+      if (!srcUrl || srcUrl.includes('placeholder')) return;
+      var modal = document.getElementById('universalImageModal');
+      var img = document.getElementById('fullscreenUniversalImg');
+      img.src = srcUrl;
+      modal.classList.add('active');
+    }
+
+    function closeUniversalImgModal() {
+      document.getElementById('universalImageModal').classList.remove('active');
     }
 
     function fetchPakarpurWeather() {
@@ -1304,7 +1351,6 @@
         var val = snapshot.val();
         binComps = val ? Object.values(val) : [];
         binComps.reverse();
-        if (isAdminUnlocked) renderRecycleBin();
       });
 
       db.ref('users').on('value', function(snapshot) {
@@ -2013,129 +2059,16 @@
              '<strong>'+c.id+' - '+c.cat+'</strong>' +
              '<div style="font-size:12px; color:#64748b; margin:4px 0;">स्थान: ' + c.place + '</div>' +
              '<div style="font-size:13px; margin-bottom:4px;">' + c.desc + '</div>';
+        if (c.audio) {
+          h += '<div style="margin:6px 0; background:#f8fafc; border:1px solid #cbd5e1; padding:6px; border-radius:6px;">' +
+               '<audio controls src="'+c.audio+'" style="width:100%; height:30px; margin-top:3px;"></audio></div>';
+        }
         if (c.reply) {
           h += '<div style="background:#f1f5f9; padding:6px; font-size:12px; color:#15803d;"><strong>प्रधान उत्तर:</strong> ' + c.reply + '</div>';
         }
         h += '</div>';
       });
       d.innerHTML = h;
-    }
-
-    function openAdminGate() {
-      openPopupModal('vAdmin');
-      if (!isAdminUnlocked) {
-        document.getElementById('adminGateBox').style.display = 'block';
-        document.getElementById('adminMainDashBox').style.display = 'none';
-        document.getElementById('adminGatePin').value = "";
-      } else {
-        document.getElementById('adminGateBox').style.display = 'none';
-        document.getElementById('adminMainDashBox').style.display = 'block';
-        renderAdminDashboard();
-      }
-    }
-
-    function verifyAdminGate() {
-      var pin = document.getElementById('adminGatePin').value.trim();
-      var valid = false;
-      if (adminCustomPassword) {
-        if (pin === adminCustomPassword) valid = true;
-      } else {
-        if (!defaultCancelled && pin === "1234") valid = true;
-      }
-
-      if (valid) {
-        isAdminUnlocked = true;
-        localStorage.setItem('pkp_admin_logged_in', 'true');
-        document.getElementById('adminGateBox').style.display = 'none';
-        document.getElementById('adminMainDashBox').style.display = 'block';
-        renderAdminDashboard();
-      } else {
-        alert("अमान्य पासवर्ड!");
-      }
-    }
-
-    function renderAdminDashboard() {
-      renderPendingRequests();
-      renderActiveUsers();
-      filterAdminComplaints();
-      updateNotificationBadges();
-    }
-
-    function toggleEditProfileBox() {
-      var box = document.getElementById('editProfileSection');
-      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function savePradhanProfileDataCloud() {
-      var n = document.getElementById('admPName').value.trim();
-      var p = document.getElementById('admPPhone').value.trim();
-      if (!n || p.length < 10) return alert("नाम व नंबर भरें!");
-      pradhanInfo.name = n;
-      pradhanInfo.phone = p;
-      db.ref('pradhan_profile').set(pradhanInfo).then(function() {
-        alert("प्रोफाइल सेव हो गई!");
-        document.getElementById('editProfileSection').style.display = 'none';
-      });
-    }
-
-    function uploadPradhanPhoto(e) {
-      compressPhoto(e.target.files[0], function(b64){
-        pradhanInfo.pic = b64;
-        db.ref('pradhan_profile').set(pradhanInfo).then(function() { alert("फोटो अपडेट हो गई!"); });
-      });
-    }
-
-    function uploadHeaderLogoPhoto(e) {
-      compressPhoto(e.target.files[0], function(b64){
-        pradhanInfo.headerLogo = b64;
-        db.ref('pradhan_profile').set(pradhanInfo).then(function() { alert("लोगो अपडेट हो गया!"); });
-      });
-    }
-
-    function renderPendingRequests() {
-      var div = document.getElementById('pendingReqListDiv');
-      document.getElementById('pendingReqCount').innerText = pendingUsers.length;
-      if (pendingUsers.length === 0) {
-        div.innerHTML = "<p style='color:#64748b;'>कोई नया अनुरोध नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      pendingUsers.forEach(function(u) {
-        h += '<div style="background:#fff; padding:6px; border-radius:6px; margin-bottom:4px; display:flex; justify-content:space-between; align-items:center;">' +
-             '<div><b>' + u.name + '</b> (' + u.phone + ')</div>' +
-             '<button onclick="approveCitizenCloud(\''+u.phone+'\')" style="background:#16a34a; color:#fff; border:none; padding:4px 8px; border-radius:6px; cursor:pointer;">स्वीकारें</button>' +
-             '</div>';
-      });
-      div.innerHTML = h;
-    }
-
-    function approveCitizenCloud(phone) {
-      var u = pendingUsers.find(function(item){ return item.phone === phone; });
-      if (!u) return;
-      db.ref('users/' + phone).set(u).then(function() {
-        db.ref('pending_users/' + phone).remove();
-        alert("खाता सक्रिय हो गया!");
-      });
-    }
-
-    function renderActiveUsers() {
-      var div = document.getElementById('activeUserListDiv');
-      document.getElementById('activeUserCount').innerText = users.length;
-      if (users.length === 0) {
-        div.innerHTML = "<p style='color:#64748b;'>कोई सक्रिय नागरिक नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      users.forEach(function(u) {
-        h += '<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #e2e8f0;">' +
-             '<span>' + u.name + ' (' + u.phone + ')</span>' +
-             '<button onclick="deleteCitizenUserCloud(\''+u.phone+'\')" class="adm-btn-del"><i class="fa-solid fa-trash"></i></button></div>';
-      });
-      div.innerHTML = h;
-    }
-
-    function deleteCitizenUserCloud(phone) {
-      if (confirm("खाता हटाना चाहते हैं?")) db.ref('users/' + phone).remove();
     }
 
     function filterAdminComplaints() {
