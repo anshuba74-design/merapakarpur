@@ -284,9 +284,43 @@
       width: 58px; height: 58px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);
       background: #dcfce7; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--primary);
     }
+
+    /* GHOST MODE & SUPER ADMIN STYLING */
+    #ghostModeBanner {
+      background: linear-gradient(90deg, #090d16 0%, #1e1b4b 100%);
+      color: #f8fafc;
+      padding: 8px 14px;
+      font-size: 12px;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #f59e0b;
+      position: sticky;
+      top: 0;
+      z-index: 1001;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .super-card-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 12px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- GHOST MODE STEALTH TOP BAR -->
+  <div id="ghostModeBanner">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
+      <span><strong>घोस्ट मोड:</strong> प्रधान डेस्क में गुप्त प्रवेश (Root Session)</span>
+    </div>
+    <button onclick="exitGhostMode()" style="background:#f59e0b; color:#0f172a; border:none; padding:4px 10px; border-radius:6px; font-weight:800; font-size:11px; cursor:pointer;">
+      <i class="fa-solid fa-power-off"></i> बाहर निकलें
+    </button>
+  </div>
 
   <!-- In-Built Language Selector Header Bar -->
   <div class="lang-bar">
@@ -358,9 +392,9 @@
       <i id="headerUserIcon" class="fa-solid fa-circle-user"></i>
     </button>
 
-    <div class="header-center">
-      <img id="headerPanchayatLogo" class="header-logo-img zoomable-pic" src="https://via.placeholder.com/40?text=PKP" onclick="zoomSpecificImage(this.src)" alt="Logo">
-      <div class="brand-title">
+    <div class="header-center" id="brandCenterSecretArea">
+      <img id="headerPanchayatLogo" class="header-logo-img zoomable-pic" src="https://via.placeholder.com/40?text=PKP" onclick="handleLogoClick(event)" alt="Logo">
+      <div class="brand-title" onclick="handleLogoClick(event)" style="cursor:pointer; user-select:none;">
         मेरा पाकरपुर
         <span>ग्राम जन समस्या निवारण एवं सेवा पोर्टल</span>
       </div>
@@ -967,6 +1001,87 @@
     </div>
   </div>
 
+  <!-- ==================== GHOST MODE & SUPER ADMIN MODALS ==================== -->
+
+  <!-- 1. Master Authentication Modal -->
+  <div class="screen-modal" id="masterAuthModal">
+    <div class="screen-modal-card" style="background:#0f172a; color:#f8fafc; border:1px solid #334155; max-width:440px;">
+      <button class="red-close-btn" onclick="closeScreenModal('masterAuthModal')">✕</button>
+      <div class="card-title" style="color:#e2e8f0; border-bottom:1px solid #334155;">
+        <i class="fa-solid fa-terminal" style="color:#6366f1;"></i> मास्टर कंसोल गेटवे
+      </div>
+
+      <div id="masterAuthStep1">
+        <p style="font-size:12px; color:#94a3b8; margin-bottom:14px;">
+          यह विंडो केवल मुख्य व्यवस्थापक (Super Admin) के लिए है। गुप्त मास्टर की दर्ज करें:
+        </p>
+        <div class="form-group">
+          <label style="color:#cbd5e1;">मास्टर एक्सेस कोड</label>
+          <input type="password" id="masterKeyInput" style="background:#1e293b; border-color:#475569; color:#fff;" placeholder="Master Key..." autocomplete="off">
+        </div>
+        <button type="button" class="btn" style="background:linear-gradient(135deg, #6366f1, #4f46e5); color:#fff;" onclick="verifyMasterKey()">
+          <i class="fa-solid fa-shield"></i> प्रमाणित करें
+        </button>
+      </div>
+
+      <div id="masterSetupStep" style="display:none;">
+        <div style="background:rgba(245,158,11,0.15); border:1px solid #f59e0b; padding:10px; border-radius:8px; font-size:12px; color:#fbbf24; margin-bottom:14px;">
+          <i class="fa-solid fa-triangle-exclamation"></i> <strong>प्रथम सेटअप:</strong> डिफ़ॉल्ट चाबी का उपयोग हुआ है। कृपया अपना स्थायी मास्टर पासवर्ड बनाएं:
+        </div>
+        <div class="form-group">
+          <label style="color:#cbd5e1;">नया निजी पासवर्ड</label>
+          <input type="password" id="newMasterPass" style="background:#1e293b; border-color:#475569; color:#fff;" placeholder="कम से कम 6 अक्षर">
+        </div>
+        <div class="form-group">
+          <label style="color:#cbd5e1;">पासवर्ड कन्फर्म करें</label>
+          <input type="password" id="confirmMasterPass" style="background:#1e293b; border-color:#475569; color:#fff;" placeholder="दोबारा दर्ज करें">
+        </div>
+        <button type="button" class="btn" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff;" onclick="savePermanentMasterKey()">
+          <i class="fa-solid fa-check"></i> स्थायी रूप से सुरक्षित करें
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Super Admin Control Deck Modal -->
+  <div class="screen-modal" id="superAdminModal">
+    <div class="screen-modal-card" style="background:#0f172a; color:#f8fafc; border:1px solid #334155; max-width:540px;">
+      <button class="red-close-btn" onclick="closeScreenModal('superAdminModal')">✕</button>
+      <div class="card-title" style="color:#e2e8f0; border-bottom:1px solid #334155;">
+        <i class="fa-solid fa-crown" style="color:#f59e0b;"></i> मास्टर सुपर एडमिन आर्किटेक्चर
+      </div>
+
+      <p style="font-size:12px; color:#94a3b8;">
+        आप पोर्टल के रूट नियंत्रण में हैं। यहां से आप बिना पासवर्ड के प्रधान के रूप में प्रवेश कर सकते हैं।
+      </p>
+
+      <div class="super-card-box">
+        <h4 style="font-size:14px; color:#e2e8f0; margin-bottom:6px;"><i class="fa-solid fa-ghost" style="color:#60a5fa;"></i> घोस्ट मोड (Ghost Mode / Impersonation)</h4>
+        <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;">
+          प्रधान का वर्तमान पासवर्ड जाने बिना उनके सम्पूर्ण एडमिन डेस्क में प्रवेश करें।
+        </p>
+        <button class="btn" style="background:linear-gradient(135deg, #2563eb, #1d4ed8); color:#fff;" onclick="enterGhostMode()">
+          <i class="fa-solid fa-user-ninja"></i> प्रधान के रूप में प्रवेश करें (Ghost Mode)
+        </button>
+      </div>
+
+      <div class="super-card-box">
+        <h4 style="font-size:14px; color:#e2e8f0; margin-bottom:6px;"><i class="fa-solid fa-key" style="color:#34d399;"></i> मास्टर की प्रबंधन</h4>
+        <p style="font-size:12px; color:#94a3b8; margin-bottom:10px;">अपना मास्टर पासवर्ड कभी भी बदलें:</p>
+        <div style="display:flex; gap:8px;">
+          <input type="password" id="updateMasterKeyInput" style="background:#1e293b; border-color:#475569; color:#fff;" placeholder="नया मास्टर पासवर्ड">
+          <button class="btn btn-slate" style="background:#334155; color:#fff; border-color:#475569; width:auto; padding:6px 14px;" onclick="changeMasterPasswordDirect()">अपडेट</button>
+        </div>
+      </div>
+
+      <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+        <button class="btn btn-crimson" style="width:auto; padding:8px 16px;" onclick="logoutSuperAdmin()">
+          <i class="fa-solid fa-right-from-bracket"></i> मास्टर कंसोल बंद करें
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     var firebaseConfig = {
@@ -1003,6 +1118,13 @@
     var isAdminUnlocked = (localStorage.getItem('pkp_admin_logged_in') === 'true');
     var adminSessionId = localStorage.getItem('pkp_admin_session_id') || null;
 
+    /* GHOST MODE & MASTER SETUP CONSTANTS */
+    var DEFAULT_MASTER_KEY = "SUPER@PAK123";
+    if (!localStorage.getItem('pkp_master_key')) {
+      localStorage.setItem('pkp_master_key', DEFAULT_MASTER_KEY);
+      localStorage.setItem('pkp_master_configured', 'false');
+    }
+
     var PAKARPUR_LAT = 26.1685;
     var PAKARPUR_LNG = 82.3850;
 
@@ -1019,6 +1141,11 @@
       initFirebaseListeners();
       fetchPakarpurWeather();
 
+      // Check if previously in Ghost Mode
+      if (sessionStorage.getItem('pkp_ghost_active') === 'true') {
+        document.getElementById('ghostModeBanner').style.display = 'flex';
+      }
+
       if (isAdminUnlocked) {
         openAdminGate();
       } else {
@@ -1027,6 +1154,107 @@
         }
       }
     };
+
+    /* -------------------------------------------------------------
+       GHOST MODE & MASTER ADMIN CORE LOGIC
+    --------------------------------------------------------------*/
+    var logoClickCount = 0;
+    var logoClickTimer = null;
+
+    function handleLogoClick(e) {
+      logoClickCount++;
+      clearTimeout(logoClickTimer);
+      if (logoClickCount >= 5) {
+        logoClickCount = 0;
+        triggerMasterConsole();
+      } else {
+        logoClickTimer = setTimeout(function() { logoClickCount = 0; }, 1500);
+      }
+    }
+
+    window.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.shiftKey && (e.code === 'KeyM' || e.key === 'M')) {
+        e.preventDefault();
+        triggerMasterConsole();
+      }
+    });
+
+    function triggerMasterConsole() {
+      if (sessionStorage.getItem('pkp_super_admin') === 'true') {
+        openScreenModal('superAdminModal');
+        return;
+      }
+      document.getElementById('masterAuthStep1').style.display = 'block';
+      document.getElementById('masterSetupStep').style.display = 'none';
+      document.getElementById('masterKeyInput').value = '';
+      openScreenModal('masterAuthModal');
+    }
+
+    function verifyMasterKey() {
+      var entered = document.getElementById('masterKeyInput').value.trim();
+      var stored = localStorage.getItem('pkp_master_key');
+      var configured = localStorage.getItem('pkp_master_configured') === 'true';
+
+      if (entered === stored) {
+        if (!configured && entered === DEFAULT_MASTER_KEY) {
+          document.getElementById('masterAuthStep1').style.display = 'none';
+          document.getElementById('masterSetupStep').style.display = 'block';
+        } else {
+          sessionStorage.setItem('pkp_super_admin', 'true');
+          closeScreenModal('masterAuthModal');
+          openScreenModal('superAdminModal');
+        }
+      } else {
+        alert("अमान्य मास्टर कुंजी! पहुंच अस्वीकृत।");
+      }
+    }
+
+    function savePermanentMasterKey() {
+      var p1 = document.getElementById('newMasterPass').value.trim();
+      var p2 = document.getElementById('confirmMasterPass').value.trim();
+
+      if (!p1 || p1.length < 6) return alert("मास्टर पासवर्ड कम से कम 6 अक्षरों का होना चाहिए!");
+      if (p1 !== p2) return alert("दोनों पासवर्ड मेल नहीं खाते!");
+
+      localStorage.setItem('pkp_master_key', p1);
+      localStorage.setItem('pkp_master_configured', 'true');
+      sessionStorage.setItem('pkp_super_admin', 'true');
+      alert("सफलता: आपका स्थायी मास्टर पासवर्ड सक्रिय हो गया!");
+      closeScreenModal('masterAuthModal');
+      openScreenModal('superAdminModal');
+    }
+
+    function changeMasterPasswordDirect() {
+      var newP = document.getElementById('updateMasterKeyInput').value.trim();
+      if (!newP || newP.length < 6) return alert("नया मास्टर पासवर्ड कम से कम 6 अक्षरों का होना चाहिए!");
+
+      localStorage.setItem('pkp_master_key', newP);
+      localStorage.setItem('pkp_master_configured', 'true');
+      document.getElementById('updateMasterKeyInput').value = '';
+      alert("मास्टर की सफलतापूर्वक बदल दी गई!");
+    }
+
+    function enterGhostMode() {
+      sessionStorage.setItem('pkp_ghost_active', 'true');
+      isAdminUnlocked = true;
+      localStorage.setItem('pkp_admin_logged_in', 'true');
+      closeScreenModal('superAdminModal');
+      document.getElementById('ghostModeBanner').style.display = 'flex';
+      openAdminGate();
+    }
+
+    function exitGhostMode() {
+      sessionStorage.removeItem('pkp_ghost_active');
+      document.getElementById('ghostModeBanner').style.display = 'none';
+      adminLogout();
+      triggerMasterConsole();
+    }
+
+    function logoutSuperAdmin() {
+      sessionStorage.removeItem('pkp_super_admin');
+      closeScreenModal('superAdminModal');
+      alert("मास्टर कंसोल सुरक्षित रूप से बंद कर दिया गया।");
+    }
 
     function toggleNewPostForm() {
       var box = document.getElementById('marketPostFormBox');
@@ -1149,7 +1377,7 @@
 
     /* POPUP MODAL HANDLERS FOR USER ICONS */
     function openScreenModal(modalId) {
-      if (!curUser && modalId !== 'vProfile') {
+      if (!curUser && modalId !== 'vProfile' && modalId !== 'masterAuthModal' && modalId !== 'superAdminModal') {
         openUserProfileDirect();
         return;
       }
@@ -1866,7 +2094,10 @@
       var newPass2 = document.getElementById('admNewPassInput2').value.trim();
 
       var currentActivePass = adminCustomPassword || (!defaultCancelled ? "1234" : null);
-      if (oldPass !== currentActivePass) return alert("पुराना पासवर्ड गलत है!");
+      var isGhostActive = (sessionStorage.getItem('pkp_ghost_active') === 'true');
+
+      // Ghost Mode allows overriding password without checking old pass
+      if (!isGhostActive && oldPass !== currentActivePass) return alert("पुराना पासवर्ड गलत है!");
       if (!newPass1 || newPass1.length < 4) return alert("नया पासवर्ड कम से कम 4 अक्षरों का हो!");
       if (newPass1 !== newPass2) return alert("दोनों पासवर्ड मेल नहीं खाते!");
 
