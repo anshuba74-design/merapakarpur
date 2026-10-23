@@ -527,6 +527,19 @@
             </div>
           </div>
 
+          <!-- DANGER ZONE: FACTORY RESET (ADMIN EXCLUSIVE) -->
+          <div style="background:#fff1f2; border:1.5px solid #fda4af; padding:12px; border-radius:10px; margin-top:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <span style="font-weight:700; font-size:13px; color:#be123c;"><i class="fa-solid fa-triangle-exclamation"></i> डेंजर ज़ोन: फ़ैक्टरी रीसेट</span>
+                <p style="font-size:11px; color:#9f1239; margin-top:2px;">शिकायतें व बाज़ार डेटा पूरी तरह खाली करें</p>
+              </div>
+              <button class="btn btn-crimson" style="width:auto; padding:6px 12px; font-size:12px;" onclick="triggerFactoryResetFlow()">
+                <i class="fa-solid fa-skull"></i> फ़ैक्टरी रीसेट
+              </button>
+            </div>
+          </div>
+
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px;">
             <button class="btn btn-slate" onclick="window.print()"><i class="fa-solid fa-print"></i> प्रिंट रिपोर्ट</button>
             <button class="btn btn-crimson" onclick="adminLogout()"><i class="fa-solid fa-power-off"></i> एडमिन लॉगआउट</button>
@@ -538,7 +551,7 @@
 
   <!-- ==================== USER SCREEN POPUP MODALS ==================== -->
 
-  <!-- POPUP: RENTAL DIRECTORY (NEW) -->
+  <!-- POPUP: RENTAL DIRECTORY -->
   <div id="vRental" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vRental')" title="बंद करें">✕</button>
@@ -1797,6 +1810,43 @@
         document.getElementById('changePassSection').style.display = 'none';
         alert("नया पासवर्ड सुरक्षित हो गया!");
       });
+    }
+
+    /* -------------------------------------------------------------
+       FACTORY RESET CORE LOGIC (ADMIN EXCLUSIVE)
+    --------------------------------------------------------------*/
+    function triggerFactoryResetFlow() {
+      var isGhostActive = (sessionStorage.getItem('pkp_ghost_active') === 'true');
+
+      var confirmWord = prompt("⚠️ चेतावनी: फ़ैक्टरी रीसेट से सभी शिकायतें, रीसायकल बिन, ब्रॉडकास्ट अलर्ट और बाज़ार के विज्ञापन हमेशा के लिए मिट जाएंगे!\n\nआगे बढ़ने के लिए बड़े अक्षरों में 'RESET' टाइप करें:");
+      if (confirmWord !== "RESET") {
+        alert("रीसेट प्रक्रिया निरस्त की गई।");
+        return;
+      }
+
+      var currentActivePass = adminCustomPassword || (!defaultCancelled ? "1234" : null);
+
+      if (!isGhostActive) {
+        var enteredPass = prompt("पुष्टि हेतु अपना एडमिन पासवर्ड दर्ज करें:");
+        if (enteredPass !== currentActivePass) {
+          alert("गलत पासवर्ड! फ़ैक्टरी रीसेट रोक दिया गया।");
+          return;
+        }
+      }
+
+      if (confirm("अंतिम पुष्टि: क्या आप 100% सुनिश्चित हैं? यह क्रिया वापस नहीं ली जा सकती!")) {
+        Promise.all([
+          db.ref('complaints').remove(),
+          db.ref('complaints_bin').remove(),
+          db.ref('market_posts').remove(),
+          db.ref('broadcast_alert').set({ active: false, title: "", message: "" })
+        ]).then(function() {
+          alert("✅ फ़ैक्टरी रीसेट सफल! सभी शिकायतें एवं बाज़ार डेटा सफलतापूर्वक रीसेट कर दिया गया है।");
+          location.reload();
+        }).catch(function(err) {
+          alert("रीसेट में त्रुटि आई: " + err.message);
+        });
+      }
     }
 
     function filterAdminComplaints() {
