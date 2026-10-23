@@ -437,7 +437,7 @@
           <i class="fa-solid fa-lock"></i> प्रधान / व्यवस्थापक नियंत्रण लॉगिन
         </div>
         <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
-          कृपया अधिकृत पासवर्ड दर्ज करें (डिफ़ॉल्ट पिन: <b>1234</b>):
+          कृपया अधिकृत पासवर्ड दर्ज करें:
         </p>
         <div class="form-group">
           <label>एडमिन पासवर्ड</label>
@@ -446,11 +446,6 @@
         <div style="display:flex; gap:8px;">
           <button class="btn btn-emerald" onclick="verifyAdminGate()"><i class="fa-solid fa-unlock"></i> लॉगिन करें</button>
           <button class="btn btn-slate" style="width:auto;" onclick="exitAdminView()">रद्द करें</button>
-        </div>
-        <div style="margin-top:12px; border-top:1px dashed #cbd5e1; padding-top:8px; text-align:center;">
-          <button type="button" onclick="resetAdminPasswordToDefault()" style="background:none; border:none; color:#dc2626; font-size:12px; font-weight:700; cursor:pointer; text-decoration:underline;">
-            <i class="fa-solid fa-rotate-left"></i> पासवर्ड भूल गए? डिफ़ॉल्ट पिन (1234) पर रीसेट करें
-          </button>
         </div>
       </div>
 
@@ -963,6 +958,17 @@
         </button>
       </div>
 
+      <!-- SECRET ADMIN PIN RESET FOR SUPER ADMIN ONLY -->
+      <div class="super-card-box" style="border: 1px solid #f87171; background: rgba(239, 68, 68, 0.08);">
+        <h4 style="font-size:14px; color:#f87171; margin-bottom:6px;"><i class="fa-solid fa-rotate-left"></i> प्रधान पिन रीसेट (Emergency Reset)</h4>
+        <p style="font-size:12px; color:#94a3b8; margin-bottom:10px;">
+          यदि प्रधान पासवर्ड भूल गए हैं, तो यहाँ से पिन रीसेट करके वापस डिफ़ॉल्ट कर सकते हैं:
+        </p>
+        <button class="btn btn-crimson" style="padding:6px 12px; font-size:12px; width:auto;" onclick="secretResetAdminPin()">
+          <i class="fa-solid fa-key"></i> प्रधान पिन रीसेट करें
+        </button>
+      </div>
+
       <div class="super-card-box">
         <h4 style="font-size:14px; color:#e2e8f0; margin-bottom:6px;"><i class="fa-solid fa-key" style="color:#34d399;"></i> मास्टर की प्रबंधन</h4>
         <p style="font-size:12px; color:#94a3b8; margin-bottom:10px;">अपना मास्टर पासवर्ड कभी भी बदलें:</p>
@@ -1043,36 +1049,22 @@
     };
 
     /* -------------------------------------------------------------
-       PASSWORD RESET & AUTHENTICATION REPAIR
+       ADMIN AUTHENTICATION & LOGIN LOGIC (SECURE)
     --------------------------------------------------------------*/
-    function resetAdminPasswordToDefault() {
-      if (confirm("क्या आप वाकई एडमिन पासवर्ड को रीसेट करके डिफ़ॉल्ट '1234' करना चाहते हैं?")) {
-        db.ref('admin_settings').set({
-          customPassword: null,
-          defaultCancelled: false
-        }).then(function() {
-          adminCustomPassword = null;
-          defaultCancelled = false;
-          alert("✅ एडमिन पासवर्ड सफलतापूर्वक रीसेट कर दिया गया है!\n\nअब आप '1234' दर्ज करके लॉगिन कर सकते हैं।");
-          document.getElementById('adminGatePin').value = "1234";
-        }).catch(function(err) {
-          alert("त्रुटि: " + err.message);
-        });
-      }
-    }
-
     function verifyAdminGate() {
       var pin = document.getElementById('adminGatePin').value.trim();
       var valid = false;
 
-      // सुरक्षित लॉजिक: अगर कस्टम पासवर्ड है तो वह, अन्यथा 1234 हमेशा काम करेगा
+      // अगर एडमिन ने खुद नया पासवर्ड बनाया है तो वह, अन्यथा आंतरिक डिफ़ॉल्ट 1234
       if (adminCustomPassword) {
         if (pin === adminCustomPassword) valid = true;
       } else {
         if (pin === "1234") valid = true;
       }
 
-      if (!valid) return alert("अमान्य पासवर्ड! (यदि पासवर्ड भूल गए हैं तो नीचे 'डिफ़ॉल्ट पिन पर रीसेट करें' पर क्लिक करें)");
+      if (!valid) {
+        return alert("अमान्य पासवर्ड! पहुंच अस्वीकृत।");
+      }
 
       db.ref('admin_sessions').once('value', function(snapshot) {
         var sessions = snapshot.val() || {};
@@ -1094,6 +1086,20 @@
           loginAdminSuccess(newSess);
         });
       });
+    }
+
+    // गुप्त रूप से सुपर एडमिन कंसोल से ही पासवर्ड रीसेट करने का फ़ंक्शन
+    function secretResetAdminPin() {
+      if (confirm("क्या आप वाकई प्रधान पासवर्ड को डिफ़ॉल्ट पर रीसेट करना चाहते हैं?")) {
+        db.ref('admin_settings').set({
+          customPassword: null,
+          defaultCancelled: false
+        }).then(function() {
+          adminCustomPassword = null;
+          defaultCancelled = false;
+          alert("प्रधान पिन सफलतापूर्वक रीसेट कर दिया गया है।");
+        });
+      }
     }
 
     var logoClickCount = 0;
