@@ -211,10 +211,6 @@
     .btn-whatsapp { background: #25d366; color: #fff; }
     .btn-direct-gov { background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; padding: 8px 12px; font-size: 12px; border-radius: 8px; margin-top: 8px; display: inline-flex; }
 
-    .adm-btn-del {
-      background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
-    }
-
     .complaint-card, .notice-card, .directory-card, .scheme-card, .fund-item-card, .gallery-card, .market-card {
       background: #ffffff; border-radius: 12px; padding: 12px; border: 1px solid var(--border); margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     }
@@ -441,7 +437,7 @@
           <i class="fa-solid fa-lock"></i> प्रधान / व्यवस्थापक नियंत्रण लॉगिन
         </div>
         <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
-          कृपया अधिकृत पासवर्ड दर्ज करें (सुरक्षा नियम: अधिकतम 2 डिवाइस में लॉगिन मान्य):
+          कृपया अधिकृत पासवर्ड दर्ज करें (डिफ़ॉल्ट पिन: <b>1234</b>):
         </p>
         <div class="form-group">
           <label>एडमिन पासवर्ड</label>
@@ -450,6 +446,11 @@
         <div style="display:flex; gap:8px;">
           <button class="btn btn-emerald" onclick="verifyAdminGate()"><i class="fa-solid fa-unlock"></i> लॉगिन करें</button>
           <button class="btn btn-slate" style="width:auto;" onclick="exitAdminView()">रद्द करें</button>
+        </div>
+        <div style="margin-top:12px; border-top:1px dashed #cbd5e1; padding-top:8px; text-align:center;">
+          <button type="button" onclick="resetAdminPasswordToDefault()" style="background:none; border:none; color:#dc2626; font-size:12px; font-weight:700; cursor:pointer; text-decoration:underline;">
+            <i class="fa-solid fa-rotate-left"></i> पासवर्ड भूल गए? डिफ़ॉल्ट पिन (1234) पर रीसेट करें
+          </button>
         </div>
       </div>
 
@@ -548,8 +549,6 @@
       </div>
     </div>
   </div>
-
-  <!-- ==================== USER SCREEN POPUP MODALS ==================== -->
 
   <!-- POPUP: RENTAL DIRECTORY -->
   <div id="vRental" class="screen-modal">
@@ -853,9 +852,7 @@
     </div>
   </div>
 
-  <!-- ==================== EXCLUSIVE ADMIN MODALS ==================== -->
-
-  <!-- ADMIN: 1. Grievance Management Modal Desk -->
+  <!-- ADMIN POPUPS -->
   <div id="secAdminGrievanceModal" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secAdminGrievanceModal')">✕</button>
@@ -879,7 +876,6 @@
     </div>
   </div>
 
-  <!-- ADMIN: 2. Marketplace Moderator Control Modal -->
   <div id="secAdminMarketModal" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secAdminMarketModal')">✕</button>
@@ -893,7 +889,6 @@
     </div>
   </div>
 
-  <!-- ADMIN: 3. Broadcast Modal -->
   <div id="secBroadcastForm" class="screen-modal">
     <div class="screen-modal-card" style="border: 2px solid #fecaca; background: #fff5f5;">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secBroadcastForm')">✕</button>
@@ -907,9 +902,7 @@
     </div>
   </div>
 
-  <!-- ==================== GHOST MODE & SUPER ADMIN MODALS ==================== -->
-
-  <!-- 1. Master Authentication Modal -->
+  <!-- GHOST MODE & SUPER ADMIN MODALS -->
   <div class="screen-modal" id="masterAuthModal">
     <div class="screen-modal-card" style="background:#0f172a; color:#f8fafc; border:1px solid #334155; max-width:440px;">
       <button class="red-close-btn" onclick="closeScreenModal('masterAuthModal')">✕</button>
@@ -949,7 +942,6 @@
     </div>
   </div>
 
-  <!-- 2. Super Admin Control Deck Modal -->
   <div class="screen-modal" id="superAdminModal">
     <div class="screen-modal-card" style="background:#0f172a; color:#f8fafc; border:1px solid #334155; max-width:540px;">
       <button class="red-close-btn" onclick="closeScreenModal('superAdminModal')">✕</button>
@@ -1019,7 +1011,6 @@
     var isAdminUnlocked = (localStorage.getItem('pkp_admin_logged_in') === 'true');
     var adminSessionId = localStorage.getItem('pkp_admin_session_id') || null;
 
-    /* GHOST MODE & MASTER SETUP CONSTANTS */
     var DEFAULT_MASTER_KEY = "SUPER@PAK123";
     if (!localStorage.getItem('pkp_master_key')) {
       localStorage.setItem('pkp_master_key', DEFAULT_MASTER_KEY);
@@ -1042,7 +1033,6 @@
       initFirebaseListeners();
       fetchPakarpurWeather();
 
-      // Check if previously in Ghost Mode
       if (sessionStorage.getItem('pkp_ghost_active') === 'true') {
         document.getElementById('ghostModeBanner').style.display = 'flex';
       }
@@ -1053,8 +1043,59 @@
     };
 
     /* -------------------------------------------------------------
-       GHOST MODE & MASTER ADMIN CORE LOGIC
+       PASSWORD RESET & AUTHENTICATION REPAIR
     --------------------------------------------------------------*/
+    function resetAdminPasswordToDefault() {
+      if (confirm("क्या आप वाकई एडमिन पासवर्ड को रीसेट करके डिफ़ॉल्ट '1234' करना चाहते हैं?")) {
+        db.ref('admin_settings').set({
+          customPassword: null,
+          defaultCancelled: false
+        }).then(function() {
+          adminCustomPassword = null;
+          defaultCancelled = false;
+          alert("✅ एडमिन पासवर्ड सफलतापूर्वक रीसेट कर दिया गया है!\n\nअब आप '1234' दर्ज करके लॉगिन कर सकते हैं।");
+          document.getElementById('adminGatePin').value = "1234";
+        }).catch(function(err) {
+          alert("त्रुटि: " + err.message);
+        });
+      }
+    }
+
+    function verifyAdminGate() {
+      var pin = document.getElementById('adminGatePin').value.trim();
+      var valid = false;
+
+      // सुरक्षित लॉजिक: अगर कस्टम पासवर्ड है तो वह, अन्यथा 1234 हमेशा काम करेगा
+      if (adminCustomPassword) {
+        if (pin === adminCustomPassword) valid = true;
+      } else {
+        if (pin === "1234") valid = true;
+      }
+
+      if (!valid) return alert("अमान्य पासवर्ड! (यदि पासवर्ड भूल गए हैं तो नीचे 'डिफ़ॉल्ट पिन पर रीसेट करें' पर क्लिक करें)");
+
+      db.ref('admin_sessions').once('value', function(snapshot) {
+        var sessions = snapshot.val() || {};
+        var activeIds = Object.keys(sessions);
+
+        var existingSession = localStorage.getItem('pkp_admin_session_id');
+        if (existingSession && activeIds.includes(existingSession)) {
+          loginAdminSuccess(existingSession);
+          return;
+        }
+
+        if (activeIds.length >= 2) {
+          alert("एडमिन लॉगिन सीमा पूर्ण है! अधिकतम 2 मोबाइल/डिवाइस में ही एडमिन लॉगिन की अनुमति है। कृपया किसी एक डिवाइस से लॉगआउट करें।");
+          return;
+        }
+
+        var newSess = "ADM_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+        db.ref('admin_sessions/' + newSess).set({ time: Date.now() }).then(function() {
+          loginAdminSuccess(newSess);
+        });
+      });
+    }
+
     var logoClickCount = 0;
     var logoClickTimer = null;
 
@@ -1162,7 +1203,6 @@
       compressPhoto(e.target.files[0], function(b64){ tempMarketPhoto = b64; });
     }
 
-    /* KRAY VIKRAY & SKILLS MARKETPLACE SUBMIT & RENDER (OPEN TO ALL) */
     function submitMarketPostCloud() {
       var userName = document.getElementById('mUserName').value.trim();
       var userPhone = document.getElementById('mUserPhone').value.trim();
@@ -1234,7 +1274,6 @@
       div.innerHTML = h;
     }
 
-    /* ADMIN MARKETPLACE MODERATOR VIEW */
     function renderAdminMarketModerator() {
       var div = document.getElementById('adminMarketModeratorListDiv');
       if (!div) return;
@@ -1264,7 +1303,6 @@
       }
     }
 
-    /* POPUP MODAL HANDLERS FOR USER ICONS */
     function openScreenModal(modalId) {
       var target = document.getElementById(modalId);
       if (target) {
@@ -1283,7 +1321,6 @@
       if (target) target.classList.remove('active');
     }
 
-    /* POPUP MODAL HANDLERS FOR ADMIN ICONS */
     function openAdminPopupSection(secId) {
       var target = document.getElementById(secId);
       if (target) {
@@ -1417,6 +1454,9 @@
         if (val) {
           adminCustomPassword = val.customPassword || null;
           defaultCancelled = val.defaultCancelled || false;
+        } else {
+          adminCustomPassword = null;
+          defaultCancelled = false;
         }
       });
 
@@ -1516,7 +1556,6 @@
       document.getElementById('admPPhone').value = pradhanInfo.phone || "";
     }
 
-    /* DIRECTORY / HELPLINE FULL CRUD */
     function drawDirectory() {
       var d = document.getElementById('directoryListDiv');
       if (directoryList.length === 0) {
@@ -1538,7 +1577,6 @@
       d.innerHTML = h;
     }
 
-    /* NOTICE BOARD */
     function drawNotices() {
       var d = document.getElementById('noticeListDiv');
       if (notices.length === 0) {
@@ -1558,7 +1596,6 @@
       d.innerHTML = h;
     }
 
-    /* KOSH & BUDGET */
     function calcAndDrawBudget() {
       var totalIn = 0, totalOut = 0;
       fundsList.forEach(function(f){ totalIn += Number(f.amount || 0); });
@@ -1613,7 +1650,7 @@
       galleryList.forEach(function(item) {
         h += '<div class="gallery-card">' +
              '<h4 style="color:#1e293b; font-size:14px; margin-bottom:8px; font-weight:700;">' + item.title + '</h4>' +
-             '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">' +
+             '<div style="grid-template-columns:1fr 1fr; gap:8px; display:grid;">' +
              '<div><span style="font-size:10px; font-weight:700; color:#dc2626;">[Before]</span>' +
              '<img src="'+item.before+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:100%; height:120px; object-fit:cover; border-radius:8px;"></div>' +
              '<div><span style="font-size:10px; font-weight:700; color:#16a34a;">[After]</span>' +
@@ -1702,41 +1739,6 @@
       }
     }
 
-    /* VERIFY ADMIN WITH MAX 2 DEVICES CONCURRENT LOGIN */
-    function verifyAdminGate() {
-      var pin = document.getElementById('adminGatePin').value.trim();
-      var valid = false;
-
-      if (adminCustomPassword) {
-        if (pin === adminCustomPassword) valid = true;
-      } else {
-        if (!defaultCancelled && pin === "1234") valid = true;
-      }
-
-      if (!valid) return alert("अमान्य पासवर्ड!");
-
-      db.ref('admin_sessions').once('value', function(snapshot) {
-        var sessions = snapshot.val() || {};
-        var activeIds = Object.keys(sessions);
-
-        var existingSession = localStorage.getItem('pkp_admin_session_id');
-        if (existingSession && activeIds.includes(existingSession)) {
-          loginAdminSuccess(existingSession);
-          return;
-        }
-
-        if (activeIds.length >= 2) {
-          alert("एडमिन लॉगिन सीमा पूर्ण है! अधिकतम 2 मोबाइल/डिवाइस में ही एडमिन लॉगिन की अनुमति है। कृपया किसी एक डिवाइस से लॉगआउट करें।");
-          return;
-        }
-
-        var newSess = "ADM_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-        db.ref('admin_sessions/' + newSess).set({ time: Date.now() }).then(function() {
-          loginAdminSuccess(newSess);
-        });
-      });
-    }
-
     function loginAdminSuccess(sessId) {
       isAdminUnlocked = true;
       adminSessionId = sessId;
@@ -1799,7 +1801,7 @@
       var newPass1 = document.getElementById('admNewPassInput1').value.trim();
       var newPass2 = document.getElementById('admNewPassInput2').value.trim();
 
-      var currentActivePass = adminCustomPassword || (!defaultCancelled ? "1234" : null);
+      var currentActivePass = adminCustomPassword || "1234";
       var isGhostActive = (sessionStorage.getItem('pkp_ghost_active') === 'true');
 
       if (!isGhostActive && oldPass !== currentActivePass) return alert("पुराना पासवर्ड गलत है!");
@@ -1812,9 +1814,6 @@
       });
     }
 
-    /* -------------------------------------------------------------
-       FACTORY RESET CORE LOGIC (ADMIN EXCLUSIVE)
-    --------------------------------------------------------------*/
     function triggerFactoryResetFlow() {
       var isGhostActive = (sessionStorage.getItem('pkp_ghost_active') === 'true');
 
@@ -1824,7 +1823,7 @@
         return;
       }
 
-      var currentActivePass = adminCustomPassword || (!defaultCancelled ? "1234" : null);
+      var currentActivePass = adminCustomPassword || "1234";
 
       if (!isGhostActive) {
         var enteredPass = prompt("पुष्टि हेतु अपना एडमिन पासवर्ड दर्ज करें:");
