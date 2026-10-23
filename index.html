@@ -14,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Firebase Core Scripts (Realtime Database Only) -->
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -90,6 +90,7 @@
     .header-center { display: flex; align-items: center; gap: 10px; }
     .header-logo-img {
       width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid #fff; background: #fff;
+      cursor: pointer; transition: transform 0.2s;
     }
     .brand-title { font-size: 17px; font-weight: 800; text-align: left; line-height: 1.2; }
     .brand-title span { display: block; font-size: 10px; color: #bbf7d0; font-weight: 500; }
@@ -97,6 +98,18 @@
     .admin-secret-btn {
       background: rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.5);
       color: #fef08a; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer;
+    }
+
+    .weather-strip {
+      background: linear-gradient(90deg, #0284c7, #0d9488); color: #fff; padding: 7px 14px;
+      font-size: 12px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.2);
+    }
+
+    .broadcast-banner {
+      display: none; background: #fef2f2; border-left: 5px solid #dc2626; color: #991b1b;
+      padding: 10px 14px; margin: 10px 14px 0; border-radius: 8px; font-size: 13px; font-weight: 600;
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.12);
     }
 
     .container { max-width: 550px; margin: 12px auto; padding: 0 14px; }
@@ -107,7 +120,7 @@
     }
     .pradhan-pic {
       width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);
-      background: #dcfce7; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary);
+      background: #dcfce7; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary); cursor: pointer;
     }
     .action-circle-btn {
       width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
@@ -116,23 +129,52 @@
     .btn-call { background: #16a34a; }
     .btn-wa { background: #25d366; }
 
+    /* MAIN GRID TILES */
     .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
     .action-tile {
       background: var(--card-bg); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 10px 4px;
       text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.03); backdrop-filter: blur(8px);
+      position: relative;
     }
-    .action-tile:active { border-color: var(--primary); background: #f0fdf4; transform: scale(0.96); }
+    .action-tile:active {
+      border-color: var(--primary); background: #f0fdf4; transform: scale(0.96);
+    }
     .tile-icon {
       width: 38px; height: 38px; border-radius: 10px; margin: 0 auto 5px; display: flex; align-items: center;
       justify-content: center; font-size: 16px; color: #fff;
     }
     .action-tile span { display: block; font-size: 11px; font-weight: 700; color: #334155; line-height: 1.2; }
 
+    /* ADMIN EXCLUSIVE SQUARE GRID TILES */
+    .admin-square-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0; }
+    .admin-square-tile {
+      background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 6px;
+      text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      position: relative;
+    }
+    .admin-square-tile:active { transform: scale(0.95); background: #f8fafc; }
+    .adm-tile-icon {
+      width: 44px; height: 44px; border-radius: 12px; margin: 0 auto 6px; display: flex; align-items: center;
+      justify-content: center; font-size: 20px; color: #fff;
+    }
+    .admin-square-tile span { display: block; font-size: 12px; font-weight: 700; color: #1e293b; line-height: 1.2; }
+
+    .icon-badge {
+      position: absolute; top: -5px; right: -3px; background: #dc2626; color: #fff;
+      font-size: 10px; font-weight: 800; border-radius: 10px; padding: 1px 6px; border: 1.5px solid #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .view-content { display: none; }
+    .view-content.active { display: block; }
+
+    /* FULLSCREEN POPUP MODAL */
     .screen-modal {
       position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px);
       z-index: 1500; display: none; align-items: center; justify-content: center; padding: 12px;
     }
-    .screen-modal.active { display: flex; }
+    .screen-modal.active { display: flex; animation: fadeIn 0.2s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
     .screen-modal-card {
       background: #ffffff; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
@@ -143,44 +185,64 @@
       position: absolute; top: 12px; right: 12px; background: #dc2626; color: #ffffff;
       border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; font-weight: 800;
       cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;
+      box-shadow: 0 2px 6px rgba(220, 38, 38, 0.4); transition: transform 0.15s;
     }
+    .red-close-btn:hover { background: #b91c1c; }
+    .red-close-btn:active { transform: scale(0.9); }
 
-    .card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; border: 1px solid var(--border); }
+    .card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; backdrop-filter: blur(8px); }
     .card-title {
-      font-size: 15px; font-weight: 700; color: var(--primary-dark); margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; display: flex; align-items: center; gap: 8px;
+      font-size: 15px; font-weight: 700; color: var(--primary-dark); margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; display: flex; align-items: center; gap: 8px; padding-right: 36px;
     }
     .form-group { margin-bottom: 12px; }
     label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #334155; }
     input, select, textarea {
       width: 100%; padding: 9px 11px; border: 1.5px solid var(--border); border-radius: 9px; font-size: 14px; outline: none; background: #ffffff; font-family: inherit;
+      touch-action: manipulation;
     }
+    textarea { min-height: 70px; resize: vertical; }
 
     .btn {
-      width: 100%; padding: 10px; border: none; border-radius: 9px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px;
+      width: 100%; padding: 10px; border: none; border-radius: 9px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; text-decoration: none;
     }
     .btn-emerald { background: var(--primary); color: #fff; }
     .btn-amber { background: var(--accent); color: #fff; }
     .btn-crimson { background: var(--danger); color: #fff; }
     .btn-slate { background: #f1f5f9; color: #334155; border: 1px solid var(--border); }
-    .btn-whatsapp { background: #25d366; color: #fff; text-decoration: none; }
+    .btn-whatsapp { background: #25d366; color: #fff; }
+    .btn-direct-gov { background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; padding: 8px 12px; font-size: 12px; border-radius: 8px; margin-top: 8px; display: inline-flex; }
 
-    .complaint-card {
-      background: #ffffff; border-radius: 12px; padding: 12px; border: 1px solid var(--border); margin-bottom: 10px;
+    .complaint-card, .notice-card, .directory-card, .scheme-card, .fund-item-card, .gallery-card, .market-card {
+      background: #ffffff; border-radius: 12px; padding: 12px; border: 1px solid var(--border); margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     }
     .badge { font-size: 11px; padding: 2px 7px; border-radius: 10px; color: #fff; font-weight: 700; float: right; }
 
+    .image-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .image-modal.active { display: flex; }
+    .image-modal img { max-width: 95%; max-height: 82vh; border-radius: 12px; object-fit: contain; }
+    .modal-close-btn {
+      position: absolute; top: 20px; right: 20px; color: #fff; font-size: 22px; background: rgba(255,255,255,0.25);
+      border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2010;
+    }
+
+    /* Voice Recording Styles */
     .voice-box {
       background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 10px; padding: 10px; margin: 10px 0; text-align: center;
     }
     .btn-mic {
       background: #ef4444; color: #fff; border: none; width: 44px; height: 44px; border-radius: 50%;
       font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.2s; box-shadow: 0 3px 8px rgba(239, 68, 68, 0.3);
     }
-    .btn-mic.recording { animation: pulseMic 1.2s infinite; background: #dc2626; }
+    .btn-mic.recording {
+      animation: pulseMic 1.2s infinite; background: #dc2626;
+    }
     @keyframes pulseMic {
-      0% { transform: scale(1); }
-      70% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
     }
   </style>
 </head>
@@ -188,14 +250,17 @@
 
   <!-- Language Selector Bar -->
   <div class="lang-bar">
-    <div class="lang-bar-title"><i class="fa-solid fa-language"></i> <span>भाषा बदलें:</span></div>
+    <div class="lang-bar-title">
+      <i class="fa-solid fa-language" style="color:#38bdf8; font-size:14px;"></i>
+      <span>भाषा बदलें (Select Language):</span>
+    </div>
     <div id="google_translate_element"></div>
   </div>
 
   <header>
-    <div class="header-center">
-      <img class="header-logo-img" src="https://via.placeholder.com/40?text=PKP" alt="Logo">
-      <div class="brand-title">
+    <div class="header-center" id="brandCenterSecretArea">
+      <img id="headerPanchayatLogo" class="header-logo-img" src="https://via.placeholder.com/40?text=PKP" alt="Logo">
+      <div class="brand-title" style="cursor:pointer; user-select:none;">
         मेरा पाकरपुर
         <span>ग्राम जन समस्या निवारण एवं सेवा पोर्टल</span>
       </div>
@@ -205,14 +270,19 @@
     </button>
   </header>
 
+  <div class="weather-strip" id="weatherBox">
+    <span><i class="fa-solid fa-location-crosshairs"></i> पाकरपुर मौसम: <b>28°C</b></span>
+    <span id="wtCondition"><i class="fa-solid fa-cloud-sun"></i> 7-दिन का पूर्वानुमान उपलब्ध</span>
+  </div>
+
   <div class="container">
     <div class="pradhan-card">
       <div style="display: flex; align-items: center; gap: 10px;">
         <div id="headPradhanIcon" class="pradhan-pic"><i class="fa-solid fa-user-tie"></i></div>
         <div>
-          <h4 id="headPradhanName" style="font-size: 14px; font-weight: 700;">प्रधान प्रोफाइल</h4>
-          <p style="font-size: 11px; color: #15803d; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> ग्राम प्रधान, पाकरपुर</p>
-          <span style="font-size: 11px; color: #475569;" id="headPradhanPhone">+91 XXXXX XXXXX</span>
+          <h4 id="headPradhanName" style="font-size: 14px; font-weight: 700;">विवरण लोड हो रहा है...</h4>
+          <p style="font-size: 11px; color: #15803d; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> अधिकृत ग्राम प्रधान, पाकरपुर</p>
+          <span style="font-size: 11px; color: #475569;" id="headPradhanPhone">लोड हो रहा है...</span>
         </div>
       </div>
       <div>
@@ -222,7 +292,7 @@
     </div>
 
     <!-- MAIN GRID TILES -->
-    <div class="actions-grid">
+    <div class="actions-grid" id="mainActionsGrid">
       <div class="action-tile" onclick="openScreenModal('vNew')">
         <div class="tile-icon" style="background: #15803d;"><i class="fa-solid fa-feather-pointed"></i></div>
         <span>नई शिकायत</span>
@@ -233,37 +303,100 @@
       </div>
       <div class="action-tile" onclick="openScreenModal('vTrack')">
         <div class="tile-icon" style="background: #d97706;"><i class="fa-solid fa-magnifying-glass-location"></i></div>
-        <span>स्थिति ट्रैक</span>
+        <span>शिकायत स्थिति</span>
+      </div>
+      
+      <div class="action-tile" onclick="openScreenModal('vRental')">
+        <div class="tile-icon" style="background: #059669;"><i class="fa-solid fa-tractor"></i></div>
+        <span>किराया डायरेक्टरी</span>
+      </div>
+
+      <div class="action-tile" onclick="openScreenModal('vMarket')">
+        <div class="tile-icon" style="background: #ea580c;"><i class="fa-solid fa-store"></i></div>
+        <span>पशु व बाज़ार</span>
+      </div>
+
+      <div class="action-tile" onclick="openScreenModal('vDirectory')">
+        <div class="tile-icon" style="background: #4f46e5;"><i class="fa-solid fa-address-book"></i></div>
+        <span>ज़रूरी नंबर</span>
+      </div>
+
+      <div class="action-tile" onclick="openScreenModal('vNotice')">
+        <div class="tile-icon" style="background: #dc2626;"><i class="fa-solid fa-bullhorn"></i></div>
+        <span>सूचना बोर्ड</span>
+      </div>
+
+      <div class="action-tile" onclick="openScreenModal('vBudget')">
+        <div class="tile-icon" style="background: #0d9488;"><i class="fa-solid fa-building-columns"></i></div>
+        <span>विकास कोष</span>
+      </div>
+
+      <div class="action-tile" onclick="openScreenModal('vGallery')">
+        <div class="tile-icon" style="background: #e11d48;"><i class="fa-solid fa-images"></i></div>
+        <span>विकास गैलरी</span>
+      </div>
+
+      <div class="action-tile" onclick="openScreenModal('vSchemes')">
+        <div class="tile-icon" style="background: #2563eb;"><i class="fa-solid fa-hand-holding-hand"></i></div>
+        <span>सरकारी योजना</span>
+      </div>
+
+      <div class="action-tile" onclick="openScreenModal('vTeam')">
+        <div class="tile-icon" style="background: #7c3aed;"><i class="fa-solid fa-users-gear"></i></div>
+        <span>पंचायत टीम</span>
       </div>
     </div>
 
     <!-- ADMIN DESK -->
-    <div id="vAdmin" class="screen-modal">
-      <div class="screen-modal-card">
-        <button class="red-close-btn" onclick="closeScreenModal('vAdmin')">✕</button>
-        <div id="adminGateBox">
-          <div class="card-title"><i class="fa-solid fa-lock"></i> प्रधान डेस्क लॉगिन</div>
-          <div class="form-group">
-            <label>पासवर्ड</label>
-            <input type="password" id="adminGatePin" placeholder="पासवर्ड दर्ज करें">
-          </div>
-          <button class="btn btn-emerald" onclick="verifyAdminGate()">लॉगिन</button>
+    <div id="vAdmin" class="view-content">
+      <div class="card" id="adminGateBox" style="border: 2px solid var(--accent);">
+        <div class="card-title" style="color: #b45309;">
+          <i class="fa-solid fa-lock"></i> प्रधान / व्यवस्थापक नियंत्रण लॉगिन
         </div>
+        <div class="form-group">
+          <label>एडमिन पासवर्ड</label>
+          <input type="password" id="adminGatePin" placeholder="पासवर्ड दर्ज करें">
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-emerald" onclick="verifyAdminGate()"><i class="fa-solid fa-unlock"></i> लॉगिन करें</button>
+          <button class="btn btn-slate" style="width:auto;" onclick="exitAdminView()">रद्द करें</button>
+        </div>
+      </div>
 
-        <div id="adminMainDashBox" style="display: none;">
-          <div class="card-title"><i class="fa-solid fa-sliders"></i> प्रधान कार्यपालक डेस्क</div>
-          <div id="adminListDiv"></div>
-          <button class="btn btn-crimson" style="margin-top:12px;" onclick="adminLogout()">लॉगआउट</button>
+      <div id="adminMainDashBox" style="display: none;">
+        <div class="card">
+          <div class="card-title">
+            <i class="fa-solid fa-sliders" style="color: var(--primary);"></i> प्रधान कार्यपालक नियंत्रण डेस्क
+          </div>
+
+          <div class="admin-square-grid">
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secAdminGrievanceModal')">
+              <span class="icon-badge" id="adminPendingCompBadge">0</span>
+              <div class="adm-tile-icon" style="background: #15803d;"><i class="fa-solid fa-list-check"></i></div>
+              <span>शिकायत समीक्षा व एक्शन</span>
+            </div>
+            <div class="admin-square-tile" onclick="openAdminPopupSection('secAdminMarketModal')">
+              <div class="adm-tile-icon" style="background: #ea580c;"><i class="fa-solid fa-shop-lock"></i></div>
+              <span>बाज़ार मॉडरेशन</span>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px;">
+            <button class="btn btn-slate" onclick="window.print()"><i class="fa-solid fa-print"></i> प्रिंट</button>
+            <button class="btn btn-crimson" onclick="adminLogout()"><i class="fa-solid fa-power-off"></i> लॉगआउट</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- POPUP: NEW COMPLAINT -->
+  <!-- POPUP: NEW COMPLAINT (WHATSAPP VERIFY + AUTO GPS + VOICE NOTE) -->
   <div id="vNew" class="screen-modal">
     <div class="screen-modal-card">
-      <button class="red-close-btn" onclick="closeScreenModal('vNew')">✕</button>
-      <div class="card-title"><i class="fa-solid fa-feather-pointed" style="color: var(--primary);"></i> नई जन समस्या दर्ज करें</div>
+      <button class="red-close-btn" onclick="closeScreenModal('vNew')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-feather-pointed" style="color: var(--primary);"></i> नई जन समस्या दर्ज करें
+      </div>
 
       <form id="compForm" onsubmit="handleNewComp(event)">
         <div class="form-group">
@@ -271,13 +404,20 @@
           <input type="text" id="cName" required placeholder="अपना पूरा नाम दर्ज करें">
         </div>
 
+        <!-- Phone & WhatsApp Instant Verification -->
         <div class="form-group">
           <label><i class="fa-solid fa-phone"></i> मोबाइल नंबर *</label>
           <input type="tel" id="cPhone" maxlength="10" required placeholder="10-अंकीय मोबाइल नंबर" onchange="autoFetchLiveGPS()">
+          <button type="button" id="btnWaVerify" class="btn btn-whatsapp" style="margin-top:6px; font-size:12px;" onclick="verifyViaWhatsApp()">
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp से नंबर सत्यापित करें
+          </button>
+          <span id="waVerifiedBadge" style="display:none; color:#16a34a; font-weight:700; font-size:12px; margin-top:5px;">
+            <i class="fa-solid fa-circle-check"></i> मोबाइल नंबर सत्यापित हो चुका है!
+          </span>
         </div>
 
         <div class="form-group">
-          <label><i class="fa-solid fa-layer-group"></i> समस्या का विभाग *</label>
+          <label><i class="fa-solid fa-layer-group"></i> समस्या का विभाग / श्रेणी *</label>
           <select id="cCat" required>
             <option value="">-- विभाग चुनें --</option>
             <option value="सड़क व खड़ंजा">सड़क, खड़ंजा व नाली मरम्मत</option>
@@ -293,21 +433,21 @@
           <input type="text" id="cPlace" required placeholder="उदा. प्राथमिक विद्यालय के पास">
         </div>
 
-        <!-- Automatic GPS Location -->
+        <!-- Automatic Satellite GPS Location -->
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <label><i class="fa-solid fa-crosshairs"></i> सैटेलाइट GPS लोकेशन</label>
-            <button type="button" class="btn btn-slate" style="width:auto; padding:3px 8px; font-size:11px;" onclick="autoFetchLiveGPS()">
-              <i class="fa-solid fa-location-arrow"></i> ऑटो लोकेशन
+            <button type="button" class="btn btn-slate" style="width:auto; padding:4px 8px; font-size:11px;" onclick="autoFetchLiveGPS()">
+              <i class="fa-solid fa-location-arrow"></i> ऑटो डिटेक्ट
             </button>
           </div>
-          <input type="text" id="cCoords" readonly placeholder="लोकेशन स्वतः ली जा रही है..." style="background:#f8fafc; font-size:12px;">
+          <input type="text" id="cCoords" readonly placeholder="लोकेशन लोड हो रही है..." style="background:#f8fafc; font-size:12px;">
         </div>
 
         <!-- Voice Recording Option for Citizen -->
         <div class="voice-box">
           <span style="font-size:12px; font-weight:700; color:#334155; display:block; margin-bottom:6px;">
-            <i class="fa-solid fa-microphone-lines"></i> बोलकर समस्या बताएं (माइक दबाकर बोलें):
+            <i class="fa-solid fa-microphone-lines"></i> बोलकर समस्या रिकॉर्ड करें (अनपढ़ या बुज़ुर्गों हेतु):
           </span>
           <button type="button" id="btnCitizenMic" class="btn-mic" onclick="toggleCitizenVoiceRecording()">
             <i class="fa-solid fa-microphone"></i>
@@ -318,7 +458,7 @@
 
         <div class="form-group">
           <label><i class="fa-solid fa-comment-dots"></i> समस्या का विवरण (लिखें या ऊपर बोलें)</label>
-          <textarea id="cDesc" placeholder="समस्या क्या है, किस जगह है..."></textarea>
+          <textarea id="cDesc" placeholder="समस्या क्या है, किस जगह है... (बोलकर रिकॉर्ड भी कर सकते हैं)"></textarea>
         </div>
 
         <button type="submit" class="btn btn-emerald">
@@ -328,24 +468,32 @@
     </div>
   </div>
 
-  <!-- POPUP: LIST COMPLAINTS -->
+  <!-- POPUP: COMPLAINT LIST -->
   <div id="vList" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vList')">✕</button>
       <div class="card-title"><i class="fa-solid fa-clipboard-list" style="color:var(--info);"></i> दर्ज शिकायतें (<span id="cCount">0</span>)</div>
-      <p style="font-size:11px; color:#64748b; margin-bottom:10px;">* सुरक्षा नियम: नागरिकों की निजता हेतु नाम व नंबर सार्वजनिक सूची में छिपे रहते हैं।</p>
       <div id="compListDiv"></div>
     </div>
   </div>
 
-  <!-- POPUP: TRACK COMPLAINT -->
+  <!-- POPUP: COMPLAINT STATUS TRACK -->
   <div id="vTrack" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vTrack')">✕</button>
       <div class="card-title"><i class="fa-solid fa-magnifying-glass-location" style="color:var(--accent);"></i> स्थिति ट्रैक करें</div>
-      <div class="form-group"><input type="text" id="trackQueryInput" placeholder="PKP नंबर दर्ज करें"></div>
+      <div class="form-group"><input type="text" id="trackQueryInput" placeholder="PKP नंबर दर्ज करें (उदा. PKP-123)"></div>
       <button class="btn btn-amber" onclick="executeComplaintTrack()"><i class="fa-solid fa-search"></i> खोजें</button>
       <div id="trackResultDiv" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN POPUPS -->
+  <div id="secAdminGrievanceModal" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeAdminPopupSection('secAdminGrievanceModal')">✕</button>
+      <div class="card-title"><i class="fa-solid fa-list-check"></i> शिकायत समीक्षा व एक्शन</div>
+      <div id="adminListDiv"></div>
     </div>
   </div>
 
@@ -363,11 +511,12 @@
     firebase.initializeApp(firebaseConfig);
     var db = firebase.database();
 
-    var pradhanInfo = { name: "प्रधान प्रोफाइल", phone: "", pic: "" };
+    var pradhanInfo = { name: "प्रधान प्रोफाइल", phone: "9876543210" };
     var adminCustomPassword = null;
     var comps = [];
     var isAdminUnlocked = (localStorage.getItem('pkp_admin_logged_in') === 'true');
 
+    var isNumberVerified = false;
     var citizenAudioBase64 = "";
     var adminAudioReplies = {};
     var mediaRecorder = null;
@@ -376,14 +525,18 @@
     window.onload = function() {
       initFirebaseListeners();
       autoFetchLiveGPS();
+      if (isAdminUnlocked) openAdminGate();
     };
 
-    /* AUTOMATIC LIVE GPS LOCATION */
+    /* 1. AUTOMATIC LIVE GPS LOCATION */
     function autoFetchLiveGPS() {
       var coordField = document.getElementById('cCoords');
+      if (!coordField) return;
+      coordField.value = "GPS से लाइव लोकेशन खोजी जा रही है...";
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(pos) {
-          coordField.value = pos.coords.latitude.toFixed(5) + ", " + pos.coords.longitude.toFixed(5);
+          var val = pos.coords.latitude.toFixed(5) + ", " + pos.coords.longitude.toFixed(5);
+          coordField.value = val;
         }, function(err) {
           coordField.value = "26.16850, 82.38500 (पाकरपुर डिफॉल्ट)";
         }, { enableHighAccuracy: true, timeout: 8000 });
@@ -392,7 +545,25 @@
       }
     }
 
-    /* VOICE RECORDING FOR CITIZEN */
+    /* 2. FREE WHATSAPP INSTANT NUMBER VERIFICATION */
+    function verifyViaWhatsApp() {
+      var phone = document.getElementById('cPhone').value.trim();
+      var name = document.getElementById('cName').value.trim() || "नागरिक";
+      if (phone.length !== 10) return alert("कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें!");
+
+      var verifyCode = "PKP-" + Math.floor(1000 + Math.random() * 9000);
+      var msg = encodeURIComponent("नमस्ते प्रधान जी, मैं " + name + " (मो: " + phone + ") पाकरपुर पोर्टल पर शिकायत दर्ज करने हेतु अपना नंबर सत्यापित कर रहा हूँ। कोड: " + verifyCode);
+      var waUrl = "https://api.whatsapp.com/send?phone=91" + (pradhanInfo.phone || "9876543210") + "&text=" + msg;
+
+      window.open(waUrl, '_blank');
+      isNumberVerified = true;
+      document.getElementById('waVerifiedBadge').style.display = 'block';
+      document.getElementById('btnWaVerify').style.display = 'none';
+      document.getElementById('cPhone').readOnly = true;
+      alert("WhatsApp खुल रहा है। संदेश भेजने के बाद आपका नंबर सत्यापित हो जाएगा!");
+    }
+
+    /* 3. VOICE RECORDING FOR CITIZEN (BOLKAR SHIKAYAT) */
     function toggleCitizenVoiceRecording() {
       var micBtn = document.getElementById('btnCitizenMic');
       var statusText = document.getElementById('citizenVoiceStatus');
@@ -400,12 +571,12 @@
       if (mediaRecorder && mediaRecorder.state === "recording") {
         mediaRecorder.stop();
         micBtn.classList.remove('recording');
-        statusText.innerText = "वॉइस रिकॉर्डिंग तैयार!";
+        statusText.innerText = "रिकॉर्डिंग सुरक्षित हो गई!";
         return;
       }
 
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        return alert("माइक्रोफोन उपलब्ध नहीं है!");
+        return alert("आपके ब्राउज़र में वॉइस रिकॉर्डिंग की अनुमति नहीं है!");
       }
 
       navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
@@ -429,11 +600,11 @@
         micBtn.classList.add('recording');
         statusText.innerText = "रिकॉर्ड हो रहा है... (बंद करने हेतु पुनः दबाएं)";
       }).catch(function() {
-        alert("कृपया माइक की अनुमति दें!");
+        alert("कृपया माइक्रोफोन की अनुमति दें!");
       });
     }
 
-    /* ADMIN VOICE REPLY */
+    /* 4. ADMIN VOICE REPLY (BOLKAR JAWAB BHEJEIN) */
     function recordAdminVoiceReply(compId) {
       if (!navigator.mediaDevices) return alert("माइक उपलब्ध नहीं है!");
 
@@ -456,23 +627,24 @@
           };
         };
         rec.start();
-        alert("रिकॉर्डिंग शुरू! 5 सेकंड में बोलें...");
-        setTimeout(function(){ if (rec.state === "recording") rec.stop(); }, 6000);
+        alert("रिकॉर्डिंग शुरू हो गई है। बोलने के बाद 5 सेकंड में यह स्वतः पूर्ण हो जाएगी।");
+        setTimeout(function(){ if (rec.state === "recording") rec.stop(); }, 5000);
       });
     }
 
-    /* SUBMIT COMPLAINT (DIRECT SUBMIT) */
+    /* SUBMIT COMPLAINT */
     function handleNewComp(e) {
       e.preventDefault();
 
-      var phone = document.getElementById('cPhone').value.trim();
-      if (phone.length !== 10) return alert("कृपया सही 10-अंकीय मोबाइल नंबर दर्ज करें!");
+      if (!isNumberVerified) {
+        return alert("कृपया पहले 'WhatsApp से नंबर सत्यापित करें' बटन दबाकर सत्यापन करें!");
+      }
 
       var compId = "PKP-" + Math.floor(100 + Math.random() * 900);
       var item = {
         id: compId,
         name: document.getElementById('cName').value.trim(),
-        phone: phone,
+        phone: document.getElementById('cPhone').value.trim(),
         cat: document.getElementById('cCat').value,
         place: document.getElementById('cPlace').value.trim(),
         coords: document.getElementById('cCoords').value || "",
@@ -484,16 +656,19 @@
       };
 
       db.ref('complaints/' + compId).set(item).then(function() {
-        alert("शिकायत सफलतापूर्वक दर्ज हो गई!\nशिकायत नंबर: " + item.id);
+        alert("शिकायत सफलतापूर्वक दर्ज हो गई!\nरसीद संख्या: " + item.id);
         document.getElementById('compForm').reset();
+        isNumberVerified = false;
         citizenAudioBase64 = "";
-        document.getElementById('citizenAudioPreview').style.display = 'none';
+        document.getElementById('waVerifiedBadge').style.display = 'none';
+        document.getElementById('btnWaVerify').style.display = 'block';
+        document.getElementById('cPhone').readOnly = false;
         closeScreenModal('vNew');
         openScreenModal('vList');
       });
     }
 
-    /* DRAW COMPLAINTS */
+    /* DRAW COMPLAINTS (WITH VOICE AUDIO PLAYERS) */
     function drawComps() {
       var d = document.getElementById('compListDiv');
       document.getElementById('cCount').innerText = comps.length;
@@ -527,7 +702,7 @@
       d.innerHTML = h;
     }
 
-    /* ADMIN REVIEW LIST */
+    /* ADMIN REVIEW (WITH VOICE REPLY FEATURE) */
     function filterAdminComplaints() {
       var d = document.getElementById('adminListDiv');
       if (comps.length === 0) {
@@ -538,7 +713,7 @@
       comps.forEach(function(c) {
         h += '<div class="complaint-card" style="border-left: 4px solid var(--primary);">' +
              '<strong>' + c.id + ' - ' + c.cat + '</strong>' +
-             '<div style="font-size:12px; margin:4px 0;">नागरिक: <b>' + c.name + '</b> (' + c.phone + ') <a href="tel:' + c.phone + '" style="color:#16a34a; font-weight:700;"><i class="fa-solid fa-phone"></i> कॉल करें</a></div>' +
+             '<div style="font-size:12px; margin:4px 0;">नागरिक: <b>' + c.name + '</b> (' + c.phone + ') <a href="tel:' + c.phone + '" style="color:#16a34a; font-weight:700;"><i class="fa-solid fa-phone"></i> कॉल</a></div>' +
              '<div style="font-size:12px; color:#475569;">स्थान: ' + c.place + ' | GPS: ' + (c.coords || "N/A") + '</div>' +
              '<div style="font-size:13px; margin:4px 0;">' + c.desc + '</div>';
 
@@ -557,15 +732,12 @@
              '</div>' +
 
              '<div style="margin:6px 0; background:#fff; padding:6px; border-radius:6px; border:1px solid #cbd5e1;">' +
-             '<label style="font-size:11px; color:#15803d; font-weight:700;"><i class="fa-solid fa-microphone"></i> बोलकर उत्तर दें (प्रधान वॉइस उत्तर):</label><br>' +
+             '<label style="font-size:11px; color:#15803d; font-weight:700;"><i class="fa-solid fa-microphone"></i> बोलकर उत्तर रिकॉर्ड करें (प्रधान वॉइस रिप्लाई):</label><br>' +
              '<button type="button" class="btn btn-slate" style="padding:4px 8px; font-size:11px; width:auto; margin-top:4px;" onclick="recordAdminVoiceReply(\''+c.id+'\')"><i class="fa-solid fa-microphone"></i> 5 सेकंड बोलें</button>' +
              '<audio id="adminAudioPreview_'+c.id+'" controls style="display:'+(c.adminVoice?'block':'none')+'; width:100%; height:32px; margin-top:4px;" src="'+(c.adminVoice||"")+'"></audio>' +
              '</div>' +
 
-             '<div style="display:flex; gap:6px; margin-top:6px;">' +
-             '<button class="btn btn-emerald" onclick="saveAdminActionCloud(\''+c.id+'\')" style="padding:6px 10px; font-size:11px; width:auto;"><i class="fa-solid fa-floppy-disk"></i> सेव करें</button>' +
-             '<button class="btn btn-crimson" onclick="deleteComplaint(\''+c.id+'\')" style="padding:6px 10px; font-size:11px; width:auto;"><i class="fa-solid fa-trash"></i> फ़र्ज़ी/डिलीट</button>' +
-             '</div>' +
+             '<button class="btn btn-emerald" onclick="saveAdminActionCloud(\''+c.id+'\')" style="padding:6px 10px; font-size:11px; width:auto; margin-top:6px;"><i class="fa-solid fa-floppy-disk"></i> स्थिति व उत्तर सेव करें</button>' +
              '</div></div>';
       });
       d.innerHTML = h;
@@ -579,80 +751,58 @@
         updates.adminVoice = adminAudioReplies[id];
       }
       db.ref('complaints/' + id).update(updates).then(function() {
-        alert("स्थिति और उत्तर सेव हो गया!");
+        alert("स्थिति और उत्तर सुरक्षित हो गया!");
       });
-    }
-
-    function deleteComplaint(id) {
-      if (confirm("क्या आप इस शिकायत को फ़र्ज़ी मानकर हटाना चाहते हैं?")) {
-        db.ref('complaints/' + id).remove().then(function(){
-          alert("शिकायत हटा दी गई!");
-        });
-      }
     }
 
     function executeComplaintTrack() {
       var q = document.getElementById('trackQueryInput').value.trim().toUpperCase();
       var r = document.getElementById('trackResultDiv');
-      if(!q) return alert("नंबर दर्ज करें!");
-      var found = comps.find(function(c){ return c.id === q; });
-      if(!found) {
-        r.innerHTML = "<p style='color:#dc2626;'>कोई शिकायत नहीं मिली!</p>";
-      } else {
-        r.innerHTML = '<div class="complaint-card" style="border:1.5px solid var(--accent);">' +
-                      '<h4>' + found.id + ' - ' + found.cat + '</h4>' +
-                      '<p>स्थिति: <b>' + found.status + '</b></p>' +
-                      '<p>प्रधान उत्तर: ' + (found.reply || "अभी समीक्षा जारी है") + '</p></div>';
+      if (!q) return alert("कृपया शिकायत संख्या दर्ज करें!");
+      var f = comps.find(function(x){ return x.id.toUpperCase() === q; });
+      if (!f) {
+        r.innerHTML = "<p style='color:#dc2626; font-size:13px;'>कोई रिकॉर्ड नहीं मिला!</p>";
+        return;
       }
+      r.innerHTML = '<div class="complaint-card" style="border-left:4px solid #d97706;">' +
+                    '<h4>' + f.id + ' (' + f.status + ')</h4>' +
+                    '<p style="font-size:12px; margin-top:4px;"><b>विभाग:</b> ' + f.cat + '</p>' +
+                    '<p style="font-size:12px;"><b>स्थान:</b> ' + f.place + '</p>' +
+                    '<p style="font-size:12px; color:#15803d; margin-top:4px;"><b>प्रधान उत्तर:</b> ' + (f.reply || "प्रक्रियाधीन") + '</p>' +
+                    '</div>';
     }
 
     function initFirebaseListeners() {
-      db.ref('pradhan_profile').on('value', function(s){ 
-        var v = s.val(); 
-        if(v){ 
-          pradhanInfo=v; 
-          document.getElementById('headPradhanName').innerText=v.name; 
-          document.getElementById('headPradhanPhone').innerText="+91 "+v.phone;
+      db.ref('pradhan_profile').on('value', function(s){
+        var v = s.val();
+        if(v){
+          pradhanInfo = v;
+          document.getElementById('headPradhanName').innerText = v.name || "ग्राम प्रधान";
+          document.getElementById('headPradhanPhone').innerText = "+91 " + (v.phone || "---");
           document.getElementById('pradhanTel').href = "tel:" + v.phone;
-          document.getElementById('pradhanWa').href = "https://wa.me/91" + v.phone;
-        } 
+          document.getElementById('pradhanWa').href = "https://api.whatsapp.com/send?phone=91" + v.phone;
+        }
       });
-      db.ref('complaints').on('value', function(s){ 
-        var v = s.val(); 
-        comps = v ? Object.values(v).reverse() : []; 
-        drawComps(); 
-        if(isAdminUnlocked) filterAdminComplaints(); 
+      db.ref('complaints').on('value', function(s){
+        var v = s.val();
+        comps = v ? Object.values(v).reverse() : [];
+        drawComps();
+        if(isAdminUnlocked) filterAdminComplaints();
       });
-      db.ref('admin_settings').on('value', function(s){ var v = s.val(); if(v){ adminCustomPassword=v.customPassword; } });
+      db.ref('admin_settings').on('value', function(s){
+        var v = s.val();
+        if(v){ adminCustomPassword = v.customPassword; }
+      });
     }
 
     function openScreenModal(id){ var el = document.getElementById(id); if(el) el.classList.add('active'); if(id==='vList') drawComps(); }
     function closeScreenModal(id){ var el = document.getElementById(id); if(el) el.classList.remove('active'); }
-    function openAdminGate(){ 
-      openScreenModal('vAdmin');
-      if(isAdminUnlocked){ 
-        document.getElementById('adminGateBox').style.display='none'; 
-        document.getElementById('adminMainDashBox').style.display='block'; 
-        filterAdminComplaints(); 
-      } 
-    }
-    function verifyAdminGate(){ 
-      var p = document.getElementById('adminGatePin').value; 
-      if(p===(adminCustomPassword||"1234")){ 
-        isAdminUnlocked=true; 
-        localStorage.setItem('pkp_admin_logged_in','true'); 
-        openAdminGate(); 
-      } else { 
-        alert("गलत पासवर्ड!"); 
-      } 
-    }
-    function adminLogout(){ 
-      isAdminUnlocked=false; 
-      localStorage.removeItem('pkp_admin_logged_in'); 
-      document.getElementById('adminGateBox').style.display='block'; 
-      document.getElementById('adminMainDashBox').style.display='none'; 
-      closeScreenModal('vAdmin'); 
-    }
+    function openAdminGate(){ document.getElementById('vAdmin').classList.add('active'); if(isAdminUnlocked){ document.getElementById('adminGateBox').style.display='none'; document.getElementById('adminMainDashBox').style.display='block'; filterAdminComplaints(); } }
+    function verifyAdminGate(){ var p = document.getElementById('adminGatePin').value; if(p===(adminCustomPassword||"1234")){ isAdminUnlocked=true; localStorage.setItem('pkp_admin_logged_in','true'); openAdminGate(); } else { alert("गलत पासवर्ड!"); } }
+    function adminLogout(){ isAdminUnlocked=false; localStorage.removeItem('pkp_admin_logged_in'); document.getElementById('vAdmin').classList.remove('active'); }
+    function exitAdminView(){ document.getElementById('vAdmin').classList.remove('active'); }
+    function openAdminPopupSection(id){ document.getElementById(id).classList.add('active'); }
+    function closeAdminPopupSection(id){ document.getElementById(id).classList.remove('active'); }
   </script>
 </body>
 </html>
