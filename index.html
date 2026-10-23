@@ -4,7 +4,7 @@
   <meta name="google-site-verification" content="jQKv4rlBXQ0Z-Q0c-sPl0SgRGPl1UUu2W--Hnz3WEio" />
 
   <title>मेरा पाकरपुर - ग्राम जन समस्या निवारण एवं सेवा पोर्टल</title>
-  <meta name="description" content="मेरा पाकरपुर ग्राम पंचायत का आधिकारिक डिजिटल पोर्टल। जन शिकायतें, क्रय-विक्रय, सूचना बोर्ड, 7-दिवसीय मौसम, विकास कोष व सरकारी योजनाएं।">
+  <meta name="description" content="मेरा पाकरपुर ग्राम पंचायत का आधिकारिक डिजिटल पोर्टल। जन शिकायतें, क्रय-विक्रय, किराया डायरेक्टरी, सूचना बोर्ड, 7-दिवसीय मौसम व सरकारी योजनाएं।">
   <meta name="keywords" content="Mera Pakarpur, मेरा पाकरपुर, Pakarpur portal, ग्राम पंचायत पाकरपुर">
 
   <meta charset="UTF-8">
@@ -83,23 +83,17 @@
 
     header {
       background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-      color: #fff; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;
+      color: #fff; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;
       position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 14px rgba(21, 128, 61, 0.3);
     }
-    .header-center { display: flex; align-items: center; gap: 8px; }
+    .header-center { display: flex; align-items: center; gap: 10px; }
     .header-logo-img {
-      width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #fff; background: #fff;
+      width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid #fff; background: #fff;
       cursor: pointer; transition: transform 0.2s;
     }
-    .brand-title { font-size: 16px; font-weight: 800; text-align: left; line-height: 1.2; }
+    .brand-title { font-size: 17px; font-weight: 800; text-align: left; line-height: 1.2; }
     .brand-title span { display: block; font-size: 10px; color: #bbf7d0; font-weight: 500; }
 
-    .header-btn {
-      background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.35);
-      color: #fff; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer;
-      overflow: hidden; padding: 0;
-    }
-    .header-user-avatar { width: 100%; height: 100%; object-fit: cover; display: none; }
     .admin-secret-btn {
       background: rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.5);
       color: #fef08a; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer;
@@ -149,22 +143,6 @@
       justify-content: center; font-size: 16px; color: #fff;
     }
     .action-tile span { display: block; font-size: 11px; font-weight: 700; color: #334155; line-height: 1.2; }
-
-    /* SEPARATE PROFILE BUTTON AT BOTTOM */
-    .profile-tile-bottom-wrap {
-      display: flex; justify-content: center; margin: 10px 0 16px;
-    }
-    .profile-tile-small {
-      display: inline-flex; align-items: center; gap: 10px; background: #ffffff;
-      border: 1.5px solid #86efac; border-radius: 30px; padding: 6px 18px 6px 8px;
-      cursor: pointer; box-shadow: 0 3px 10px rgba(22, 163, 74, 0.12); transition: all 0.2s ease;
-    }
-    .profile-tile-small:active { transform: scale(0.95); background: #f0fdf4; border-color: var(--primary); }
-    .profile-tile-small .tile-icon-small {
-      width: 26px; height: 26px; border-radius: 50%; background: #16a34a;
-      display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff;
-    }
-    .profile-tile-small span { font-size: 12px; font-weight: 700; color: #166534; line-height: 1; }
 
     /* ADMIN EXCLUSIVE SQUARE GRID TILES */
     .admin-square-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0; }
@@ -236,9 +214,6 @@
     .adm-btn-del {
       background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
     }
-    .adm-btn-block {
-      background: #450a0a; color: #fecaca; border: 1px solid #dc2626; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
-    }
 
     .complaint-card, .notice-card, .directory-card, .scheme-card, .fund-item-card, .gallery-card, .market-card {
       background: #ffffff; border-radius: 12px; padding: 12px; border: 1px solid var(--border); margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
@@ -260,11 +235,6 @@
       background: #fff; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; border-radius: 14px; padding: 16px; position: relative;
     }
 
-    .mini-logout-btn {
-      display: inline-flex; align-items: center; gap: 4px; background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5;
-      padding: 5px 10px; border-radius: 7px; font-size: 11px; font-weight: 700; cursor: pointer; float: right;
-    }
-
     .hourly-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
     .hourly-scroll::-webkit-scrollbar { display: none; }
     .hourly-card { min-width: 62px; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 8px 4px; text-align: center; font-size: 11px; flex-shrink: 0; }
@@ -273,17 +243,6 @@
 
     .zoomable-pic { cursor: pointer; transition: transform 0.2s; }
     .zoomable-pic:active { transform: scale(0.96); }
-
-    .stat-square-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 10px 0; }
-    .stat-square { padding: 8px 4px; border-radius: 10px; text-align: center; color: #fff; font-weight: 700; }
-    .stat-square span { display: block; font-size: 10px; opacity: 0.9; margin-bottom: 2px; }
-    .stat-square h4 { font-size: 18px; line-height: 1; }
-
-    .user-profile-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-    .user-avatar-circle {
-      width: 58px; height: 58px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);
-      background: #dcfce7; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--primary);
-    }
 
     /* GHOST MODE & SUPER ADMIN STYLING */
     #ghostModeBanner {
@@ -348,17 +307,6 @@
     </div>
   </div>
 
-  <!-- CITIZEN PROFILE & COMPLAINTS MODAL -->
-  <div class="image-modal" id="citizenDetailModal">
-    <div class="modal-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:10px;">
-        <h4 style="color:#0284c7; font-size:15px;"><i class="fa-solid fa-id-badge"></i> नागरिक संपूर्ण विवरण</h4>
-        <button style="border:none; background:#dc2626; color:#fff; width:30px; height:30px; border-radius:50%; font-size:15px; cursor:pointer;" onclick="closeCitizenDetailModal()">✕</button>
-      </div>
-      <div id="citizenModalContent"></div>
-    </div>
-  </div>
-
   <!-- GOOGLE STYLE WEATHER FORECAST MODAL -->
   <div class="image-modal" id="weatherFullModal">
     <div class="modal-box">
@@ -387,11 +335,6 @@
   </div>
 
   <header>
-    <button class="header-btn" onclick="openUserProfileDirect()" title="नागरिक खाता">
-      <img id="headerUserAvatar" class="header-user-avatar" src="" alt="Avatar">
-      <i id="headerUserIcon" class="fa-solid fa-circle-user"></i>
-    </button>
-
     <div class="header-center" id="brandCenterSecretArea">
       <img id="headerPanchayatLogo" class="header-logo-img zoomable-pic" src="https://via.placeholder.com/40?text=PKP" onclick="handleLogoClick(event)" alt="Logo">
       <div class="brand-title" onclick="handleLogoClick(event)" style="cursor:pointer; user-select:none;">
@@ -435,7 +378,7 @@
       </div>
     </div>
 
-    <!-- CITIZEN PORTAL GRID TILES -->
+    <!-- CITIZEN PORTAL GRID TILES (OPEN FOR EVERYONE - NO LOGIN REQUIRED) -->
     <div class="actions-grid" id="mainActionsGrid">
       <div class="action-tile" onclick="openScreenModal('vNew')">
         <div class="tile-icon" style="background: #15803d;"><i class="fa-solid fa-feather-pointed"></i></div>
@@ -450,42 +393,44 @@
         <span>शिकायत स्थिति</span>
       </div>
       
+      <div class="action-tile" onclick="openScreenModal('vRental')">
+        <div class="tile-icon" style="background: #059669;"><i class="fa-solid fa-tractor"></i></div>
+        <span>किराया डायरेक्टरी</span>
+      </div>
+
       <div class="action-tile" onclick="openScreenModal('vMarket')">
         <div class="tile-icon" style="background: #ea580c;"><i class="fa-solid fa-store"></i></div>
-        <span>क्रय-विक्रय व सेवा</span>
+        <span>पशु व बाज़ार</span>
+      </div>
+
+      <div class="action-tile" onclick="openScreenModal('vDirectory')">
+        <div class="tile-icon" style="background: #4f46e5;"><i class="fa-solid fa-address-book"></i></div>
+        <span>ज़रूरी नंबर</span>
       </div>
 
       <div class="action-tile" onclick="openScreenModal('vNotice')">
         <div class="tile-icon" style="background: #dc2626;"><i class="fa-solid fa-bullhorn"></i></div>
         <span>सूचना बोर्ड</span>
       </div>
-      <div class="action-tile" onclick="openScreenModal('vDirectory')">
-        <div class="tile-icon" style="background: #4f46e5;"><i class="fa-solid fa-address-book"></i></div>
-        <span>हेल्पलाइन नंबर</span>
-      </div>
+
       <div class="action-tile" onclick="openScreenModal('vBudget')">
         <div class="tile-icon" style="background: #0d9488;"><i class="fa-solid fa-building-columns"></i></div>
         <span>विकास कोष</span>
       </div>
+
       <div class="action-tile" onclick="openScreenModal('vGallery')">
         <div class="tile-icon" style="background: #e11d48;"><i class="fa-solid fa-images"></i></div>
         <span>विकास गैलरी</span>
       </div>
-      <div class="action-tile" onclick="openScreenModal('vTeam')">
-        <div class="tile-icon" style="background: #7c3aed;"><i class="fa-solid fa-users-gear"></i></div>
-        <span>पंचायत टीम</span>
-      </div>
+
       <div class="action-tile" onclick="openScreenModal('vSchemes')">
         <div class="tile-icon" style="background: #2563eb;"><i class="fa-solid fa-hand-holding-hand"></i></div>
         <span>सरकारी योजना</span>
       </div>
-    </div>
 
-    <!-- COMPACT PROFILE BUTTON AT BOTTOM -->
-    <div class="profile-tile-bottom-wrap">
-      <div class="profile-tile-small" onclick="openUserProfileDirect()" title="मेरी प्रोफ़ाइल / नागरिक खाता">
-        <div class="tile-icon-small"><i class="fa-solid fa-id-card"></i></div>
-        <span>मेरा खाता / प्रोफाइल देखें</span>
+      <div class="action-tile" onclick="openScreenModal('vTeam')">
+        <div class="tile-icon" style="background: #7c3aed;"><i class="fa-solid fa-users-gear"></i></div>
+        <span>पंचायत टीम</span>
       </div>
     </div>
 
@@ -539,18 +484,12 @@
             </div>
           </div>
 
-          <!-- PURE ADMIN CONTROL ICONS (EXCLUSIVELY FOR SUPERVISION) -->
+          <!-- PURE ADMIN CONTROL ICONS -->
           <div class="admin-square-grid">
             <div class="admin-square-tile" onclick="openAdminPopupSection('secAdminGrievanceModal')">
               <span class="icon-badge" id="adminPendingCompBadge">0</span>
               <div class="adm-tile-icon" style="background: #15803d;"><i class="fa-solid fa-list-check"></i></div>
               <span>शिकायत समीक्षा व एक्शन</span>
-            </div>
-
-            <div class="admin-square-tile" onclick="openAdminPopupSection('secUsersForm')">
-              <span class="icon-badge" id="adminActiveBadge">0</span>
-              <div class="adm-tile-icon" style="background: #0284c7;"><i class="fa-solid fa-users-gear"></i></div>
-              <span>नागरिक व सुरक्षा नियंत्रण</span>
             </div>
 
             <div class="admin-square-tile" onclick="openAdminPopupSection('secAdminMarketModal')">
@@ -599,6 +538,51 @@
 
   <!-- ==================== USER SCREEN POPUP MODALS ==================== -->
 
+  <!-- POPUP: RENTAL DIRECTORY (NEW) -->
+  <div id="vRental" class="screen-modal">
+    <div class="screen-modal-card">
+      <button class="red-close-btn" onclick="closeScreenModal('vRental')" title="बंद करें">✕</button>
+      <div class="card-title">
+        <i class="fa-solid fa-tractor" style="color: #059669;"></i> किराए के कृषि यंत्र व औज़ार
+      </div>
+      <p style="font-size:12px; color:#64748b; margin-bottom:12px;">
+        गाँव में सीधे मालिक से संपर्क करें और बिना कमीशन किराए पर बुक करें:
+      </p>
+
+      <div class="directory-card" style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid #16a34a;">
+        <div>
+          <h4 style="font-size:14px; font-weight:700;">महिंद्रा ट्रैक्टर + रोटावेटर</h4>
+          <p style="font-size:12px; color:#475569;">मालिक: रमेश यादव | दर: <b style="color:#16a34a;">₹700/घंटा</b></p>
+        </div>
+        <a href="tel:9876543214" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
+      </div>
+
+      <div class="directory-card" style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid #16a34a;">
+        <div>
+          <h4 style="font-size:14px; font-weight:700;">कल्टीवेटर व जुताई ट्रॉली</h4>
+          <p style="font-size:12px; color:#475569;">मालिक: दिनेश सिंह | दर: <b style="color:#16a34a;">₹500/घंटा</b></p>
+        </div>
+        <a href="tel:9876543215" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
+      </div>
+
+      <div class="directory-card" style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid #16a34a;">
+        <div>
+          <h4 style="font-size:14px; font-weight:700;">पानी का 5HP डीज़ल पंप सेट</h4>
+          <p style="font-size:12px; color:#475569;">मालिक: छोटेलाल | दर: <b style="color:#16a34a;">₹150/घंटा</b></p>
+        </div>
+        <a href="tel:9876543216" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
+      </div>
+
+      <div class="directory-card" style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid #16a34a;">
+        <div>
+          <h4 style="font-size:14px; font-weight:700;">थ्रेशर / मड़ाई मशीन</h4>
+          <p style="font-size:12px; color:#475569;">मालिक: संतराम | दर: <b style="color:#16a34a;">सीज़न अनुसार</b></p>
+        </div>
+        <a href="tel:9876543217" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
+      </div>
+    </div>
+  </div>
+
   <!-- POPUP: KRAY VIKRAY & SKILLS MARKETPLACE -->
   <div id="vMarket" class="screen-modal">
     <div class="screen-modal-card">
@@ -609,7 +593,7 @@
 
       <div style="background:#fff7ed; border:1px solid #fed7aa; padding:10px; border-radius:10px; margin-bottom:12px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <h4 style="font-size:13px; color:#9a3412;"><i class="fa-solid fa-plus-circle"></i> नया सामान या अपनी सेवा जोड़ें</h4>
+          <h4 style="font-size:13px; color:#9a3412;"><i class="fa-solid fa-plus-circle"></i> नया सामान या पशु बिक्री जोड़ें</h4>
           <button class="btn btn-amber" style="width:auto; padding:5px 10px; font-size:11px;" onclick="toggleNewPostForm()">
             <i class="fa-solid fa-pen"></i> पोस्ट बनाएं
           </button>
@@ -617,20 +601,28 @@
 
         <div id="marketPostFormBox" style="display:none; margin-top:10px; border-top:1px dashed #fdba74; padding-top:10px;">
           <div class="form-group">
+            <label>आपका नाम *</label>
+            <input type="text" id="mUserName" placeholder="उदा. राम प्रसाद">
+          </div>
+          <div class="form-group">
+            <label>आपका मोबाइल नंबर *</label>
+            <input type="tel" id="mUserPhone" maxlength="10" placeholder="10-अंकीय मोबाइल नंबर">
+          </div>
+          <div class="form-group">
             <label>प्रकार चुनें *</label>
             <select id="mType">
-              <option value="सामान बिक्री">सामान बेचना है (अनाज, मवेशी, यंत्र, पुराना सामान)</option>
-              <option value="सेवा / हुनर">मेरी सेवा / हुनर (मिस्त्री, चालक, इलेक्ट्रीशियन, आदि)</option>
+              <option value="सामान बिक्री">सामान / पशु बिक्री (भैंस, गाय, अनाज, यंत्र)</option>
+              <option value="सेवा / हुनर">मेरी सेवा / हुनर (मिस्त्री, चालक, आदि)</option>
               <option value="खरीदना है">मुझे खरीदना है / आवश्यकता है</option>
             </select>
           </div>
           <div class="form-group">
             <label>शीर्षक / नाम *</label>
-            <input type="text" id="mTitle" placeholder="उदा. 5 क्विंटल गेंहू, या ट्रैक्टर चालक सेवा">
+            <input type="text" id="mTitle" placeholder="उदा. मुर्राह भैंस 12 लीटर, या 5 क्विंटल गेंहू">
           </div>
           <div class="form-group">
-            <label>मूल्य / पारिश्रमिक (₹) (ऐच्छिक)</label>
-            <input type="text" id="mPrice" placeholder="उदा. ₹2400 प्रति क्विंटल, या संपर्क करें">
+            <label>मूल्य (₹) (ऐच्छिक)</label>
+            <input type="text" id="mPrice" placeholder="उदा. ₹55,000 या संपर्क करें">
           </div>
           <div class="form-group">
             <label>फोटो जोड़ें (ऐच्छिक)</label>
@@ -638,7 +630,7 @@
           </div>
           <div class="form-group">
             <label>विस्तृत विवरण *</label>
-            <textarea id="mDesc" placeholder="सामान/सेवा की पूरी जानकारी दें..."></textarea>
+            <textarea id="mDesc" placeholder="सामान/पशु की पूरी जानकारी दें..."></textarea>
           </div>
           <button class="btn btn-emerald" onclick="submitMarketPostCloud()"><i class="fa-solid fa-upload"></i> बाज़ार में पोस्ट करें</button>
         </div>
@@ -659,11 +651,11 @@
       <form id="compForm" onsubmit="handleNewComp(event)">
         <div class="form-group">
           <label><i class="fa-solid fa-user"></i> आपका नाम *</label>
-          <input type="text" id="cName" required readonly style="background:#f8fafc;">
+          <input type="text" id="cName" required placeholder="अपना पूरा नाम दर्ज करें">
         </div>
         <div class="form-group">
           <label><i class="fa-solid fa-phone"></i> मोबाइल नंबर *</label>
-          <input type="tel" id="cPhone" maxlength="10" required readonly style="background:#f8fafc;">
+          <input type="tel" id="cPhone" maxlength="10" required placeholder="10-अंकीय मोबाइल नंबर">
         </div>
         <div class="form-group">
           <label><i class="fa-solid fa-layer-group"></i> समस्या का विभाग / श्रेणी *</label>
@@ -848,74 +840,6 @@
     </div>
   </div>
 
-  <!-- POPUP: Citizen Account & Profile -->
-  <div id="vProfile" class="screen-modal">
-    <div class="screen-modal-card">
-      <button class="red-close-btn" onclick="closeScreenModal('vProfile')" title="बंद करें">✕</button>
-
-      <div id="userAuthBox">
-        <div class="card-title">
-          <i class="fa-solid fa-user-lock" style="color: var(--accent);"></i> नागरिक खाता (पंजीकरण / लॉगिन)
-        </div>
-
-        <div style="display:flex; gap:8px; margin-bottom:14px;">
-          <button class="btn btn-amber" id="btnSubReg" onclick="switchAuthTab('reg')">
-            <i class="fa-solid fa-user-plus"></i> नया पंजीकरण
-          </button>
-          <button class="btn btn-slate" id="btnSubLogin" onclick="switchAuthTab('login')">
-            <i class="fa-solid fa-right-to-bracket"></i> लॉगिन करें
-          </button>
-        </div>
-
-        <div id="boxReg">
-          <div id="regReqNotice" style="display:none; padding:10px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; font-size:12px; color:#1e40af; margin-bottom:10px;">
-            <i class="fa-solid fa-clock-rotate-left"></i> अनुरोध भेजा गया: खाता अनुमोदन हेतु लंबित है।
-          </div>
-
-          <div class="form-group"><label>पूरा नाम *</label><input type="text" id="rName" placeholder="अपना पूरा नाम दर्ज करें"></div>
-          <div class="form-group"><label>मोबाइल नंबर *</label><input type="tel" id="rPhone" maxlength="10" placeholder="10-अंकीय मोबाइल नंबर"></div>
-          <div class="form-group"><label>टोला / मोहल्ला *</label><input type="text" id="rWard" placeholder="उदा. उत्तर टोला"></div>
-          <div class="form-group"><label>पासवर्ड बनाएं *</label><input type="password" id="rPass" placeholder="कम से कम 4 अक्षर"></div>
-          <button class="btn btn-amber" onclick="submitCitizenRegistrationRequest()">
-            <i class="fa-solid fa-paper-plane"></i> प्रधान जी को खाता अनुमोदन अनुरोध भेजें
-          </button>
-        </div>
-
-        <div id="boxLogin" style="display:none;">
-          <div class="form-group"><label>पंजीकृत मोबाइल नंबर</label><input type="tel" id="lPhone" maxlength="10" placeholder="10-अंकीय नंबर"></div>
-          <div class="form-group"><label>पासवर्ड</label><input type="password" id="lPass" placeholder="अपना पासवर्ड दर्ज करें"></div>
-          <button class="btn btn-emerald" onclick="userLogin()"><i class="fa-solid fa-unlock"></i> लॉगिन करें</button>
-        </div>
-      </div>
-
-      <div id="userProfileBox" style="display:none;">
-        <div class="card-title"><i class="fa-solid fa-address-card" style="color: var(--primary);"></i> मेरी सक्रिय नागरिक प्रोफ़ाइल</div>
-        
-        <div class="user-profile-header">
-          <img id="uAvatarImg" class="user-avatar-circle zoomable-pic" src="" style="display:none;" onclick="zoomSpecificImage(this.src)" alt="User Pic">
-          <div id="uAvatarIcon" class="user-avatar-circle"><i class="fa-solid fa-user"></i></div>
-          <div>
-            <h3 id="pName" style="font-size:16px; color:#1e293b;"></h3>
-            <p style="font-size:12px; color:#16a34a; font-weight:600;"><i class="fa-solid fa-circle-check"></i> प्रमाणित ग्राम नागरिक</p>
-            <span id="pPhone" style="font-size:12px; color:#64748b;"></span>
-          </div>
-        </div>
-
-        <p style="margin-bottom:6px; font-size:13px;"><strong>निवास / टोला:</strong> <span id="pWard"></span></p>
-
-        <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:10px; margin:12px 0;">
-          <label style="font-size:12px; color:#15803d; font-weight:700;"><i class="fa-solid fa-camera"></i> अपनी प्रोफाइल फोटो लगाएं / बदलें:</label>
-          <input type="file" accept="image/*" onchange="uploadUserAvatarCloud(event)" style="font-size:12px; padding:6px; margin-top:4px;">
-        </div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px dashed var(--border); padding-top:10px;">
-          <button class="btn btn-emerald" style="width:auto; padding:6px 14px;" onclick="closeScreenModal('vProfile'); openScreenModal('vNew');"><i class="fa-solid fa-feather-pointed"></i> नई शिकायत</button>
-          <button class="mini-logout-btn" onclick="userLogout()"><i class="fa-solid fa-power-off"></i> लॉगआउट</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- ==================== EXCLUSIVE ADMIN MODALS ==================== -->
 
   <!-- ADMIN: 1. Grievance Management Modal Desk -->
@@ -942,38 +866,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: 2. Users Management Modal -->
-  <div id="secUsersForm" class="screen-modal">
-    <div class="screen-modal-card" style="border: 2px solid #cbd5e1;">
-      <button class="red-close-btn" onclick="closeAdminPopupSection('secUsersForm')">✕</button>
-      <div class="card-title" style="color: #1e293b;"><i class="fa-solid fa-users"></i> नागरिक पंजीकरण व सक्रिय नागरिक</div>
-      <div style="margin-bottom:10px;">
-        <label style="font-size:11px;">अनुमोदन नीति:</label>
-        <select id="admApprovalModeSelect" onchange="changeApprovalModeCloud()">
-          <option value="manual">मैनुअल (प्रधान जी अनुमति दें)</option>
-          <option value="auto">ऑटो-एक्सेप्ट</option>
-        </select>
-      </div>
-
-      <div style="background:#fff7ed; border:1px solid #fed7aa; padding:8px; border-radius:8px; margin-bottom:8px;">
-        <span style="font-weight:700; font-size:11px; color:#9a3412;">लंबित अनुरोध (<span id="pendingReqCount">0</span>):</span>
-        <div id="pendingReqListDiv" style="font-size:11px; margin-top:4px;"></div>
-      </div>
-
-      <div style="background:#ffffff; border:1px solid #cbd5e1; padding:8px; border-radius:8px; margin-bottom:8px;">
-        <span style="font-weight:700; font-size:11px; color:#334155;">सक्रिय नागरिक (<span id="activeUserCount">0</span>):</span>
-        <div id="activeUserListDiv" style="max-height:180px; overflow-y:auto; font-size:11px; margin-top:4px;"></div>
-      </div>
-
-      <div style="background:#fef2f2; border:1px solid #fecaca; padding:8px; border-radius:8px;">
-        <span style="font-weight:700; font-size:11px; color:#991b1b;"><i class="fa-solid fa-user-slash"></i> प्रतिबंधित नागरिक सूची (<span id="blockedUserCount">0</span>):</span>
-        <p style="font-size:10px; color:#64748b; margin-bottom:4px;">अनुरोध आने पर नागरिक को दोबारा अनब्लॉक करें:</p>
-        <div id="blockedUserListDiv" style="max-height:140px; overflow-y:auto; font-size:11px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADMIN: 3. Marketplace Moderator Control Modal -->
+  <!-- ADMIN: 2. Marketplace Moderator Control Modal -->
   <div id="secAdminMarketModal" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secAdminMarketModal')">✕</button>
@@ -987,7 +880,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: 4. Broadcast Modal -->
+  <!-- ADMIN: 3. Broadcast Modal -->
   <div id="secBroadcastForm" class="screen-modal">
     <div class="screen-modal-card" style="border: 2px solid #fecaca; background: #fff5f5;">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secBroadcastForm')">✕</button>
@@ -1100,13 +993,9 @@
     var pradhanInfo = { name: "प्रधान प्रोफाइल उपलब्ध नहीं", phone: "नंबर उपलब्ध नहीं", pic: "", headerLogo: "" };
     var adminCustomPassword = null;
     var defaultCancelled = false;
-    var approvalMode = 'manual';
 
     var comps = [];
     var binComps = [];
-    var users = [];
-    var pendingUsers = [];
-    var blockedPhones = [];
     var notices = [];
     var directoryList = [];
     var fundsList = [];
@@ -1114,7 +1003,6 @@
     var galleryList = [];
     var marketPosts = [];
 
-    var curUser = JSON.parse(localStorage.getItem('pkp_live_cur_u')) || null;
     var isAdminUnlocked = (localStorage.getItem('pkp_admin_logged_in') === 'true');
     var adminSessionId = localStorage.getItem('pkp_admin_session_id') || null;
 
@@ -1148,10 +1036,6 @@
 
       if (isAdminUnlocked) {
         openAdminGate();
-      } else {
-        if (!curUser) {
-          openUserProfileDirect();
-        }
       }
     };
 
@@ -1265,25 +1149,23 @@
       compressPhoto(e.target.files[0], function(b64){ tempMarketPhoto = b64; });
     }
 
-    /* KRAY VIKRAY & SKILLS MARKETPLACE SUBMIT & RENDER */
+    /* KRAY VIKRAY & SKILLS MARKETPLACE SUBMIT & RENDER (OPEN TO ALL) */
     function submitMarketPostCloud() {
-      if (!curUser) {
-        alert("कृपया पहले लॉगिन करें!");
-        openUserProfileDirect();
-        return;
-      }
+      var userName = document.getElementById('mUserName').value.trim();
+      var userPhone = document.getElementById('mUserPhone').value.trim();
       var t = document.getElementById('mTitle').value.trim();
       var d = document.getElementById('mDesc').value.trim();
       var type = document.getElementById('mType').value;
       var pr = document.getElementById('mPrice').value.trim() || "परस्पर सहमति";
 
+      if (!userName || userPhone.length < 10) return alert("कृपया अपना नाम और 10-अंकीय मोबाइल नंबर अवश्य भरें!");
       if (!t || !d) return alert("कृपया शीर्षक और विवरण अवश्य भरें!");
 
       var id = "MKT-" + Date.now();
       var item = {
         id: id,
-        userName: curUser.name,
-        userPhone: curUser.phone,
+        userName: userName,
+        userPhone: userPhone,
         type: type,
         title: t,
         price: pr,
@@ -1305,13 +1187,12 @@
     function drawMarket() {
       var div = document.getElementById('marketListDiv');
       if (marketPosts.length === 0) {
-        div.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>अभी कोई सामान या सेवा पोस्ट नहीं की गई है। पहली पोस्ट आप बनाएं!</p>";
+        div.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>अभी कोई सामान या पशु बिक्री पोस्ट नहीं है। पहली पोस्ट आप बनाएं!</p>";
         return;
       }
 
       var h = "";
       marketPosts.forEach(function(item) {
-        var isMine = curUser && (curUser.phone === item.userPhone);
         var typeBadgeColor = (item.type === "सामान बिक्री") ? "#16a34a" : (item.type === "सेवा / हुनर" ? "#0284c7" : "#ea580c");
 
         h += '<div class="market-card" style="border-left: 4px solid ' + typeBadgeColor + ';">' +
@@ -1320,13 +1201,8 @@
              '<span class="badge" style="background:'+typeBadgeColor+'; float:none; margin-bottom:4px; display:inline-block;">'+item.type+'</span>' +
              '<h4 style="font-size:14px; font-weight:700; color:#1e293b; margin-top:2px;">'+item.title+'</h4>' +
              '<span style="font-size:12px; font-weight:800; color:#b45309;">मूल्य: '+item.price+'</span>' +
-             '</div>';
-
-        if (isMine) {
-          h += '<button onclick="deleteMarketPostCloud(\''+item.id+'\')" class="adm-btn-del" title="हटाएं"><i class="fa-solid fa-trash"></i> हटाएं</button>';
-        }
-
-        h += '</div>' +
+             '</div>' +
+             '</div>' +
              '<p style="font-size:12px; color:#475569; margin:6px 0;">'+item.desc+'</p>';
 
         if (item.photo) {
@@ -1377,17 +1253,9 @@
 
     /* POPUP MODAL HANDLERS FOR USER ICONS */
     function openScreenModal(modalId) {
-      if (!curUser && modalId !== 'vProfile' && modalId !== 'masterAuthModal' && modalId !== 'superAdminModal') {
-        openUserProfileDirect();
-        return;
-      }
       var target = document.getElementById(modalId);
       if (target) {
         target.classList.add('active');
-        if (modalId === 'vNew') {
-          document.getElementById('cName').value = curUser.name;
-          document.getElementById('cPhone').value = curUser.phone;
-        }
         if (modalId === 'vList') drawComps();
         if (modalId === 'vMarket') drawMarket();
         if (modalId === 'vNotice') drawNotices();
@@ -1536,8 +1404,6 @@
         if (val) {
           adminCustomPassword = val.customPassword || null;
           defaultCancelled = val.defaultCancelled || false;
-          approvalMode = val.approvalMode || 'manual';
-          document.getElementById('admApprovalModeSelect').value = approvalMode;
         }
       });
 
@@ -1570,47 +1436,6 @@
         var mBadge = document.getElementById('adminMarketBadge');
         if (mBadge) mBadge.innerText = marketPosts.length;
         if (isAdminUnlocked) renderAdminMarketModerator();
-      });
-
-      db.ref('users').on('value', function(snapshot) {
-        var val = snapshot.val();
-        users = val ? Object.values(val) : [];
-        
-        var badge = document.getElementById('adminActiveBadge');
-        if (badge) badge.innerText = users.length;
-
-        if (curUser) {
-          var updatedSelf = users.find(function(u){ return u.phone === curUser.phone; });
-          if (updatedSelf) {
-            var localSessionId = localStorage.getItem('pkp_cur_session_id');
-            if (updatedSelf.currentSessionId && localSessionId && updatedSelf.currentSessionId !== localSessionId) {
-              alert("आपका खाता किसी अन्य डिवाइस में लॉगिन हो चुका है। आप यहाँ से लॉगआउट हो रहे हैं।");
-              userLogout();
-              return;
-            }
-            curUser = updatedSelf;
-            localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
-          } else {
-            if (!isAdminUnlocked) {
-              alert("आपका खाता उपलब्ध नहीं है या व्यवस्थापक द्वारा प्रतिबंधित कर दिया गया है।");
-              userLogout();
-            }
-          }
-        }
-        syncUserState();
-        if (isAdminUnlocked) renderActiveUsers();
-      });
-
-      db.ref('pending_users').on('value', function(snapshot) {
-        var val = snapshot.val();
-        pendingUsers = val ? Object.values(val) : [];
-        if (isAdminUnlocked) renderPendingRequests();
-      });
-
-      db.ref('blocked_phones').on('value', function(snapshot) {
-        var val = snapshot.val();
-        blockedPhones = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
-        if (isAdminUnlocked) renderBlockedUsers();
       });
 
       db.ref('notices').on('value', function(snapshot) {
@@ -1786,135 +1611,6 @@
       d.innerHTML = h;
     }
 
-    function openUserProfileDirect() {
-      openScreenModal('vProfile');
-    }
-
-    function switchAuthTab(type) {
-      document.getElementById('btnSubReg').className = (type === 'reg') ? 'btn btn-amber' : 'btn btn-slate';
-      document.getElementById('btnSubLogin').className = (type === 'login') ? 'btn btn-emerald' : 'btn btn-slate';
-      document.getElementById('boxReg').style.display = (type === 'reg') ? 'block' : 'none';
-      document.getElementById('boxLogin').style.display = (type === 'login') ? 'block' : 'none';
-    }
-
-    function submitCitizenRegistrationRequest() {
-      var n = document.getElementById('rName').value.trim();
-      var p = document.getElementById('rPhone').value.trim();
-      var w = document.getElementById('rWard').value.trim();
-      var pass = document.getElementById('rPass').value.trim();
-
-      if (!n || p.length < 10 || !w || !pass) return alert("कृपया सभी विवरण भरें!");
-      if (blockedPhones.includes(p)) return alert("यह मोबाइल नंबर व्यवस्थापक द्वारा स्थायी रूप से प्रतिबंधित (Blocked) है!");
-
-      var sessionId = "SESS_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-      var newUserObj = { name: n, phone: p, ward: w, pass: pass, avatar: "", date: new Date().toLocaleDateString('hi-IN'), currentSessionId: sessionId };
-
-      if (approvalMode === 'auto') {
-        db.ref('users/' + p).set(newUserObj);
-        curUser = newUserObj;
-        localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
-        localStorage.setItem('pkp_cur_session_id', sessionId);
-        alert("खाता सक्रिय हो गया है!");
-        syncUserState();
-        closeScreenModal('vProfile');
-        openScreenModal('vNew');
-      } else {
-        db.ref('pending_users/' + p).set(newUserObj);
-        document.getElementById('regReqNotice').style.display = 'block';
-        alert("अनुरोध भेज दिया गया है।");
-      }
-    }
-
-    /* CITIZEN LOGIN WITH STRICT SINGLE SESSION LOGIC */
-    function userLogin() {
-      var p = document.getElementById('lPhone').value.trim();
-      var pass = document.getElementById('lPass').value.trim();
-
-      if (blockedPhones.includes(p)) {
-        return alert("यह खाता व्यवस्थापक द्वारा प्रतिबंधित (Blocked) है। कृपया ग्राम प्रधान जी से संपर्क करें।");
-      }
-
-      var found = users.find(function(u){ return u.phone === p && u.pass === pass; });
-      if (found) {
-        var newSession = "SESS_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-        found.currentSessionId = newSession;
-
-        db.ref('users/' + p + '/currentSessionId').set(newSession).then(function() {
-          curUser = found;
-          localStorage.setItem('pkp_live_cur_u', JSON.stringify(found));
-          localStorage.setItem('pkp_cur_session_id', newSession);
-          alert("लॉगिन सफल!");
-          syncUserState();
-          closeScreenModal('vProfile');
-          openScreenModal('vNew');
-        });
-      } else {
-        alert("गलत नंबर या पासवर्ड!");
-      }
-    }
-
-    function userLogout() {
-      if (curUser && curUser.phone) {
-        db.ref('users/' + curUser.phone + '/currentSessionId').remove();
-      }
-      curUser = null;
-      localStorage.removeItem('pkp_live_cur_u');
-      localStorage.removeItem('pkp_cur_session_id');
-      document.querySelectorAll('.screen-modal').forEach(function(m){ m.classList.remove('active'); });
-      syncUserState();
-      openUserProfileDirect();
-    }
-
-    function uploadUserAvatarCloud(e) {
-      if (!curUser) return;
-      compressPhoto(e.target.files[0], function(b64){
-        db.ref('users/' + curUser.phone).update({ avatar: b64 }).then(function() {
-          curUser.avatar = b64;
-          localStorage.setItem('pkp_live_cur_u', JSON.stringify(curUser));
-          syncUserState();
-          alert("आपकी प्रोफाइल फोटो सफलतापूर्वक अपडेट हो गई!");
-        });
-      });
-    }
-
-    function syncUserState() {
-      var headerAvatar = document.getElementById('headerUserAvatar');
-      var headerIcon = document.getElementById('headerUserIcon');
-
-      if (curUser) {
-        document.getElementById('userAuthBox').style.display = 'none';
-        document.getElementById('userProfileBox').style.display = 'block';
-        document.getElementById('pName').innerText = curUser.name;
-        document.getElementById('pPhone').innerText = "+91 " + curUser.phone;
-        document.getElementById('pWard').innerText = curUser.ward;
-
-        var uImg = document.getElementById('uAvatarImg');
-        var uIco = document.getElementById('uAvatarIcon');
-
-        if (curUser.avatar) {
-          uImg.src = curUser.avatar;
-          uImg.style.display = 'block';
-          uIco.style.display = 'none';
-
-          headerAvatar.src = curUser.avatar;
-          headerAvatar.style.display = 'block';
-          headerIcon.style.display = 'none';
-        } else {
-          uImg.style.display = 'none';
-          uIco.style.display = 'flex';
-
-          headerAvatar.style.display = 'none';
-          headerIcon.style.display = 'inline-block';
-        }
-      } else {
-        document.getElementById('userAuthBox').style.display = 'block';
-        document.getElementById('userProfileBox').style.display = 'none';
-
-        headerAvatar.style.display = 'none';
-        headerIcon.style.display = 'inline-block';
-      }
-    }
-
     function executeComplaintTrack() {
       var q = document.getElementById('trackQueryInput').value.trim();
       var res = document.getElementById('trackResultDiv');
@@ -2039,9 +1735,6 @@
     }
 
     function renderAdminDashboard() {
-      renderPendingRequests();
-      renderActiveUsers();
-      renderBlockedUsers();
       filterAdminComplaints();
       renderRecycleBin();
       renderAdminMarketModerator();
@@ -2096,7 +1789,6 @@
       var currentActivePass = adminCustomPassword || (!defaultCancelled ? "1234" : null);
       var isGhostActive = (sessionStorage.getItem('pkp_ghost_active') === 'true');
 
-      // Ghost Mode allows overriding password without checking old pass
       if (!isGhostActive && oldPass !== currentActivePass) return alert("पुराना पासवर्ड गलत है!");
       if (!newPass1 || newPass1.length < 4) return alert("नया पासवर्ड कम से कम 4 अक्षरों का हो!");
       if (newPass1 !== newPass2) return alert("दोनों पासवर्ड मेल नहीं खाते!");
@@ -2105,171 +1797,6 @@
         document.getElementById('changePassSection').style.display = 'none';
         alert("नया पासवर्ड सुरक्षित हो गया!");
       });
-    }
-
-    function changeApprovalModeCloud() {
-      var mode = document.getElementById('admApprovalModeSelect').value;
-      db.ref('admin_settings').update({ approvalMode: mode }).then(function() {
-        alert("पंजीकरण नीति अपडेट हो गई!");
-      });
-    }
-
-    function renderPendingRequests() {
-      var div = document.getElementById('pendingReqListDiv');
-      document.getElementById('pendingReqCount').innerText = pendingUsers.length;
-      if (pendingUsers.length === 0) {
-        div.innerHTML = "<p style='color:#64748b;'>कोई नया अनुरोध नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      pendingUsers.forEach(function(u) {
-        h += '<div style="background:#fff; border:1px solid #e2e8f0; padding:8px; border-radius:8px; margin-bottom:6px;">' +
-             '<strong>' + u.name + ' (' + u.phone + ')</strong> - ' + u.ward +
-             '<div style="display:flex; gap:6px; margin-top:6px;">' +
-             '<button onclick="approveCitizenCloud(\''+u.phone+'\')" style="background:#16a34a; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:700; cursor:pointer;">स्वीकारें</button>' +
-             '<button onclick="rejectCitizenCloud(\''+u.phone+'\')" style="background:#d97706; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:700; cursor:pointer;">हटाएं</button>' +
-             '<button onclick="blockCitizenPermanentlyCloud(\''+u.phone+'\')" style="background:#dc2626; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:700; cursor:pointer;">ब्लॉक</button>' +
-             '</div></div>';
-      });
-      div.innerHTML = h;
-    }
-
-    function approveCitizenCloud(phone) {
-      var u = pendingUsers.find(function(item){ return item.phone === phone; });
-      if (!u) return;
-      db.ref('users/' + phone).set(u).then(function() {
-        db.ref('pending_users/' + phone).remove();
-        alert(u.name + " का खाता सक्रिय हो गया!");
-      });
-    }
-    function rejectCitizenCloud(phone) { db.ref('pending_users/' + phone).remove(); }
-
-    function blockCitizenPermanentlyCloud(phone) {
-      if (confirm("क्या आप सचमुच नागरिक (" + phone + ") को हमेशा के लिए ब्लॉक करना चाहते हैं?")) {
-        db.ref('blocked_phones/' + phone).set(phone).then(function() {
-          db.ref('pending_users/' + phone).remove();
-          db.ref('users/' + phone).remove();
-          alert("मोबाइल नंबर (" + phone + ") को सफलतापूर्वक ब्लॉक कर दिया गया!");
-        });
-      }
-    }
-
-    function unblockCitizenCloud(phone) {
-      if (confirm("क्या आप नागरिक (" + phone + ") को अनब्लॉक करना चाहते हैं?")) {
-        db.ref('blocked_phones/' + phone).remove().then(function() {
-          alert("मोबाइल नंबर (" + phone + ") अनब्लॉक हो चुका है। अब वे पुनः पोर्टल पर लॉगिन या पंजीकरण कर सकते हैं!");
-        });
-      }
-    }
-
-    function renderActiveUsers() {
-      var div = document.getElementById('activeUserListDiv');
-      document.getElementById('activeUserCount').innerText = users.length;
-      if (users.length === 0) {
-        div.innerHTML = "<p style='color:#64748b;'>कोई सक्रिय नागरिक नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      users.forEach(function(u) {
-        var avatarThumbnail = u.avatar ? '<img src="'+u.avatar+'" style="width:28px; height:28px; border-radius:50%; object-fit:cover; margin-right:6px; border:1px solid #16a34a;">' : '<i class="fa-solid fa-circle-user" style="font-size:22px; color:#64748b; margin-right:6px;"></i>';
-
-        h += '<div style="display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid #e2e8f0; padding:6px 10px; border-radius:6px; margin-bottom:5px;">' +
-             '<div style="display:flex; align-items:center;">' + avatarThumbnail + '<div><b>' + u.name + '</b> (' + u.phone + ')<br><span style="color:#64748b; font-size:10px;">टोला: ' + u.ward + '</span></div></div>' +
-             '<div style="display:flex; gap:6px;">' +
-             '<button onclick="openCitizenDetailModal(\''+u.phone+'\')" style="background:#0284c7; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-eye"></i> विवरण</button>' +
-             '<button onclick="blockCitizenPermanentlyCloud(\''+u.phone+'\')" class="adm-btn-block" title="ब्लॉक करें"><i class="fa-solid fa-ban"></i> ब्लॉक</button>' +
-             '<button onclick="deleteCitizenUserCloud(\''+u.phone+'\')" class="adm-btn-del" title="हटाएं"><i class="fa-solid fa-trash"></i></button>' +
-             '</div></div>';
-      });
-      div.innerHTML = h;
-    }
-
-    function renderBlockedUsers() {
-      var div = document.getElementById('blockedUserListDiv');
-      document.getElementById('blockedUserCount').innerText = blockedPhones.length;
-      if (blockedPhones.length === 0) {
-        div.innerHTML = "<p style='color:#64748b;'>कोई नागरिक ब्लॉक नहीं है।</p>";
-        return;
-      }
-      var h = "";
-      blockedPhones.forEach(function(phone) {
-        h += '<div style="display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid #fecaca; padding:6px 10px; border-radius:6px; margin-bottom:4px;">' +
-             '<div><b style="color:#991b1b;"><i class="fa-solid fa-ban"></i> +91 ' + phone + '</b></div>' +
-             '<button onclick="unblockCitizenCloud(\''+phone+'\')" style="background:#16a34a; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-lock-open"></i> Unblock करें</button>' +
-             '</div>';
-      });
-      div.innerHTML = h;
-    }
-
-    function openCitizenDetailModal(phone) {
-      var u = users.find(function(item){ return item.phone === phone; });
-      if (!u) return alert("उपयोगकर्ता नहीं मिला!");
-
-      var userComps = comps.filter(function(c){ return c.phone === phone; });
-      var binUserComps = binComps.filter(function(c){ return c.phone === phone; });
-
-      var countResolved = userComps.filter(function(c){ return c.status === "निस्तारित"; }).length;
-      var countOngoing = userComps.filter(function(c){ return c.status === "लंबित" || c.status === "प्रगति पर"; }).length;
-      var countRejected = binUserComps.length + userComps.filter(function(c){ return c.status.includes("निरस्त"); }).length;
-
-      var userImgHtml = u.avatar ? '<img src="'+u.avatar+'" class="zoomable-pic" onclick="zoomSpecificImage(this.src)" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid #0284c7;">' : '<div style="width:52px; height:52px; border-radius:50%; background:#e0f2fe; color:#0284c7; display:flex; align-items:center; justify-content:center; font-size:24px;"><i class="fa-solid fa-user"></i></div>';
-
-      var out = '<div style="background:#f8fafc; border:1px solid #e2e8f0; padding:10px; border-radius:10px; margin-bottom:10px; display:flex; align-items:center; gap:12px;">' +
-                userImgHtml +
-                '<div>' +
-                '<h4 style="font-size:14px; color:#1e293b;"><i class="fa-solid fa-user"></i> ' + u.name + '</h4>' +
-                '<p style="font-size:12px; color:#475569;">मोबाइल: <a href="tel:'+u.phone+'" style="color:#16a34a; font-weight:700;">+91 '+u.phone+'</a></p>' +
-                '<p style="font-size:12px; color:#475569;">निवास / टोला: <b>' + u.ward + '</b></p>' +
-                '<p style="font-size:11px; color:#64748b;">पंजीकरण तिथि: ' + (u.date || "N/A") + '</p>' +
-                '</div></div>' +
-
-                '<div class="stat-square-grid">' +
-                '<div class="stat-square" style="background:#16a34a;">' +
-                '<span><i class="fa-solid fa-circle-check"></i> निस्तारित</span>' +
-                '<h4>' + countResolved + '</h4></div>' +
-                '<div class="stat-square" style="background:#0284c7;">' +
-                '<span><i class="fa-solid fa-hourglass-half"></i> जारी / लंबित</span>' +
-                '<h4>' + countOngoing + '</h4></div>' +
-                '<div class="stat-square" style="background:#dc2626;">' +
-                '<span><i class="fa-solid fa-ban"></i> निरस्त / फ़र्ज़ी</span>' +
-                '<h4>' + countRejected + '</h4></div>' +
-                '</div>' +
-
-                '<div style="margin:10px 0;"><button onclick="blockCitizenPermanentlyCloud(\''+u.phone+'\')" class="btn btn-crimson" style="padding:6px; font-size:12px;"><i class="fa-solid fa-ban"></i> इस नागरिक को स्थायी रूप से ब्लॉक करें</button></div>' +
-
-                '<h5 style="font-size:12px; margin:10px 0 6px; color:#334155;"><i class="fa-solid fa-list-check"></i> नागरिक की सभी शिकायतें (' + userComps.length + '):</h5>' +
-                '<div style="max-height:220px; overflow-y:auto;">';
-
-      if (userComps.length === 0) {
-        out += "<p style='color:#94a3b8; font-size:11px; text-align:center; padding:10px;'>इस नागरिक ने अभी कोई शिकायत दर्ज नहीं की है।</p>";
-      } else {
-        userComps.forEach(function(c) {
-          var bg = (c.status === "निस्तारित") ? "#16a34a" : (c.status === "प्रगति पर" ? "#0284c7" : (c.status.includes("निरस्त") ? "#dc2626" : "#f59e0b"));
-          out += '<div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:8px; margin-bottom:6px;">' +
-                 '<span class="badge" style="background:'+bg+'; font-size:10px;">'+c.status+'</span>' +
-                 '<strong>'+c.id+' - '+c.cat+'</strong>' +
-                 '<div style="font-size:11px; color:#64748b; margin:2px 0;">स्थान: '+c.place+'</div>' +
-                 '<div style="font-size:12px; color:#334155;">'+c.desc+'</div>';
-          if (c.resolutionPhoto) {
-            out += '<div style="font-size:10px; color:#16a34a; font-weight:700; margin-top:4px;"><i class="fa-solid fa-image"></i> काम पूरा होने की फोटो जुड़ी है</div>';
-          }
-          out += '</div>';
-        });
-      }
-      out += '</div>';
-
-      document.getElementById('citizenModalContent').innerHTML = out;
-      document.getElementById('citizenDetailModal').classList.add('active');
-    }
-
-    function closeCitizenDetailModal() {
-      document.getElementById('citizenDetailModal').classList.remove('active');
-    }
-
-    function deleteCitizenUserCloud(phone) {
-      if (confirm("क्या आप सचमुच नागरिक (" + phone + ") का खाता हटाना चाहते हैं?")) {
-        db.ref('users/' + phone).remove();
-      }
     }
 
     function filterAdminComplaints() {
@@ -2490,13 +2017,16 @@
 
     function handleNewComp(e) {
       e.preventDefault();
-      if (!curUser) return openUserProfileDirect();
+
+      var n = document.getElementById('cName').value.trim();
+      var p = document.getElementById('cPhone').value.trim();
+      if (!n || p.length < 10) return alert("कृपया अपना नाम और 10-अंकीय मोबाइल नंबर अवश्य भरें!");
 
       var compId = "PKP-" + Math.floor(100 + Math.random() * 900);
       var item = {
         id: compId,
-        name: curUser.name,
-        phone: curUser.phone,
+        name: n,
+        phone: p,
         cat: document.getElementById('cCat').value,
         place: document.getElementById('cPlace').value.trim(),
         coords: document.getElementById('cCoords').value || "",
@@ -2509,7 +2039,7 @@
 
       db.ref('complaints/' + compId).set(item).then(function() {
         tempCompPhoto = "";
-        alert("शिकायत दर्ज हो गई!\nरसीद संख्या: " + item.id);
+        alert("शिकायत सफलतापूर्वक दर्ज हो गई!\nआपकी रसीद संख्या: " + item.id);
         document.getElementById('compForm').reset();
         closeScreenModal('vNew');
         openScreenModal('vList');
