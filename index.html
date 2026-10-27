@@ -285,7 +285,7 @@
   <div id="ghostModeBanner">
     <div style="display:flex; align-items:center; gap:8px;">
       <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
-      <span><strong>घोस्ट मोड:</strong> मास्टर सुपर एडमिन सत्र सक्रिय</span>
+      <span><strong>घोस्ट मोड:</strong> मास्टर सुपर एडमिन रूट सत्र सक्रिय</span>
     </div>
     <button onclick="exitGhostMode()" style="background:#f59e0b; color:#0f172a; border:none; padding:4px 10px; border-radius:6px; font-weight:800; font-size:11px; cursor:pointer;">
       <i class="fa-solid fa-power-off"></i> बाहर निकलें
@@ -341,7 +341,7 @@
         <div id="headPradhanIcon" class="pradhan-pic"><i class="fa-solid fa-user-tie"></i></div>
         <div>
           <h4 id="headPradhanName" style="font-size: 14px; font-weight: 700;">विवरण लोड हो रहा है...</h4>
-          <p style="font-size: 11px; color: #15803d; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> अधिकृत ग्राम प्रधान, पाकरपुर</p>
+          <p style="font-size: 11px; color: #15803d; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> ग्राम पंचायत पाकरपुर</p>
           <span style="font-size: 11px; color: #475569;" id="headPradhanPhone">लोड हो रहा है...</span>
         </div>
       </div>
@@ -425,7 +425,7 @@
           <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:10px; margin-bottom:12px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <div>
-                <h4 id="dashPradhanName" style="font-size:15px; color:#166534; font-weight:700;">प्रधान नाम</h4>
+                <h4 id="dashPradhanName" style="font-size:15px; color:#166534; font-weight:700;">विवरण उपलब्ध नहीं</h4>
                 <p id="dashPradhanPhone" style="font-size:12px; color:#15803d;">मोबाइल नंबर</p>
               </div>
               <button class="btn btn-emerald" style="width:auto; padding:6px 12px; font-size:12px;" onclick="toggleEditProfileBox()">
@@ -434,9 +434,9 @@
             </div>
 
             <div id="editProfileSection" style="display:none; margin-top:12px; border-top:1px dashed #86efac; padding-top:10px;">
-              <div class="form-group"><label>प्रधान का नाम:</label><input type="text" id="admPName"></div>
-              <div class="form-group"><label>प्रधान का मोबाइल नंबर:</label><input type="tel" id="admPPhone" maxlength="10"></div>
-              <div class="form-group"><label>प्रधान फोटो:</label><input type="file" accept="image/*" onchange="uploadPradhanPhoto(event)"></div>
+              <div class="form-group"><label>प्रधान / संचालक का नाम:</label><input type="text" id="admPName"></div>
+              <div class="form-group"><label>मोबाइल नंबर:</label><input type="tel" id="admPPhone" maxlength="10"></div>
+              <div class="form-group"><label>फोटो:</label><input type="file" accept="image/*" onchange="uploadPradhanPhoto(event)"></div>
               <div class="form-group" style="background:#fff; padding:8px; border-radius:8px; border:1px solid #86efac;">
                 <label style="color:#166534;"><i class="fa-solid fa-image"></i> वेबसाइट हेडर लोगो बदलें:</label>
                 <input type="file" accept="image/*" onchange="uploadHeaderLogoPhoto(event)">
@@ -721,24 +721,13 @@
     </div>
   </div>
 
-  <!-- POPUP: RENTAL DIRECTORY -->
+  <!-- POPUP: RENTAL DIRECTORY (CLEANED) -->
   <div id="vRental" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vRental')">✕</button>
       <div class="card-title"><i class="fa-solid fa-tractor" style="color: #059669;"></i> किराए के कृषि यंत्र व औज़ार</div>
-      <div class="directory-card" style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid #16a34a;">
-        <div>
-          <h4 style="font-size:14px; font-weight:700;">महिंद्रा ट्रैक्टर + रोटावेटर</h4>
-          <p style="font-size:12px; color:#475569;">मालिक: रमेश यादव | दर: <b style="color:#16a34a;">₹700/घंटा</b></p>
-        </div>
-        <a href="tel:9876543214" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
-      </div>
-      <div class="directory-card" style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid #16a34a;">
-        <div>
-          <h4 style="font-size:14px; font-weight:700;">डीज़ल 5HP पंप सेट</h4>
-          <p style="font-size:12px; color:#475569;">मालिक: छोटेलाल | दर: <b style="color:#16a34a;">₹150/घंटा</b></p>
-        </div>
-        <a href="tel:9876543216" class="action-circle-btn btn-call"><i class="fa-solid fa-phone"></i></a>
+      <div id="rentalListDiv">
+        <p style='text-align:center; color:#94a3b8; padding:15px; font-size:12px;'>वर्तमान में किराए पर उपलब्ध यंत्रों की सूची अपडेट की जा रही है।</p>
       </div>
     </div>
   </div>
@@ -808,7 +797,7 @@
       <button class="red-close-btn" onclick="closeScreenModal('vTeam')">✕</button>
       <div class="card-title"><i class="fa-solid fa-users-gear" style="color: #7c3aed;"></i> प्रतिनिधि मंडल</div>
       <div class="directory-card" style="border-left:4px solid var(--primary);">
-        <h4 id="teamPradhanName">प्रधान प्रोफाइल</h4>
+        <h4 id="teamPradhanName">ग्राम प्रतिनिधि</h4>
         <p id="teamPradhanPhone" style="font-size:12px; color:#64748b;"></p>
       </div>
     </div>
@@ -818,11 +807,16 @@
   <div id="vSchemes" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vSchemes')">✕</button>
-      <div class="card-title"><i class="fa-solid fa-hand-holding-hand" style="color: var(--success);"></i> सरकारी योजनाएं</div>
+      <div class="card-title"><i class="fa-solid fa-hand-holding-hand" style="color: var(--success);"></i> प्रमुख सरकारी योजनाएं</div>
       <div class="scheme-card" style="border-left:4px solid #0284c7;">
         <h4>आयुष्मान भारत कार्ड</h4>
-        <p style="font-size:12px; color:#475569;">₹5 लाख तक मुफ़्त इलाज।</p>
-        <a href="https://beneficiary.nha.gov.in" target="_blank" style="color:#0284c7; font-weight:700; font-size:12px;">कार्ड बनाएं / डाउनलोड करें →</a>
+        <p style="font-size:12px; color:#475569;">₹5 लाख तक मुफ़्त सरकारी/निजी अस्पताल इलाज।</p>
+        <a href="https://beneficiary.nha.gov.in" target="_blank" style="color:#0284c7; font-weight:700; font-size:12px;">कार्ड पोर्टल पर जाएं →</a>
+      </div>
+      <div class="scheme-card" style="border-left:4px solid #16a34a; margin-top:8px;">
+        <h4>पीएम किसान सम्मान निधि</h4>
+        <p style="font-size:12px; color:#475569;">सालाना ₹6000 आर्थिक सहायता किस्त स्टेटस।</p>
+        <a href="https://pmkisan.gov.in" target="_blank" style="color:#16a34a; font-weight:700; font-size:12px;">आधिकारिक पोर्टल पर जाएं →</a>
       </div>
     </div>
   </div>
@@ -901,7 +895,8 @@
     firebase.initializeApp(firebaseConfig);
     var db = firebase.database();
 
-    var pradhanInfo = { name: "प्रधान प्रोफाइल", phone: "9876543210", pic: "", headerLogo: "" };
+    // Default clean state
+    var pradhanInfo = { name: "ग्राम प्रतिनिधि", phone: "", pic: "", headerLogo: "" };
     var adminCustomPassword = null;
     var comps = [];
     var binComps = [];
@@ -1111,7 +1106,7 @@
       };
 
       db.ref('complaints/' + compId).set(item).then(function() {
-        alert("शिकायत सफलतापूर्वक दर्ज हो गई!\nरसीद: " + item.id);
+        alert("शिकायत दर्ज हो गई!\nरसीद: " + item.id);
         document.getElementById('compForm').reset();
         isNumberVerified = false;
         citizenAudioBase64 = "";
@@ -1125,12 +1120,12 @@
       });
     }
 
-    /* ALL DRAW FUNCTIONS TO SHOW DATA FROM JSON */
+    /* RENDER FUNCTIONS (NO HARDCODED DUMMY FALLBACKS) */
     function drawComps() {
       var d = document.getElementById('compListDiv');
       document.getElementById('cCount').innerText = comps.length;
       if (comps.length === 0) {
-        d.innerHTML = "<div style='text-align:center; padding:20px; color:#94a3b8;'>अभी कोई शिकायत नहीं है।</div>";
+        d.innerHTML = "<div style='text-align:center; padding:20px; color:#94a3b8; font-size:12px;'>अभी कोई शिकायत दर्ज नहीं है।</div>";
         return;
       }
       var h = "";
@@ -1152,9 +1147,9 @@
 
         if (c.reply || c.adminVoice) {
           h += '<div style="background:#f1f5f9; border-left:3px solid var(--primary); padding:6px 10px; border-radius:6px; font-size:12px; color:#15803d; margin-top:6px;">' +
-               '<strong>प्रधान उत्तर:</strong> ' + (c.reply || "");
+               '<strong>उत्तर:</strong> ' + (c.reply || "");
           if (c.adminVoice) {
-            h += '<div style="margin-top:4px;"><span style="font-size:10px; font-weight:700;">प्रधान जी की आवाज़:</span><br><audio controls src="' + c.adminVoice + '" style="width:100%; height:32px; margin-top:2px;"></audio></div>';
+            h += '<div style="margin-top:4px;"><span style="font-size:10px; font-weight:700;">वॉइस उत्तर:</span><br><audio controls src="' + c.adminVoice + '" style="width:100%; height:32px; margin-top:2px;"></audio></div>';
           }
           h += '</div>';
         }
@@ -1166,7 +1161,7 @@
     function drawMarket() {
       var d = document.getElementById('marketListDiv');
       if (marketPosts.length === 0) {
-        d.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:15px;'>अभी कोई सामान/पशु बिक्री पोस्ट नहीं है।</p>";
+        d.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:15px; font-size:12px;'>अभी बाज़ार में कोई सामान या पशु बिक्री पोस्ट नहीं है।</p>";
         return;
       }
       var h = "";
@@ -1191,7 +1186,7 @@
     function drawNotices() {
       var d = document.getElementById('noticeListDiv');
       if (notices.length === 0) {
-        d.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:15px;'>कोई नोटिस नहीं है।</p>";
+        d.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:15px; font-size:12px;'>वर्तमान में कोई नई सूचना उपलब्ध नहीं है।</p>";
         return;
       }
       var h = "";
@@ -1208,7 +1203,7 @@
     function drawDirectory() {
       var d = document.getElementById('directoryListDiv');
       if (directoryList.length === 0) {
-        d.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:15px;'>कोई हेल्पलाइन नंबर दर्ज नहीं है।</p>";
+        d.innerHTML = "<p style='text-align:center; color:#94a3b8; padding:15px; font-size:12px;'>कोई हेल्पलाइन नंबर दर्ज नहीं है।</p>";
         return;
       }
       var h = "";
@@ -1232,7 +1227,7 @@
 
       var expDiv = document.getElementById('koshExpensesDiv');
       if (expensesList.length === 0) {
-        expDiv.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center;'>कोई खर्च दर्ज नहीं है।</p>";
+        expDiv.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center;'>कोई खर्च विवरण दर्ज नहीं है।</p>";
         return;
       }
       var h = "";
@@ -1249,7 +1244,7 @@
     function drawGallery() {
       var d = document.getElementById('galleryListDiv');
       if (galleryList.length === 0) {
-        d.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>अभी कोई गैलरी फोटो नहीं है।</p>";
+        d.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>वर्तमान में कोई गैलरी फोटो उपलब्ध नहीं है।</p>";
         return;
       }
       var h = "";
@@ -1365,11 +1360,11 @@
     function savePradhanProfileDataCloud() {
       var n = document.getElementById('admPName').value.trim();
       var p = document.getElementById('admPPhone').value.trim();
-      if (!n || p.length < 10) return alert("कृपया नाम व 10-अंकीय नंबर अवश्य भरें!");
+      if (!n || p.length < 10) return alert("कृपया नाम व 10-अंकीय नंबर भरें!");
       pradhanInfo.name = n;
       pradhanInfo.phone = p;
       db.ref('pradhan_profile').set(pradhanInfo).then(function() {
-        alert("प्रधान प्रोफाइल सुरक्षित हो गई!");
+        alert("प्रोफाइल सुरक्षित हो गई!");
         document.getElementById('editProfileSection').style.display = 'none';
       });
     }
@@ -1421,8 +1416,9 @@
       });
     }
 
+    /* FULL FACTORY RESET FIX: CLEARS ALL DUMMY NODES */
     function triggerFactoryResetFlow() {
-      var confirmWord = prompt("चेतावनी: फ़ैक्टरी रीसेट से सभी शिकायतें व डेटा मिट जाएंगे!\nआगे बढ़ने के लिए 'RESET' लिखें:");
+      var confirmWord = prompt("चेतावनी: फ़ैक्टरी रीसेट से सभी शिकायतें, बाज़ार, नोटिस व फंड डेटा पूरी तरह मिट जाएंगे!\nआगे बढ़ने के लिए 'RESET' लिखें:");
       if (confirmWord !== "RESET") return alert("रीसेट निरस्त हुआ।");
 
       var currentActivePass = adminCustomPassword || "1234";
@@ -1434,9 +1430,14 @@
           db.ref('complaints').remove(),
           db.ref('complaints_bin').remove(),
           db.ref('market_posts').remove(),
+          db.ref('notices').remove(),
+          db.ref('directory').remove(),
+          db.ref('gram_funds').remove(),
+          db.ref('gram_expenses').remove(),
+          db.ref('gallery').remove(),
           db.ref('broadcast_alert').set({ active: false, title: "", message: "" })
         ]).then(function() {
-          alert("फ़ैक्टरी रीसेट सफल!");
+          alert("फ़ैक्टरी रीसेट सफल! सारा डेटा पूरी तरह खाली कर दिया गया है।");
           location.reload();
         });
       }
@@ -1457,7 +1458,7 @@
       var d = document.getElementById('recycleBinDiv');
       document.getElementById('binCount').innerText = binComps.length;
       if (binComps.length === 0) {
-        d.innerHTML = "<p style='color:#64748b; padding:6px;'>कचरा पेटी खाली है।</p>";
+        d.innerHTML = "<p style='color:#64748b; padding:6px; font-size:12px;'>कचरा पेटी खाली है।</p>";
         return;
       }
       var h = "";
@@ -1497,9 +1498,9 @@
                 '<h4>' + f.id + ' (' + f.status + ')</h4>' +
                 '<p style="font-size:12px; margin-top:4px;"><b>विभाग:</b> ' + f.cat + '</p>' +
                 '<p style="font-size:12px;"><b>स्थान:</b> ' + f.place + '</p>' +
-                '<p style="font-size:12px; color:#15803d; margin-top:4px;"><b>प्रधान उत्तर:</b> ' + (f.reply || "प्रक्रियाधीन") + '</p>';
+                '<p style="font-size:12px; color:#15803d; margin-top:4px;"><b>उत्तर:</b> ' + (f.reply || "प्रक्रियाधीन") + '</p>';
       if (f.adminVoice) {
-        out += '<div style="margin-top:6px;"><span style="font-size:11px; font-weight:700;">प्रधान जी की वॉइस सुनें:</span><br><audio controls src="'+f.adminVoice+'" style="width:100%; height:32px;"></audio></div>';
+        out += '<div style="margin-top:6px;"><span style="font-size:11px; font-weight:700;">वॉइस उत्तर सुनें:</span><br><audio controls src="'+f.adminVoice+'" style="width:100%; height:32px;"></audio></div>';
       }
       out += '</div>';
       r.innerHTML = out;
@@ -1532,26 +1533,28 @@
       r.readAsDataURL(file);
     }
 
-    /* COMPLETE ALL FIREBASE LISTENERS (FOR EVERY NODE IN JSON) */
     function initFirebaseListeners() {
       db.ref('pradhan_profile').on('value', function(s){
         var v = s.val();
         if(v){
           pradhanInfo = v;
-          document.getElementById('headPradhanName').innerText = v.name || "ग्राम प्रधान";
-          document.getElementById('headPradhanPhone').innerText = "+91 " + (v.phone || "---");
-          document.getElementById('dashPradhanName').innerText = v.name || "ग्राम प्रधान";
-          document.getElementById('dashPradhanPhone').innerText = "+91 " + (v.phone || "---");
+          document.getElementById('headPradhanName').innerText = v.name || "विवरण उपलब्ध नहीं";
+          document.getElementById('headPradhanPhone').innerText = v.phone ? "+91 " + v.phone : "नंबर उपलब्ध नहीं";
+          document.getElementById('dashPradhanName').innerText = v.name || "विवरण उपलब्ध नहीं";
+          document.getElementById('dashPradhanPhone').innerText = v.phone ? "+91 " + v.phone : "नंबर उपलब्ध नहीं";
           document.getElementById('admPName').value = v.name || "";
           document.getElementById('admPPhone').value = v.phone || "";
-          document.getElementById('teamPradhanName').innerText = v.name || "ग्राम प्रधान";
-          document.getElementById('teamPradhanPhone').innerText = "मो: +91 " + (v.phone || "---");
-          document.getElementById('pradhanTel').href = "tel:" + v.phone;
-          document.getElementById('pradhanWa').href = "https://api.whatsapp.com/send?phone=91" + v.phone;
+          document.getElementById('teamPradhanName').innerText = v.name || "ग्राम प्रतिनिधि";
+          document.getElementById('teamPradhanPhone').innerText = v.phone ? "मो: +91 " + v.phone : "";
+          document.getElementById('pradhanTel').href = v.phone ? "tel:" + v.phone : "#";
+          document.getElementById('pradhanWa').href = v.phone ? "https://api.whatsapp.com/send?phone=91" + v.phone : "#";
           if (v.pic) {
             document.getElementById('headPradhanImg').src = v.pic;
             document.getElementById('headPradhanImg').style.display = "block";
             document.getElementById('headPradhanIcon').style.display = "none";
+          } else {
+            document.getElementById('headPradhanImg').style.display = "none";
+            document.getElementById('headPradhanIcon').style.display = "flex";
           }
           if (v.headerLogo) {
             document.getElementById('headerPanchayatLogo').src = v.headerLogo;
@@ -1707,7 +1710,7 @@
       if (confirm("क्या आप वाकई प्रधान पिन 1234 पर रीसेट करना चाहते हैं?")) {
         db.ref('admin_settings').set({ customPassword: null }).then(function() {
           adminCustomPassword = null;
-          alert("प्रधान पिन सफलतापूर्वक 1234 पर रीसेट हो गया!");
+          alert("प्रधान पिन 1234 पर रीसेट हो गया!");
           closeScreenModal('superAdminModal');
         });
       }
