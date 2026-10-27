@@ -32,28 +32,29 @@
 
   <style>
     :root {
-      /* NEW PREMIUM PALETTE: Royal Deep Indigo, Clean Slate & Warm Emerald */
-      --primary: #4338ca;
-      --primary-dark: #312e81;
-      --primary-light: #6366f1;
-      --accent: #059669;
-      --accent-hover: #047857;
+      /* NEW LUXURY EXECUTIVE THEME: Deep Midnight Navy, Slate & Warm Champagne Gold */
+      --primary: #0f172a;
+      --primary-dark: #020617;
+      --primary-card: #ffffff;
+      --gold: #b45309;
+      --gold-light: #f59e0b;
+      --gold-subtle: #fef3c7;
+      --emerald: #059669;
       --danger: #e11d48;
-      --warning: #d97706;
       --card-bg: rgba(255, 255, 255, 0.96);
       --bg-base: #f8fafc;
       --text: #0f172a;
       --text-muted: #64748b;
       --border: #e2e8f0;
       --radius: 16px;
-      --shadow-sm: 0 2px 8px -2px rgba(15, 23, 42, 0.06);
-      --shadow: 0 10px 25px -4px rgba(67, 56, 202, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+      --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+      --shadow: 0 12px 30px -6px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     body {
       font-family: 'Mukta', 'Plus Jakarta Sans', sans-serif;
-      background: linear-gradient(180deg, #f1f5f9 0%, #f8fafc 40%, #eef2ff 100%);
+      background: radial-gradient(circle at 50% 0%, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%);
       background-attachment: fixed;
       color: var(--text);
       padding-bottom: 40px;
@@ -63,21 +64,21 @@
       content: "";
       position: fixed;
       inset: 0;
-      background-image: radial-gradient(#4338ca 0.6px, transparent 0.6px);
-      background-size: 20px 20px;
-      opacity: 0.05;
+      background-image: radial-gradient(rgba(180, 83, 9, 0.12) 0.6px, transparent 0.6px);
+      background-size: 22px 22px;
+      opacity: 0.45;
       pointer-events: none;
       z-index: -1;
     }
 
     .lang-bar {
-      background: #090d16; color: #fff; padding: 6px 14px; font-size: 11px;
-      display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b;
+      background: #020617; color: #f8fafc; padding: 6px 14px; font-size: 11px;
+      display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(245, 158, 11, 0.3);
     }
-    .lang-bar-title { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+    .lang-bar-title { display: flex; align-items: center; gap: 6px; font-weight: 600; color: #fef08a; }
     #google_translate_element select {
-      padding: 3px 6px; font-size: 11px; border-radius: 6px; border: 1px solid #334155;
-      background: #1e293b; color: #ffffff; font-weight: 700; outline: none; cursor: pointer;
+      padding: 3px 6px; font-size: 11px; border-radius: 6px; border: 1px solid #475569;
+      background: #0f172a; color: #ffffff; font-weight: 700; outline: none; cursor: pointer;
     }
     .goog-te-gadget { font-size: 0px !important; }
     .goog-te-gadget span { display: none !important; }
@@ -85,31 +86,32 @@
     body { top: 0px !important; }
 
     header {
-      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4338ca 100%);
+      background: linear-gradient(135deg, #020617 0%, #0f172a 70%, #1e293b 100%);
       color: #fff; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
-      position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(30, 27, 75, 0.25);
+      position: sticky; top: 0; z-index: 100; box-shadow: 0 6px 20px rgba(2, 6, 23, 0.35);
+      border-bottom: 1.5px solid rgba(245, 158, 11, 0.4);
     }
     .header-center { display: flex; align-items: center; gap: 12px; }
     .header-logo-img {
-      width: 44px; height: 44px; border-radius: 12px; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.4);
+      width: 44px; height: 44px; border-radius: 12px; object-fit: cover; border: 2px solid var(--gold-light);
       background: #fff; cursor: pointer; transition: transform 0.2s;
     }
-    .brand-title { font-size: 18px; font-weight: 800; text-align: left; line-height: 1.2; letter-spacing: -0.3px; }
-    .brand-title span { display: block; font-size: 11px; color: #c7d2fe; font-weight: 500; margin-top: 1px; }
+    .brand-title { font-size: 18px; font-weight: 800; text-align: left; line-height: 1.2; letter-spacing: -0.3px; color: #ffffff; }
+    .brand-title span { display: block; font-size: 11px; color: #fef08a; font-weight: 600; margin-top: 1px; }
 
     .header-actions { display: flex; align-items: center; gap: 8px; }
     .admin-secret-btn, .admin-menu-header-btn {
-      background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #ffffff; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer;
+      background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fef08a; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer;
       transition: all 0.2s; backdrop-filter: blur(8px);
     }
-    .admin-secret-btn:hover { background: rgba(255, 255, 255, 0.22); }
+    .admin-secret-btn:hover { background: rgba(245, 158, 11, 0.3); }
     .admin-menu-header-btn { display: none; }
 
     .weather-strip {
-      background: linear-gradient(90deg, #1e293b, #334155); color: #e2e8f0; padding: 8px 14px;
-      font-size: 12px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;
-      cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      background: #ffffff; color: #334155; padding: 8px 14px; border-bottom: 1px solid var(--border);
+      font-size: 12px; font-weight: 700; display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.02);
     }
 
     .broadcast-banner {
@@ -121,38 +123,38 @@
     .container { max-width: 550px; margin: 14px auto; padding: 0 14px; }
 
     .pradhan-card {
-      background: var(--card-bg); border-left: 5px solid var(--primary-light); border-radius: var(--radius); padding: 14px;
+      background: var(--card-bg); border-left: 5px solid var(--gold-light); border-radius: var(--radius); padding: 14px;
       margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); backdrop-filter: blur(10px);
-      border-top: 1px solid rgba(255,255,255,0.7);
+      border: 1px solid rgba(226, 232, 240, 0.8); border-left-width: 5px;
     }
     .pradhan-pic {
-      width: 54px; height: 54px; border-radius: 14px; object-fit: cover; border: 2px solid var(--primary-light);
-      background: #e0e7ff; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary); cursor: pointer;
+      width: 54px; height: 54px; border-radius: 14px; object-fit: cover; border: 2px solid var(--gold-light);
+      background: var(--gold-subtle); display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--gold); cursor: pointer;
     }
     .action-circle-btn {
       width: 38px; height: 38px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center;
-      color: #fff; text-decoration: none; font-size: 15px; margin-left: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      color: #fff; text-decoration: none; font-size: 15px; margin-left: 6px; box-shadow: 0 3px 8px rgba(0,0,0,0.12);
       transition: transform 0.15s;
     }
     .action-circle-btn:active { transform: scale(0.92); }
-    .btn-call { background: #059669; }
-    .btn-wa { background: #10b981; }
+    .btn-call { background: var(--emerald); }
+    .btn-wa { background: #16a34a; }
 
     /* MAIN CITIZEN GRID TILES */
     .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
     .action-tile {
-      background: var(--card-bg); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 12px 6px;
+      background: var(--card-bg); border: 1.5px solid #e2e8f0; border-radius: var(--radius); padding: 12px 6px;
       text-align: center; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: var(--shadow-sm); backdrop-filter: blur(10px);
       position: relative;
     }
     .action-tile:active {
-      border-color: var(--primary-light); background: #eef2ff; transform: scale(0.95);
+      border-color: var(--gold-light); background: #fefce8; transform: scale(0.95);
     }
     .tile-icon {
       width: 42px; height: 42px; border-radius: 12px; margin: 0 auto 6px; display: flex; align-items: center;
       justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     }
-    .action-tile span { display: block; font-size: 11.5px; font-weight: 700; color: #334155; line-height: 1.25; }
+    .action-tile span { display: block; font-size: 11.5px; font-weight: 700; color: #1e293b; line-height: 1.25; }
 
     /* ADMIN EXCLUSIVE SQUARE GRID TILES */
     .admin-square-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0; }
@@ -204,7 +206,7 @@
       border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; backdrop-filter: blur(8px);
     }
     .card-title {
-      font-size: 16px; font-weight: 800; color: var(--primary-dark); margin-bottom: 12px; border-bottom: 2px solid #f1f5f9;
+      font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 12px; border-bottom: 2px solid #f1f5f9;
       padding-bottom: 8px; display: flex; align-items: center; gap: 8px; padding-right: 36px;
     }
     .form-group { margin-bottom: 12px; }
@@ -213,7 +215,7 @@
       width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; outline: none;
       background: #ffffff; font-family: inherit; transition: border-color 0.2s;
     }
-    input:focus, select:focus, textarea:focus { border-color: var(--primary-light); }
+    input:focus, select:focus, textarea:focus { border-color: var(--gold-light); }
     textarea { min-height: 70px; resize: vertical; }
 
     .btn {
@@ -221,11 +223,12 @@
       display: flex; align-items: center; justify-content: center; gap: 7px; text-decoration: none; transition: transform 0.15s;
     }
     .btn:active { transform: scale(0.98); }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: #fff; }
-    .btn-emerald { background: var(--accent); color: #fff; }
+    .btn-primary { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff; }
+    .btn-gold { background: linear-gradient(135deg, #b45309 0%, #d97706 100%); color: #fff; }
+    .btn-emerald { background: var(--emerald); color: #fff; }
     .btn-crimson { background: var(--danger); color: #fff; }
     .btn-slate { background: #f1f5f9; color: #334155; border: 1px solid var(--border); }
-    .btn-whatsapp { background: #10b981; color: #fff; }
+    .btn-whatsapp { background: #16a34a; color: #fff; }
 
     .complaint-card, .notice-card, .directory-card, .scheme-card, .fund-item-card, .gallery-card, .market-card {
       background: #ffffff; border-radius: 14px; padding: 14px; border: 1px solid var(--border); margin-bottom: 10px;
@@ -264,9 +267,9 @@
     .admin-menu-item:active { background: #f1f5f9; }
 
     #ghostModeBanner {
-      background: linear-gradient(90deg, #090d16 0%, #1e1b4b 100%);
+      background: linear-gradient(90deg, #020617 0%, #0f172a 100%);
       color: #f8fafc; padding: 8px 14px; font-size: 12px; display: none;
-      justify-content: space-between; align-items: center; border-bottom: 2px solid #f59e0b;
+      justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold-light);
       position: sticky; top: 0; z-index: 1001;
     }
     .super-card-box {
@@ -307,7 +310,7 @@
   <!-- Language Selector -->
   <div class="lang-bar">
     <div class="lang-bar-title">
-      <i class="fa-solid fa-language" style="color:#818cf8; font-size:14px;"></i>
+      <i class="fa-solid fa-language" style="color:var(--gold-light); font-size:14px;"></i>
       <span>भाषा चुनें (Select Language):</span>
     </div>
     <div id="google_translate_element"></div>
@@ -334,7 +337,7 @@
   </header>
 
   <div class="weather-strip" id="weatherBox">
-    <span><i class="fa-solid fa-location-crosshairs" style="color:#818cf8;"></i> पाकरपुर मौसम: <b>28°C (साफ़ धूप)</b></span>
+    <span><i class="fa-solid fa-location-crosshairs" style="color:var(--gold);"></i> पाकरपुर मौसम: <b>28°C (साफ़ धूप)</b></span>
     <span id="wtCondition"><i class="fa-solid fa-cloud-sun"></i> 7-दिन का पूर्वानुमान उपलब्ध</span>
   </div>
 
@@ -353,7 +356,7 @@
         <div id="headPradhanIcon" class="pradhan-pic"><i class="fa-solid fa-landmark"></i></div>
         <div>
           <h4 id="headPradhanName" style="font-size: 15px; font-weight: 800;">ग्राम पंचायत पाकरपुर</h4>
-          <p style="font-size: 11px; color: var(--accent); font-weight: 700;"><i class="fa-solid fa-circle-check"></i> जन सेवा एवं सहायता डेस्क</p>
+          <p style="font-size: 11px; color: var(--gold); font-weight: 700;"><i class="fa-solid fa-circle-check"></i> जन सेवा एवं सहायता डेस्क</p>
           <span style="font-size: 11px; color: #64748b;" id="headPradhanPhone">लोड हो रहा है...</span>
         </div>
       </div>
@@ -370,11 +373,11 @@
         <span>नई शिकायत</span>
       </div>
       <div class="action-tile" onclick="openScreenModal('vList')">
-        <div class="tile-icon" style="background: linear-gradient(135deg, #2563eb, #3b82f6);"><i class="fa-solid fa-list-check"></i></div>
+        <div class="tile-icon" style="background: linear-gradient(135deg, #0f172a, #334155);"><i class="fa-solid fa-list-check"></i></div>
         <span>शिकायतें देखें</span>
       </div>
       <div class="action-tile" onclick="openScreenModal('vTrack')">
-        <div class="tile-icon" style="background: linear-gradient(135deg, #d97706, #f59e0b);"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+        <div class="tile-icon" style="background: linear-gradient(135deg, #b45309, #d97706);"><i class="fa-solid fa-magnifying-glass-location"></i></div>
         <span>शिकायत स्थिति</span>
       </div>
       <div class="action-tile" onclick="openScreenModal('vRental')">
@@ -386,15 +389,15 @@
         <span>पशु व बाज़ार</span>
       </div>
       <div class="action-tile" onclick="openScreenModal('vDirectory')">
-        <div class="tile-icon" style="background: linear-gradient(135deg, #4f46e5, #6366f1);"><i class="fa-solid fa-address-book"></i></div>
+        <div class="tile-icon" style="background: linear-gradient(135deg, #475569, #64748b);"><i class="fa-solid fa-address-book"></i></div>
         <span>ज़रूरी नंबर</span>
       </div>
       <div class="action-tile" onclick="openScreenModal('vNotice')">
-        <div class="tile-icon" style="background: linear-gradient(135deg, #e11d48, #f43f5e);"><i class="fa-solid fa-bullhorn"></i></div>
+        <div class="tile-icon" style="background: linear-gradient(135deg, #be123c, #e11d48);"><i class="fa-solid fa-bullhorn"></i></div>
         <span>सूचना बोर्ड</span>
       </div>
       <div class="action-tile" onclick="openScreenModal('vBudget')">
-        <div class="tile-icon" style="background: linear-gradient(135deg, #0284c7, #38bdf8);"><i class="fa-solid fa-building-columns"></i></div>
+        <div class="tile-icon" style="background: linear-gradient(135deg, #0369a1, #0284c7);"><i class="fa-solid fa-building-columns"></i></div>
         <span>विकास कोष</span>
       </div>
       <div class="action-tile" onclick="openScreenModal('vGallery')">
@@ -402,19 +405,19 @@
         <span>विकास गैलरी</span>
       </div>
       <div class="action-tile" onclick="openScreenModal('vSchemes')">
-        <div class="tile-icon" style="background: linear-gradient(135deg, #0369a1, #0284c7);"><i class="fa-solid fa-hand-holding-hand"></i></div>
+        <div class="tile-icon" style="background: linear-gradient(135deg, #1e293b, #0f172a);"><i class="fa-solid fa-hand-holding-hand"></i></div>
         <span>सरकारी योजना</span>
       </div>
       <div class="action-tile" onclick="openScreenModal('vTeam')">
-        <div class="tile-icon" style="background: linear-gradient(135deg, #475569, #64748b);"><i class="fa-solid fa-users-gear"></i></div>
+        <div class="tile-icon" style="background: linear-gradient(135deg, #b45309, #f59e0b);"><i class="fa-solid fa-users-gear"></i></div>
         <span>पंचायत टीम</span>
       </div>
     </div>
 
     <!-- ADMIN WORKSPACE -->
     <div id="vAdmin" class="view-content">
-      <div class="card" id="adminGateBox" style="border: 2px solid var(--primary-light);">
-        <div class="card-title" style="color: var(--primary);">
+      <div class="card" id="adminGateBox" style="border: 2px solid var(--gold-light);">
+        <div class="card-title" style="color: var(--gold);">
           <i class="fa-solid fa-lock"></i> प्रधान / व्यवस्थापक नियंत्रण लॉगिन
         </div>
         <div class="form-group">
@@ -422,7 +425,7 @@
           <input type="password" id="adminGatePin" placeholder="पासवर्ड दर्ज करें">
         </div>
         <div style="display:flex; gap:8px;">
-          <button class="btn btn-primary" onclick="verifyAdminGate()"><i class="fa-solid fa-unlock"></i> लॉगिन करें</button>
+          <button class="btn btn-gold" onclick="verifyAdminGate()"><i class="fa-solid fa-unlock"></i> लॉगिन करें</button>
           <button class="btn btn-slate" style="width:auto;" onclick="exitAdminView()">रद्द करें</button>
         </div>
       </div>
@@ -430,14 +433,14 @@
       <div id="adminMainDashBox" style="display: none;">
         <div class="card">
           <div class="card-title" style="border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px;">
-            <i class="fa-solid fa-sliders" style="color: var(--primary);"></i> कार्यपालक नियंत्रण डेस्क
+            <i class="fa-solid fa-sliders" style="color: var(--gold);"></i> कार्यपालक नियंत्रण डेस्क
           </div>
 
           <!-- EDIT PROFILE SECTION -->
           <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:12px; margin-bottom:12px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <div>
-                <h4 id="dashPradhanName" style="font-size:15px; color:var(--primary-dark); font-weight:800;">विवरण उपलब्ध नहीं</h4>
+                <h4 id="dashPradhanName" style="font-size:15px; color:#0f172a; font-weight:800;">विवरण उपलब्ध नहीं</h4>
                 <p id="dashPradhanPhone" style="font-size:12px; color:var(--text-muted);">मोबाइल नंबर</p>
               </div>
               <button class="btn btn-primary" style="width:auto; padding:6px 12px; font-size:12px;" onclick="toggleEditProfileBox()">
@@ -447,13 +450,13 @@
 
             <div id="editProfileSection" style="display:none; margin-top:12px; border-top:1px dashed #cbd5e1; padding-top:10px;">
               <div class="form-group"><label>प्रधान / संचालक का नाम:</label><input type="text" id="admPName"></div>
-              <div class="form-group"><label>मोबाइल नंबर:</label><input type="tel" id="admPPhone" maxlength="10"></div>
+              <div class="form-group"><label>मोबाइल नंबर:</label><input type="tel" id="admPPhone" maxlength="12"></div>
               <div class="form-group"><label>फोटो:</label><input type="file" accept="image/*" onchange="uploadPradhanPhoto(event)"></div>
               <div class="form-group" style="background:#fff; padding:8px; border-radius:8px; border:1px solid #e2e8f0;">
-                <label style="color:var(--primary);"><i class="fa-solid fa-image"></i> वेबसाइट हेडर लोगो बदलें:</label>
+                <label style="color:#0f172a;"><i class="fa-solid fa-image"></i> वेबसाइट हेडर लोगो बदलें:</label>
                 <input type="file" accept="image/*" onchange="uploadHeaderLogoPhoto(event)">
               </div>
-              <button class="btn btn-emerald" style="padding:8px; font-size:13px;" onclick="savePradhanProfileDataCloud()">
+              <button class="btn btn-gold" style="padding:8px; font-size:13px;" onclick="savePradhanProfileDataCloud()">
                 <i class="fa-solid fa-cloud-arrow-up"></i> प्रोफाइल विवरण सेव करें
               </button>
             </div>
@@ -481,23 +484,23 @@
             </div>
 
             <div class="admin-square-tile" onclick="openAdminPopupSection('secAdminDirectoryModal')">
-              <div class="adm-tile-icon" style="background: linear-gradient(135deg, #4f46e5, #6366f1);"><i class="fa-solid fa-phone-volume"></i></div>
+              <div class="adm-tile-icon" style="background: linear-gradient(135deg, #b45309, #d97706);"><i class="fa-solid fa-phone-volume"></i></div>
               <span>ज़रूरी नंबर जोड़ें / बदलें</span>
             </div>
 
             <div class="admin-square-tile" onclick="openAdminPopupSection('secBroadcastForm')">
-              <div class="adm-tile-icon" style="background: linear-gradient(135deg, #e11d48, #f43f5e);"><i class="fa-solid fa-tower-broadcast"></i></div>
+              <div class="adm-tile-icon" style="background: linear-gradient(135deg, #be123c, #e11d48);"><i class="fa-solid fa-tower-broadcast"></i></div>
               <span>सार्वजनिक ब्रॉडकास्ट अलर्ट</span>
             </div>
 
             <div class="admin-square-tile" onclick="openScreenModal('vNotice')">
-              <div class="adm-tile-icon" style="background: linear-gradient(135deg, #b91c1c, #dc2626);"><i class="fa-solid fa-bullhorn"></i></div>
+              <div class="adm-tile-icon" style="background: linear-gradient(135deg, #0f172a, #334155);"><i class="fa-solid fa-bullhorn"></i></div>
               <span>सूचना बोर्ड प्रबंधन</span>
             </div>
 
             <div class="admin-square-tile" onclick="openScreenModal('secRecycleBinModal')">
               <span class="icon-badge" id="binCount">0</span>
-              <div class="adm-tile-icon" style="background: linear-gradient(135deg, #475569, #64748b);"><i class="fa-solid fa-trash-can"></i></div>
+              <div class="adm-tile-icon" style="background: linear-gradient(135deg, #64748b, #94a3b8);"><i class="fa-solid fa-trash-can"></i></div>
               <span>शिकायत रीसायकल बिन</span>
             </div>
           </div>
@@ -515,23 +518,32 @@
     </div>
   </div>
 
-  <!-- POPUP: ADMIN DIRECTORY MANAGER (NEW FEATURE TO ADD/DELETE HELPLINE NUMBERS) -->
+  <!-- POPUP: ADMIN DIRECTORY MANAGER (ALLOWS 3-DIGIT EMERGENCY NUMBERS & DIRECT SAVE) -->
   <div id="secAdminDirectoryModal" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secAdminDirectoryModal')">✕</button>
-      <div class="card-title" style="color: var(--primary);">
+      <div class="card-title" style="color: var(--gold);">
         <i class="fa-solid fa-address-book"></i> ज़रूरी हेल्पलाइन नंबर प्रबंधन
       </div>
 
-      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px; margin-bottom:14px;">
-        <h4 style="font-size:13px; font-weight:800; color:#334155; margin-bottom:8px;"><i class="fa-solid fa-plus-circle"></i> नया ज़रूरी नंबर जोड़ें</h4>
-        <div class="form-group"><label>पद / कार्य (उदा. लेखपाल, आशा बहू, एम्बुलेंस) *</label><input type="text" id="admDirRole" placeholder="पद / सेवा का नाम"></div>
-        <div class="form-group"><label>अधिकारी / व्यक्ति का नाम *</label><input type="text" id="admDirName" placeholder="नाम"></div>
-        <div class="form-group"><label>मोबाइल नंबर *</label><input type="tel" id="admDirPhone" maxlength="10" placeholder="10-अंकीय मोबाइल नंबर"></div>
-        <button class="btn btn-emerald" onclick="submitAdminDirectoryCloud()"><i class="fa-solid fa-floppy-disk"></i> नंबर सेव करें</button>
+      <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:12px; padding:14px; margin-bottom:14px;">
+        <h4 style="font-size:13.5px; font-weight:800; color:#92400e; margin-bottom:8px;"><i class="fa-solid fa-plus-circle"></i> नया ज़रूरी नंबर जोड़ें</h4>
+        <div class="form-group">
+          <label>पद / सेवा का नाम (उदा. पुलिस, एम्बुलेंस, लेखपाल) *</label>
+          <input type="text" id="admDirRole" placeholder="सेवा का नाम दर्ज करें">
+        </div>
+        <div class="form-group">
+          <label>अधिकारी / विभाग का नाम *</label>
+          <input type="text" id="admDirName" placeholder="नाम (उदा. आपातकालीन सेवा या व्यक्ति का नाम)">
+        </div>
+        <div class="form-group">
+          <label>नंबर (3 से 12 अंक मान्य) *</label>
+          <input type="tel" id="admDirPhone" maxlength="12" placeholder="उदा. 112, 108, 1090 या 10-अंकीय मोबाइल">
+        </div>
+        <button class="btn btn-gold" onclick="submitAdminDirectoryCloud()"><i class="fa-solid fa-floppy-disk"></i> तुरंत नंबर सेव करें</button>
       </div>
 
-      <h4 style="font-size:13px; font-weight:800; color:#1e293b; margin-bottom:8px;">मौजूदा नंबर सूची:</h4>
+      <h4 style="font-size:13px; font-weight:800; color:#1e293b; margin-bottom:8px;">पोर्टल पर सक्रिय नंबर:</h4>
       <div id="adminDirectoryManageList"></div>
     </div>
   </div>
@@ -540,7 +552,7 @@
   <div id="adminUserServicesModal" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('adminUserServicesModal')">✕</button>
-      <div class="card-title" style="color: var(--primary);">
+      <div class="card-title" style="color: #0f172a;">
         <i class="fa-solid fa-users"></i> आम नागरिक सेवा विकल्प
       </div>
       <div class="actions-grid">
@@ -549,11 +561,11 @@
           <span>नई शिकायत</span>
         </div>
         <div class="action-tile" onclick="closeScreenModal('adminUserServicesModal'); openScreenModal('vList');">
-          <div class="tile-icon" style="background: #2563eb;"><i class="fa-solid fa-list-check"></i></div>
+          <div class="tile-icon" style="background: #0f172a;"><i class="fa-solid fa-list-check"></i></div>
           <span>शिकायतें देखें</span>
         </div>
         <div class="action-tile" onclick="closeScreenModal('adminUserServicesModal'); openScreenModal('vTrack');">
-          <div class="tile-icon" style="background: #d97706;"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+          <div class="tile-icon" style="background: #b45309;"><i class="fa-solid fa-magnifying-glass-location"></i></div>
           <span>शिकायत स्थिति</span>
         </div>
         <div class="action-tile" onclick="closeScreenModal('adminUserServicesModal'); openScreenModal('vRental');">
@@ -565,11 +577,11 @@
           <span>पशु व बाज़ार</span>
         </div>
         <div class="action-tile" onclick="closeScreenModal('adminUserServicesModal'); openScreenModal('vSchemes');">
-          <div class="tile-icon" style="background: #0284c7;"><i class="fa-solid fa-hand-holding-hand"></i></div>
+          <div class="tile-icon" style="background: #1e293b;"><i class="fa-solid fa-hand-holding-hand"></i></div>
           <span>सरकारी योजना</span>
         </div>
         <div class="action-tile" onclick="closeScreenModal('adminUserServicesModal'); openScreenModal('vTeam');">
-          <div class="tile-icon" style="background: #475569;"><i class="fa-solid fa-users-gear"></i></div>
+          <div class="tile-icon" style="background: #f59e0b;"><i class="fa-solid fa-users-gear"></i></div>
           <span>पंचायत टीम</span>
         </div>
       </div>
@@ -589,11 +601,11 @@
           <span>शिकायत रीसायकल बिन</span>
         </div>
         <div class="admin-menu-item" onclick="closeScreenModal('adminSettingsModal'); openScreenModal('secChangePassModal');">
-          <i class="fa-solid fa-key" style="color:#d97706; width:20px;"></i>
+          <i class="fa-solid fa-key" style="color:var(--gold); width:20px;"></i>
           <span>एडमिन पासवर्ड बदलें (Change Password)</span>
         </div>
         <div class="admin-menu-item" onclick="window.print()">
-          <i class="fa-solid fa-print" style="color:#2563eb; width:20px;"></i>
+          <i class="fa-solid fa-print" style="color:#0f172a; width:20px;"></i>
           <span>पोर्टल रिपोर्ट प्रिंट करें</span>
         </div>
         <div class="admin-menu-item" onclick="closeScreenModal('adminSettingsModal'); triggerFactoryResetFlow();" style="color:#e11d48;">
@@ -621,11 +633,11 @@
   <div id="secChangePassModal" class="screen-modal">
     <div class="screen-modal-card" style="max-width: 440px;">
       <button class="red-close-btn" onclick="closeScreenModal('secChangePassModal')">✕</button>
-      <div class="card-title" style="color: #d97706;"><i class="fa-solid fa-key"></i> सुरक्षा एवं पासवर्ड प्रबंधन</div>
+      <div class="card-title" style="color: var(--gold);"><i class="fa-solid fa-key"></i> सुरक्षा एवं पासवर्ड प्रबंधन</div>
       <div class="form-group"><label>पुराना पासवर्ड *</label><input type="password" id="admOldPassInput"></div>
       <div class="form-group"><label>नया पासवर्ड *</label><input type="password" id="admNewPassInput1"></div>
       <div class="form-group"><label>नया पासवर्ड Confirm *</label><input type="password" id="admNewPassInput2"></div>
-      <button class="btn btn-primary" onclick="executePasswordChangeWithConfirmation()">नया पासवर्ड सुरक्षित करें</button>
+      <button class="btn btn-gold" onclick="executePasswordChangeWithConfirmation()">नया पासवर्ड सुरक्षित करें</button>
     </div>
   </div>
 
@@ -633,7 +645,7 @@
   <div id="vNew" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vNew')" title="बंद करें">✕</button>
-      <div class="card-title" style="color: var(--accent);">
+      <div class="card-title" style="color: var(--emerald);">
         <i class="fa-solid fa-feather-pointed"></i> नई जन समस्या दर्ज करें
       </div>
 
@@ -718,7 +730,7 @@
   <div id="vList" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vList')" title="बंद करें">✕</button>
-      <div class="card-title" style="color: #2563eb;">
+      <div class="card-title" style="color: #0f172a;">
         <i class="fa-solid fa-clipboard-list"></i> पाकरपुर दर्ज शिकायतें (<span id="cCount">0</span>)
       </div>
       <p style="font-size:11px; color:#64748b; margin-bottom:10px;">
@@ -732,14 +744,14 @@
   <div id="vTrack" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vTrack')" title="बंद करें">✕</button>
-      <div class="card-title" style="color: #d97706;">
+      <div class="card-title" style="color: var(--gold);">
         <i class="fa-solid fa-magnifying-glass-location"></i> अपनी शिकायत की स्थिति ट्रैक करें
       </div>
       <div class="form-group">
         <label>शिकायत रसीद संख्या (उदा. PKP-101) दर्ज करें:</label>
         <input type="text" id="trackQueryInput" placeholder="PKP नंबर दर्ज करें">
       </div>
-      <button class="btn btn-primary" onclick="executeComplaintTrack()"><i class="fa-solid fa-search"></i> स्थिति खोजें</button>
+      <button class="btn btn-gold" onclick="executeComplaintTrack()"><i class="fa-solid fa-search"></i> स्थिति खोजें</button>
       <div id="trackResultDiv" style="margin-top:12px;"></div>
     </div>
   </div>
@@ -755,7 +767,7 @@
     </div>
   </div>
 
-  <!-- POPUP: MARKETPLACE (WITH CITIZEN UPLOAD & PHOTO POSTING) -->
+  <!-- POPUP: MARKETPLACE -->
   <div id="vMarket" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vMarket')">✕</button>
@@ -767,7 +779,7 @@
       <div style="background:#fff7ed; border:1.5px solid #fed7aa; padding:12px; border-radius:14px; margin-bottom:14px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <h4 style="font-size:13.5px; color:#9a3412; font-weight:800;"><i class="fa-solid fa-plus-circle"></i> अपना सामान / पशु या हुनर जोड़ें</h4>
-          <button class="btn btn-primary" style="width:auto; padding:5px 12px; font-size:11px;" onclick="toggleNewPostForm()">
+          <button class="btn btn-gold" style="width:auto; padding:5px 12px; font-size:11px;" onclick="toggleNewPostForm()">
             <i class="fa-solid fa-pen"></i> पोस्ट बनाएं
           </button>
         </div>
@@ -809,7 +821,7 @@
   <div id="vDirectory" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vDirectory')">✕</button>
-      <div class="card-title" style="color: var(--primary);"><i class="fa-solid fa-address-book"></i> आवश्यक एवं आपातकालीन हेल्पलाइन</div>
+      <div class="card-title" style="color: var(--gold);"><i class="fa-solid fa-address-book"></i> आवश्यक एवं आपातकालीन हेल्पलाइन</div>
       <div id="directoryListDiv"></div>
     </div>
   </div>
@@ -818,7 +830,7 @@
   <div id="vBudget" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vBudget')">✕</button>
-      <div class="card-title" style="color: #0284c7;"><i class="fa-solid fa-building-columns"></i> ग्राम विकास कोष</div>
+      <div class="card-title" style="color: #0369a1;"><i class="fa-solid fa-building-columns"></i> ग्राम विकास कोष</div>
       <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:14px; text-align:center;">
         <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:8px 4px; border-radius:10px;">
           <span style="font-size:11px; color:#15803d; font-weight:700;">कुल फंड</span>
@@ -828,9 +840,9 @@
           <span style="font-size:11px; color:#be123c; font-weight:700;">कुल खर्च</span>
           <h4 id="koshTotalOut" style="font-size:14px; color:#e11d48; margin-top:2px;">₹0</h4>
         </div>
-        <div style="background:#eef2ff; border:1px solid #c7d2fe; padding:8px 4px; border-radius:10px;">
-          <span style="font-size:11px; color:#4338ca; font-weight:700;">बैलेंस</span>
-          <h4 id="koshBalance" style="font-size:14px; color:#4338ca; margin-top:2px;">₹0</h4>
+        <div style="background:#fef3c7; border:1px solid #fde68a; padding:8px 4px; border-radius:10px;">
+          <span style="font-size:11px; color:#92400e; font-weight:700;">बैलेंस</span>
+          <h4 id="koshBalance" style="font-size:14px; color:#b45309; margin-top:2px;">₹0</h4>
         </div>
       </div>
       <div id="koshExpensesDiv"></div>
@@ -850,8 +862,8 @@
   <div id="vTeam" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vTeam')">✕</button>
-      <div class="card-title" style="color: #475569;"><i class="fa-solid fa-users-gear"></i> प्रतिनिधि मंडल</div>
-      <div class="directory-card" style="border-left:4px solid var(--primary-light);">
+      <div class="card-title" style="color: var(--gold);"><i class="fa-solid fa-users-gear"></i> प्रतिनिधि मंडल</div>
+      <div class="directory-card" style="border-left:4px solid var(--gold-light);">
         <h4 id="teamPradhanName">ग्राम प्रतिनिधि</h4>
         <p id="teamPradhanPhone" style="font-size:12px; color:#64748b;"></p>
       </div>
@@ -862,7 +874,7 @@
   <div id="vSchemes" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeScreenModal('vSchemes')">✕</button>
-      <div class="card-title" style="color: #0369a1;"><i class="fa-solid fa-hand-holding-hand"></i> प्रमुख सरकारी योजनाएं</div>
+      <div class="card-title" style="color: #0f172a;"><i class="fa-solid fa-hand-holding-hand"></i> प्रमुख सरकारी योजनाएं</div>
       <div class="scheme-card" style="border-left:4px solid #0284c7;">
         <h4>आयुष्मान भारत कार्ड</h4>
         <p style="font-size:12px; color:#475569;">₹5 लाख तक मुफ़्त सरकारी/निजी अस्पताल इलाज।</p>
@@ -880,7 +892,7 @@
   <div id="secAdminGrievanceModal" class="screen-modal">
     <div class="screen-modal-card">
       <button class="red-close-btn" onclick="closeAdminPopupSection('secAdminGrievanceModal')">✕</button>
-      <div class="card-title" style="color: var(--accent);"><i class="fa-solid fa-list-check"></i> शिकायत समीक्षा व एक्शन</div>
+      <div class="card-title" style="color: var(--emerald);"><i class="fa-solid fa-list-check"></i> शिकायत समीक्षा व एक्शन</div>
       <div id="adminListDiv"></div>
     </div>
   </div>
@@ -908,27 +920,27 @@
 
   <!-- SUPER ADMIN MODAL -->
   <div class="screen-modal" id="masterAuthModal">
-    <div class="screen-modal-card" style="background:#0f172a; color:#f8fafc; border:1px solid #334155; max-width:440px;">
+    <div class="screen-modal-card" style="background:#020617; color:#f8fafc; border:1px solid #334155; max-width:440px;">
       <button class="red-close-btn" onclick="closeScreenModal('masterAuthModal')">✕</button>
       <div class="card-title" style="color:#e2e8f0; border-bottom:1px solid #334155;">
-        <i class="fa-solid fa-terminal" style="color:#6366f1;"></i> मास्टर कंसोल गेटवे
+        <i class="fa-solid fa-terminal" style="color:var(--gold-light);"></i> मास्टर कंसोल गेटवे
       </div>
       <div id="masterAuthStep1">
         <p style="font-size:12px; color:#94a3b8; margin-bottom:14px;">यह विंडो केवल मुख्य व्यवस्थापक के लिए है:</p>
         <div class="form-group">
-          <input type="password" id="masterKeyInput" style="background:#1e293b; border-color:#475569; color:#fff;" placeholder="Master Key...">
+          <input type="password" id="masterKeyInput" style="background:#0f172a; border-color:#475569; color:#fff;" placeholder="Master Key...">
         </div>
-        <button type="button" class="btn btn-primary" onclick="verifyMasterKey()">प्रमाणित करें</button>
+        <button type="button" class="btn btn-gold" onclick="verifyMasterKey()">प्रमाणित करें</button>
       </div>
     </div>
   </div>
 
   <div class="screen-modal" id="superAdminModal">
-    <div class="screen-modal-card" style="background:#0f172a; color:#f8fafc; border:1px solid #334155; max-width:540px;">
+    <div class="screen-modal-card" style="background:#020617; color:#f8fafc; border:1px solid #334155; max-width:540px;">
       <button class="red-close-btn" onclick="closeScreenModal('superAdminModal')">✕</button>
-      <div class="card-title" style="color:#e2e8f0; border-bottom:1px solid #334155;"><i class="fa-solid fa-crown" style="color:#f59e0b;"></i> मास्टर सुपर एडमिन आर्किटेक्चर</div>
+      <div class="card-title" style="color:#e2e8f0; border-bottom:1px solid #334155;"><i class="fa-solid fa-crown" style="color:var(--gold-light);"></i> मास्टर सुपर एडमिन आर्किटेक्चर</div>
       <div class="super-card-box">
-        <button class="btn btn-primary" onclick="enterGhostMode()">घोस्ट मोड में प्रवेश करें</button>
+        <button class="btn btn-gold" onclick="enterGhostMode()">घोस्ट मोड में प्रवेश करें</button>
       </div>
       <div class="super-card-box" style="border: 1px solid #f87171; margin-top:10px;">
         <button class="btn btn-crimson" onclick="secretResetAdminPin()">प्रधान पिन 1234 पर रीसेट करें</button>
@@ -1219,13 +1231,15 @@
       });
     }
 
-    /* ADMIN DIRECTORY MANAGEMENT (ADD/DELETE HELPLINE NUMBERS) */
+    /* ADMIN DIRECTORY MANAGEMENT (ALLOWS 3 TO 12 DIGIT NUMBERS - POLICE, AMBULANCE, ETC.) */
     function submitAdminDirectoryCloud() {
       var role = document.getElementById('admDirRole').value.trim();
       var name = document.getElementById('admDirName').value.trim();
       var phone = document.getElementById('admDirPhone').value.trim();
 
-      if (!role || !name || phone.length < 10) return alert("कृपया पद, नाम और 10-अंकीय नंबर अवश्य भरें!");
+      if (!role) return alert("कृपया पद या सेवा का नाम भरें!");
+      if (!name) return alert("कृपया नाम भरें!");
+      if (!phone || phone.length < 3) return alert("कृपया वैध हेल्पलाइन या मोबाइल नंबर (कम से कम 3 अंक, जैसे 112 या 108) भरें!");
 
       var id = "DIR-" + Date.now();
       var item = { id: id, role: role, name: name, phone: phone };
@@ -1235,6 +1249,8 @@
         document.getElementById('admDirRole').value = "";
         document.getElementById('admDirName').value = "";
         document.getElementById('admDirPhone').value = "";
+      }).catch(function(err) {
+        alert("त्रुटि: नंबर सुरक्षित नहीं हो सका - " + err.message);
       });
     }
 
@@ -1256,7 +1272,7 @@
       var h = "";
       directoryList.forEach(function(item) {
         h += '<div style="background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:10px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">' +
-             '<div><b>' + item.role + '</b>: ' + item.name + '<br><span style="color:#059669; font-size:12px;">+91 ' + item.phone + '</span></div>' +
+             '<div><b>' + item.role + '</b>: ' + item.name + '<br><span style="color:var(--emerald); font-size:12px; font-weight:700;">' + item.phone + '</span></div>' +
              '<button onclick="deleteDirectoryCloud(\'' + (item.id || item.phone) + '\')" class="btn btn-crimson" style="width:auto; padding:4px 8px; font-size:11px;"><i class="fa-solid fa-trash"></i></button>' +
              '</div>';
       });
@@ -1273,7 +1289,7 @@
       }
       var h = "";
       comps.forEach(function(c) {
-        var bg = (c.status === "निस्तारित") ? "#059669" : (c.status === "प्रगति पर" ? "#2563eb" : "#d97706");
+        var bg = (c.status === "निस्तारित") ? "#059669" : (c.status === "प्रगति पर" ? "#0f172a" : "#b45309");
         h += '<div class="complaint-card"><span class="badge" style="background:'+bg+'">'+c.status+'</span>' +
              '<strong>' + c.id + ' - ' + c.cat + '</strong>' +
              '<div style="font-size:12px; color:#64748b; margin:4px 0;">स्थान: ' + c.place + '</div>' +
@@ -1289,7 +1305,7 @@
         }
 
         if (c.reply || c.adminVoice) {
-          h += '<div style="background:#f8fafc; border-left:3px solid var(--primary-light); padding:6px 10px; border-radius:6px; font-size:12px; color:var(--primary); margin-top:6px;">' +
+          h += '<div style="background:#f8fafc; border-left:3px solid var(--gold); padding:6px 10px; border-radius:6px; font-size:12px; color:#0f172a; margin-top:6px;">' +
                '<strong>उत्तर:</strong> ' + (c.reply || "");
           if (c.adminVoice) {
             h += '<div style="margin-top:4px;"><span style="font-size:10px; font-weight:700;">वॉइस उत्तर:</span><br><audio controls src="' + c.adminVoice + '" style="width:100%; height:32px; margin-top:2px;"></audio></div>';
@@ -1351,10 +1367,11 @@
       }
       var h = "";
       directoryList.forEach(function(c) {
-        h += '<div class="directory-card" style="display:flex; justify-content:space-between; align-items:center; border-left:4px solid var(--primary-light);">' +
+        var callNumber = c.phone.replace(/[^0-9]/g, '');
+        h += '<div class="directory-card" style="display:flex; justify-content:space-between; align-items:center; border-left:4px solid var(--gold);">' +
              '<div><h4 style="font-size:13px; font-weight:700;">' + c.role + '</h4>' +
-             '<p style="font-size:12px; color:#475569;">' + c.name + ' - <span style="color:#059669; font-weight:700;">+91 ' + c.phone + '</span></p></div>' +
-             '<a href="tel:' + c.phone + '" class="action-circle-btn btn-call" style="width:34px; height:34px; font-size:14px;"><i class="fa-solid fa-phone"></i></a></div>';
+             '<p style="font-size:12px; color:#475569;">' + c.name + ' - <span style="color:var(--emerald); font-weight:800;">' + c.phone + '</span></p></div>' +
+             '<a href="tel:' + callNumber + '" class="action-circle-btn btn-call" style="width:34px; height:34px; font-size:14px;"><i class="fa-solid fa-phone"></i></a></div>';
       });
       d.innerHTML = h;
     }
@@ -1439,7 +1456,7 @@
       }
       var h = "";
       comps.forEach(function(c) {
-        h += '<div class="complaint-card" style="border-left: 4px solid var(--accent);">' +
+        h += '<div class="complaint-card" style="border-left: 4px solid var(--emerald);">' +
              '<div style="display:flex; justify-content:space-between; align-items:center;">' +
              '<strong>' + c.id + ' - ' + c.cat + '</strong>' +
              '<button onclick="moveToRecycleBin(\''+c.id+'\')" style="background:#fee2e2; color:#e11d48; border:1px solid #fecaca; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">बिन में डालें</button>' +
@@ -1467,7 +1484,7 @@
              '</div>' +
 
              '<div style="margin:6px 0; background:#fff; padding:6px; border-radius:6px; border:1px solid #cbd5e1; text-align:center;">' +
-             '<label style="font-size:11px; color:var(--primary); font-weight:700; display:block; margin-bottom:4px;"><i class="fa-solid fa-microphone"></i> बोलकर उत्तर रिकॉर्ड करें:</label>' +
+             '<label style="font-size:11px; color:#0f172a; font-weight:700; display:block; margin-bottom:4px;"><i class="fa-solid fa-microphone"></i> बोलकर उत्तर रिकॉर्ड करें:</label>' +
              '<button type="button" id="admMicBtn_'+c.id+'" class="btn-mic" style="width:36px; height:36px; font-size:14px;" onclick="toggleAdminVoiceReply(\''+c.id+'\')"><i class="fa-solid fa-microphone"></i></button>' +
              '<p id="admVoiceStatus_'+c.id+'" style="font-size:10px; color:#64748b; margin-top:3px;">माइक दबाएं और अपनी आवाज़ में उत्तर दें</p>' +
              
@@ -1503,7 +1520,7 @@
     function savePradhanProfileDataCloud() {
       var n = document.getElementById('admPName').value.trim();
       var p = document.getElementById('admPPhone').value.trim();
-      if (!n || p.length < 10) return alert("कृपया नाम व 10-अंकीय नंबर भरें!");
+      if (!n || p.length < 3) return alert("कृपया नाम व नंबर भरें!");
       pradhanInfo.name = n;
       pradhanInfo.phone = p;
       db.ref('pradhan_profile').set(pradhanInfo).then(function() {
@@ -1636,11 +1653,11 @@
         r.innerHTML = "<p style='color:#e11d48; font-size:13px;'>कोई रिकॉर्ड नहीं मिला!</p>";
         return;
       }
-      var out = '<div class="complaint-card" style="border-left:4px solid #d97706;">' +
+      var out = '<div class="complaint-card" style="border-left:4px solid var(--gold);">' +
                 '<h4>' + f.id + ' (' + f.status + ')</h4>' +
                 '<p style="font-size:12px; margin-top:4px;"><b>विभाग:</b> ' + f.cat + '</p>' +
                 '<p style="font-size:12px;"><b>स्थान:</b> ' + f.place + '</p>' +
-                '<p style="font-size:12px; color:#059669; margin-top:4px;"><b>उत्तर:</b> ' + (f.reply || "प्रक्रियाधीन") + '</p>';
+                '<p style="font-size:12px; color:var(--emerald); margin-top:4px;"><b>उत्तर:</b> ' + (f.reply || "प्रक्रियाधीन") + '</p>';
       if (f.adminVoice) {
         out += '<div style="margin-top:6px;"><span style="font-size:11px; font-weight:700;">वॉइस उत्तर सुनें:</span><br><audio controls src="'+f.adminVoice+'" style="width:100%; height:32px;"></audio></div>';
       }
@@ -1687,197 +1704,8 @@
           document.getElementById('admPName').value = v.name || "";
           document.getElementById('admPPhone').value = v.phone || "";
           document.getElementById('teamPradhanName').innerText = v.name || "ग्राम प्रतिनिधि";
-          document.getElementById('teamPradhanPhone').innerText = v.phone ? "मो: +91 " + v.phone : "";
+          document.getElementById('teamPradhanPhone').innerText = v.phone ? "मो: " + v.phone : "";
           document.getElementById('pradhanTel').href = v.phone ? "tel:" + v.phone : "#";
           document.getElementById('pradhanWa').href = v.phone ? "https://api.whatsapp.com/send?phone=91" + v.phone : "#";
           if (v.pic) {
-            document.getElementById('headPradhanImg').src = v.pic;
-            document.getElementById('headPradhanImg').style.display = "block";
-            document.getElementById('headPradhanIcon').style.display = "none";
-          } else {
-            document.getElementById('headPradhanImg').style.display = "none";
-            document.getElementById('headPradhanIcon').style.display = "flex";
-          }
-          if (v.headerLogo) {
-            document.getElementById('headerPanchayatLogo').src = v.headerLogo;
-          }
-        }
-      });
-
-      db.ref('broadcast_alert').on('value', function(s){
-        var v = s.val();
-        var banner = document.getElementById('broadcastBanner');
-        if (v && v.active) {
-          document.getElementById('broadcastTitleText').innerText = v.title || "महत्वपूर्ण सूचना";
-          document.getElementById('broadcastMessageText').innerText = v.message || "";
-          banner.style.display = 'block';
-        } else {
-          banner.style.display = 'none';
-        }
-      });
-
-      db.ref('complaints').on('value', function(s){
-        var v = s.val();
-        comps = v ? Object.values(v).reverse() : [];
-        drawComps();
-        var pendingCount = comps.filter(function(c){ return c.status === "लंबित" || c.status === "प्रगति पर"; }).length;
-        document.getElementById('adminPendingCompBadge').innerText = pendingCount;
-        if(isAdminUnlocked) filterAdminComplaints();
-      });
-
-      db.ref('complaints_bin').on('value', function(s){
-        var v = s.val();
-        binComps = v ? Object.values(v).reverse() : [];
-        renderRecycleBin();
-      });
-
-      db.ref('market_posts').on('value', function(s){
-        var v = s.val();
-        marketPosts = v ? Object.values(v).reverse() : [];
-        drawMarket();
-        var mBadge = document.getElementById('adminMarketBadge');
-        if (mBadge) mBadge.innerText = marketPosts.length;
-        if (isAdminUnlocked) renderAdminMarketModerator();
-      });
-
-      db.ref('notices').on('value', function(s){
-        var v = s.val();
-        notices = v ? Object.values(v).reverse() : [];
-        drawNotices();
-      });
-
-      db.ref('directory').on('value', function(s){
-        var v = s.val();
-        directoryList = v ? Object.values(v) : [];
-        drawDirectory();
-        if (isAdminUnlocked) renderAdminDirectoryManageList();
-      });
-
-      db.ref('gram_funds').on('value', function(s){
-        var v = s.val();
-        fundsList = v ? Object.values(v) : [];
-        calcAndDrawBudget();
-      });
-
-      db.ref('gram_expenses').on('value', function(s){
-        var v = s.val();
-        expensesList = v ? Object.values(v).reverse() : [];
-        calcAndDrawBudget();
-      });
-
-      db.ref('gallery').on('value', function(s){
-        var v = s.val();
-        galleryList = v ? Object.values(v).reverse() : [];
-        drawGallery();
-      });
-
-      db.ref('admin_settings').on('value', function(s){
-        var v = s.val();
-        if(v){ adminCustomPassword = v.customPassword; }
-      });
-    }
-
-    function verifyAdminGate() {
-      var pin = document.getElementById('adminGatePin').value.trim();
-      var valid = adminCustomPassword ? (pin === adminCustomPassword) : (pin === "1234");
-      if (!valid) return alert("अमान्य पासवर्ड! पहुंच अस्वीकृत।");
-      isAdminUnlocked = true;
-      localStorage.setItem('pkp_admin_logged_in', 'true');
-      updateAdminUIState();
-    }
-
-    function adminLogout() {
-      isAdminUnlocked = false;
-      localStorage.removeItem('pkp_admin_logged_in');
-      document.getElementById('vAdmin').classList.remove('active');
-      document.getElementById('adminGateBox').style.display = 'block';
-      document.getElementById('adminMainDashBox').style.display = 'none';
-      updateAdminUIState();
-      alert("एडमिन सत्र समाप्त हुआ!");
-    }
-
-    function openAdminGate() {
-      document.querySelectorAll('.screen-modal').forEach(function(el){ el.classList.remove('active'); });
-      document.getElementById('vAdmin').classList.add('active');
-      if (isAdminUnlocked) {
-        document.getElementById('adminGateBox').style.display = 'none';
-        document.getElementById('adminMainDashBox').style.display = 'block';
-        filterAdminComplaints();
-        renderAdminDirectoryManageList();
-      }
-    }
-
-    function exitAdminView() {
-      document.getElementById('vAdmin').classList.remove('active');
-    }
-
-    var logoClickCount = 0;
-    var logoTimer = null;
-    function handleLogoClick() {
-      logoClickCount++;
-      clearTimeout(logoTimer);
-      if (logoClickCount >= 5) {
-        logoClickCount = 0;
-        openScreenModal('masterAuthModal');
-      } else {
-        logoTimer = setTimeout(function(){ logoClickCount = 0; }, 1500);
-      }
-    }
-
-    function verifyMasterKey() {
-      var val = document.getElementById('masterKeyInput').value.trim();
-      var currentMaster = localStorage.getItem('pkp_master_key') || DEFAULT_MASTER_KEY;
-      if (val === currentMaster) {
-        closeScreenModal('masterAuthModal');
-        openScreenModal('superAdminModal');
-      } else {
-        alert("अमान्य मास्टर कुंजी!");
-      }
-    }
-
-    function enterGhostMode() {
-      sessionStorage.setItem('pkp_ghost_active', 'true');
-      isAdminUnlocked = true;
-      localStorage.setItem('pkp_admin_logged_in', 'true');
-      closeScreenModal('superAdminModal');
-      document.getElementById('ghostModeBanner').style.display = 'flex';
-      updateAdminUIState();
-    }
-
-    function exitGhostMode() {
-      sessionStorage.removeItem('pkp_ghost_active');
-      document.getElementById('ghostModeBanner').style.display = 'none';
-      adminLogout();
-    }
-
-    function secretResetAdminPin() {
-      if (confirm("क्या आप वाकई प्रधान पिन 1234 पर रीसेट करना चाहते हैं?")) {
-        db.ref('admin_settings').set({ customPassword: null }).then(function() {
-          adminCustomPassword = null;
-          alert("प्रधान पिन 1234 पर रीसेट हो गया!");
-          closeScreenModal('superAdminModal');
-        });
-      }
-    }
-
-    function openScreenModal(id){
-      var el = document.getElementById(id);
-      if(el) el.classList.add('active');
-      if(id === 'vList') drawComps();
-      if(id === 'vMarket') drawMarket();
-      if(id === 'vNotice') drawNotices();
-      if(id === 'vDirectory') drawDirectory();
-      if(id === 'vBudget') calcAndDrawBudget();
-      if(id === 'vGallery') drawGallery();
-    }
-    function closeScreenModal(id){ var el = document.getElementById(id); if(el) el.classList.remove('active'); }
-    function openAdminPopupSection(id){
-      document.getElementById(id).classList.add('active');
-      if(id === 'secAdminGrievanceModal') filterAdminComplaints();
-      if(id === 'secAdminMarketModal') renderAdminMarketModerator();
-      if(id === 'secAdminDirectoryModal') renderAdminDirectoryManageList();
-    }
-    function closeAdminPopupSection(id){ document.getElementById(id).classList.remove('active'); }
-  </script>
-</body>
-</html>
+            document.getElementById('headPradhanImg').src =
